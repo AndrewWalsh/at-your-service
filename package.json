@@ -7,7 +7,7 @@
     "dist"
   ],
   "bin": {
-    "at-your-service": "dist/cli.js"
+    "at-your-service": "./dist/cli.js"
   },
   "main": "./dist/at-your-service.umd.js",
   "module": "./dist/at-your-service.es.js",
