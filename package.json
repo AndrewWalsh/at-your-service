@@ -1,0 +1,59 @@
+{
+  "name": "at-your-service",
+  "version": "0.0.1",
+  "description": "Use the power of service workers to automagically create specifications",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "at-your-service": "src/_not_exported/cli.js"
+  },
+  "main": "./dist/at-your-service.umd.js",
+  "module": "./dist/at-your-service.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/at-your-service.es.js",
+      "require": "./dist/at-your-service.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite -c ./vite.config.ts",
+    "test": "vitest",
+    "build": "vite build -c ./vite.config.ts && npm run build:cli && npm run build:sw",
+    "format": "prettier . --write",
+    "build:cli": "cpy src/_not_exported/cli.js dist --flat",
+    "build:sw": "cpy src/_not_exported/at-your-service-sw.js dist --flat",
+    "preview": "vite preview -c ./vite.config.ts"
+  },
+  "keywords": [],
+  "author": "Andrew Walsh",
+  "license": "MIT",
+  "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
+    "@faker-js/faker": "^7.6.0",
+    "@types/yargs": "^17.0.13",
+    "prettier": "2.7.1",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "vite": "^3.2.2",
+    "vitest": "^0.24.5"
+  },
+  "dependencies": {
+    "alterschema": "^1.1.1",
+    "cpy-cli": "^4.2.0",
+    "lodash": "^4.17.21",
+    "openapi3-ts": "^3.1.1",
+    "patch-package": "^6.5.0",
+    "quicktype-core": "^6.1.0",
+    "redom": "^3.29.1",
+    "store2": "^2.14.2",
+    "strict-event-emitter": "^0.2.8",
+    "type-fest": "^3.1.0",
+    "validator": "^13.7.0",
+    "yargs": "^17.6.2",
+    "yup": "^0.32.11"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
