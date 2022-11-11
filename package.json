@@ -1,13 +1,13 @@
 {
   "name": "at-your-service",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Use the power of service workers to automagically create specifications",
   "files": [
     "dist"
   ],
   "bin": {
-    "at-your-service": "src/_not_exported/cli.js"
+    "at-your-service": "dist/cli.js"
   },
   "main": "./dist/at-your-service.umd.js",
   "module": "./dist/at-your-service.es.js",
