@@ -30,12 +30,12 @@ export const startUi = (store: Store, options = createDefaults()) => {
       position === "bottomRight" || position === "topRight" ? 0 : undefined,
     top: position === "topLeft" || position === "topRight" ? 0 : undefined,
   });
-  const button = el("button", "Copy", {
+  const button = el("button", "Copy OpenAPI Spec", {
     style: bottomLeftAbsolute("bottomLeft"),
   });
   button.onclick = async () => {
-    console.log(await store.get());
-    console.log(await (await storeStructToOpenAPI(await store.get())).getSpec());
+    const spec = await (await storeStructToOpenAPI(await store.get())).getJSON();
+    navigator.clipboard.writeText(spec)
   };
   mount(document.body, button);
 };

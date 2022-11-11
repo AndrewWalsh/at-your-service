@@ -2,7 +2,6 @@ import type { StoreStructure } from "../../types";
 import {
   OpenAPIObject,
   OpenApiBuilder,
-  PathObject,
   PathItemObject,
   OperationObject,
   ResponseObject,
@@ -15,7 +14,6 @@ import {
 import { ReadonlyDeep } from "type-fest";
 import { convert } from '@redocly/json-to-json-schema';
 
-import jsonSchemaToOpenAPISchema from "./json-schema-to-openapi-schema";
 import samplesToJsonSchema from "../samples-to-json-schema";
 
 const extractPathNames = (str: string) => {
@@ -106,11 +104,6 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           /**
            * RESPONSE OBJECT CREATION
            */
-          // const resMediaType: MediaTypeObject = {
-          //   schema: await jsonSchemaToOpenAPISchema(
-          //     await samplesToJsonSchema(resSamples)
-          //   ),
-          // };
           const resMediaType: MediaTypeObject = {
             schema: convert(resSamples.map(s => s.toJSON())) as any,
           };
@@ -129,11 +122,6 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           /**
            * REQUEST OBJECT CREATION
            */
-          // const reqMediaType: MediaTypeObject = {
-          //   schema: await jsonSchemaToOpenAPISchema(
-          //     await samplesToJsonSchema(reqSamples)
-          //   ),
-          // };
           const reqMediaType: MediaTypeObject = {
             schema: convert(reqSamples.map(s => s.toJSON())) as any,
           };

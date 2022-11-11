@@ -113,8 +113,8 @@ class Store {
       pathToStoreRoute: PathToStoreRoute;
       url: URL;
       pathName: string;
-      responseSample: Sample;
-      requestSample: Sample;
+      responseSample?: Sample;
+      requestSample?: Sample;
     } & MessageData
   ) {
     const initialData: StoreRoute = {
@@ -178,8 +178,8 @@ class Store {
     const requestJSON = JSON.stringify(data.request.body);
     const responseJSON = JSON.stringify(data.response.body);
 
-    const requestSample = new Sample(requestJSON);
-    const responseSample = new Sample(responseJSON);
+    const requestSample = data.request.body ? new Sample(requestJSON) : undefined;
+    const responseSample = data.response.body ? new Sample(responseJSON) : undefined;
 
     const storeRoute: undefined | StoreRoute = get(
       this.store,
@@ -193,15 +193,18 @@ class Store {
         pathToStoreRoute,
         url,
         pathName,
-        requestSample: requestSample,
-        responseSample: responseSample,
+        requestSample,
+        responseSample,
       });
     }
     // Update
     else {
       // Add new sample if it doesn't exist
       // That is to say, we need to know of it in order to construct an accurate representation
-      if (!storeRoute.resSamples.some(responseSample.isEqual)) {
+      if (requestSample && !storeRoute.reqSamples.some(requestSample.isEqual)) {
+        storeRoute.reqSamples.push(requestSample);
+      }
+      if (responseSample && !storeRoute.resSamples.some(responseSample.isEqual)) {
         storeRoute.resSamples.push(responseSample);
       }
       storeRoute.meta.push({
