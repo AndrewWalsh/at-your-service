@@ -48,13 +48,13 @@ test("returns a valid OpenAPI 3.1 Schema Object for a JSON Schema drafr 4 input 
             type: "integer",
           },
           object: {
-            $ref: "#/$defs/Object",
+            $ref: "#/definitions/Object",
           },
           string: {
             type: "string",
           },
           varies: {
-            $ref: "#/$defs/Varies",
+            $ref: "#/definitions/Varies",
           },
         },
         required: [

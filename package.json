@@ -33,6 +33,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@faker-js/faker": "^7.6.0",
+    "@seriousme/openapi-schema-validator": "^2.1.0",
     "@types/yargs": "^17.0.13",
     "prettier": "2.7.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
@@ -40,6 +41,7 @@
     "vitest": "^0.24.5"
   },
   "dependencies": {
+    "@redocly/json-to-json-schema": "^0.0.1",
     "alterschema": "^1.1.1",
     "cpy-cli": "^4.2.0",
     "lodash": "^4.17.21",

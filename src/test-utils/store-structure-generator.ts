@@ -19,7 +19,7 @@ export const createStoreStructure = (opts = defaults()) => {
   const host = faker.internet.url()
   const pathname = `/${faker.lorem.word()}`
   const method = faker.internet.httpMethod()
-  const status = faker.internet.httpMethod()
+  const status = 's' + faker.internet.httpStatusCode()
 
   const storeStructure: StoreStructure = {
     [host]: {

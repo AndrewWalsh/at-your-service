@@ -10,11 +10,37 @@ import {
   ResponsesObject,
   MediaTypeObject,
   RequestBodyObject,
+  ParameterObject,
 } from "openapi3-ts";
 import { ReadonlyDeep } from "type-fest";
+import { convert } from '@redocly/json-to-json-schema';
 
 import jsonSchemaToOpenAPISchema from "./json-schema-to-openapi-schema";
 import samplesToJsonSchema from "../samples-to-json-schema";
+
+const extractPathNames = (str: string) => {
+  const regex = /({.+?})/gm;
+
+  // Alternative syntax using RegExp constructor
+  // const regex = new RegExp('({.+?})', 'gm')
+
+  let m;
+
+  const out = []
+  while ((m = regex.exec(str)) !== null) {
+    // This is necessary to avoid infinite loops with zero-width matches
+    if (m.index === regex.lastIndex) {
+      regex.lastIndex++;
+    }
+
+    // The result can be accessed through the `m`-variable.
+    m.forEach((match, groupIndex) => {
+      // @ts-ignore
+      out.push(match)
+    });
+  }
+  return out
+};
 
 type StoreStructToOpenApi = (store: StoreStructure) => Promise<
   ReadonlyDeep<{
@@ -67,8 +93,6 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
 
   for (const host in store) {
     for (const pathname in store[host]) {
-      const addPath = (pathItem: PathItemObject): PathObject =>
-        spec.addPath(pathname, pathItem);
       for (const method in store[host][pathname]) {
         if (!openAPIValidMethods.has(method.toLowerCase())) {
           continue;
@@ -77,15 +101,18 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           // Remove the prefix character from the status code
           const { reqSamples, resSamples } =
             store[host][pathname][method][status];
-          status = status.slice(1)
+          status = status.slice(1);
 
           /**
            * RESPONSE OBJECT CREATION
            */
+          // const resMediaType: MediaTypeObject = {
+          //   schema: await jsonSchemaToOpenAPISchema(
+          //     await samplesToJsonSchema(resSamples)
+          //   ),
+          // };
           const resMediaType: MediaTypeObject = {
-            schema: await jsonSchemaToOpenAPISchema(
-              await samplesToJsonSchema(resSamples)
-            ),
+            schema: convert(resSamples.map(s => s.toJSON())) as any,
           };
           const resContent: ContentObject = {
             "application/json": resMediaType,
@@ -102,10 +129,13 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           /**
            * REQUEST OBJECT CREATION
            */
+          // const reqMediaType: MediaTypeObject = {
+          //   schema: await jsonSchemaToOpenAPISchema(
+          //     await samplesToJsonSchema(reqSamples)
+          //   ),
+          // };
           const reqMediaType: MediaTypeObject = {
-            schema: await jsonSchemaToOpenAPISchema(
-              await samplesToJsonSchema(reqSamples)
-            ),
+            schema: convert(reqSamples.map(s => s.toJSON())) as any,
           };
           const reqContent: ContentObject = {
             "application/json": reqMediaType,
@@ -119,17 +149,30 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * WRAP UP INTO OPERATION, PATH ITEM, AND PUT INTO PATH
            */
           // Some methods have no req body https://swagger.io/docs/specification/describing-request-body/
-          const hasRequestBody = !(new Set(['get', 'delete', 'head']).has(method.toLowerCase()))
+          const hasRequestBody = !new Set(["get", "delete", "head"]).has(
+            method.toLowerCase()
+          );
+          const pathNames = extractPathNames(pathname)
+          const parameters: ParameterObject[] = pathNames.map((name) => ({
+            name,
+            in: "path",
+            required: true,
+          }))
           // The req/res associated with a HTTP [VERB] request
           const operation: OperationObject = {
             summary: `Summary for ${pathname} ${method} ${status}`,
             description: `${method} call to ${pathname} with status ${status}`,
             responses,
-            requestBody: hasRequestBody ? requestBody : undefined,
           };
+          if (parameters.length) {
+            operation.parameters = parameters
+          }
+          if (hasRequestBody) {
+            operation.requestBody = requestBody;
+          }
           // The method (e.g. get) and the operation on it
           const pathItem: PathItemObject = {
-            [method]: operation,
+            [method.toLowerCase()]: operation,
           };
           // Add the resulting object to the spec
           spec.addPath(pathname, pathItem);
