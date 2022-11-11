@@ -9,9 +9,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/AndrewWalsh/at-your-service">
+  <a href="https://github.com/AndrewWalsh/at-your-service">
     <img src="resources/logo.svg" alt="Logo">
-  </a> -->
+  </a>
 
 <h3 align="center">at-your-service</h3>
 
