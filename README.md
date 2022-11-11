@@ -56,11 +56,11 @@ Once this is installed, run the start script in your application code.
 
 1. Install NPM package
    ```sh
-   npm install at-your-service
+   npm install at-your-service@alpha
    ```
 2. Add service worker to `public`, `static`, or otherwise root directory
    ```sh
-   npx at-your-service <directory>
+   npx at-your-service@alpha <directory>
    ```
 3. Run the start script in your application
 
