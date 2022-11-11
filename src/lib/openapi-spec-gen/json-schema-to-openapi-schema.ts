@@ -1,4 +1,4 @@
-import alterSchema from "alterschema";
+import alterSchema from "../../vendor/alterschema/bindings/node/index";
 import { SchemaObject } from "openapi3-ts";
 import { omit } from "lodash";
 

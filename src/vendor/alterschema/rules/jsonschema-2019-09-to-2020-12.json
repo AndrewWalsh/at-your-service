@@ -1,0 +1,251 @@
+{
+  "walker": "jsonschema-2019-09",
+  "rules": [
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/upgrade-official-metaschema",
+        "type": "object",
+        "required": [ "$schema" ],
+        "properties": {
+          "$schema": {
+            "const": "https://json-schema.org/draft/2019-09/schema"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "schema" },
+          { "$$schema": "https://json-schema.org/draft/2020-12/schema" }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/open-tuple",
+        "$comment": "https://json-schema.org/draft/2020-12/release-notes.html",
+        "type": "object",
+        "required": [ "items" ],
+        "properties": {
+          "items": {
+            "type": "array"
+          },
+          "additionalItems": false
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'items')" },
+          {
+            "prefixItems": {
+              "$eval": "schema.items"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/open-tuple-in-ref",
+        "$comment": "https://json-schema.org/draft/2020-12/release-notes.html",
+        "type": "object",
+        "required": [ "$ref" ],
+        "properties": {
+          "$ref": {
+            "type": "string",
+            "pattern": "/items/\\d+"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, '$ref')" },
+          {
+            "$$ref": {
+              "$eval": "replace(schema['$ref'], '/items/(\\d+)', '/prefixItems/$1')"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/additional-items-in-ref",
+        "$comment": "https://json-schema.org/draft/2020-12/release-notes.html",
+        "type": "object",
+        "required": [ "$ref" ],
+        "properties": {
+          "$ref": {
+            "type": "string",
+            "pattern": "/additionalItems"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, '$ref')" },
+          {
+            "$$ref": {
+              "$eval": "replace(schema['$ref'], '/additionalItems', '/items')"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/closed-tuple",
+        "$comment": "https://json-schema.org/draft/2020-12/release-notes.html",
+        "type": "object",
+        "required": [ "items", "additionalItems" ],
+        "properties": {
+          "additionalItems": true,
+          "items": {
+            "type": "array"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'additionalItems')" },
+          {
+            "items": {
+              "$eval": "schema.additionalItems"
+            },
+            "prefixItems": {
+              "$eval": "schema.items"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/empty-object",
+        "const": {}
+      },
+      "transform": {
+        "$eval": "true"
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/negated-empty-object",
+        "const": { "not": true }
+      },
+      "transform": {
+        "$eval": "false"
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/enum-to-const",
+        "type": "object",
+        "required": [ "enum" ],
+        "properties": {
+          "enum": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'enum')" },
+          {
+            "const": {
+              "$eval": "schema.enum[0]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/recursive-anchor-false",
+        "type": "object",
+        "required": [ "$recursiveAnchor" ],
+        "properties": {
+          "$recursiveAnchor": {
+            "const": false
+          }
+        }
+      },
+      "transform": {
+        "$eval": "omit(schema, '$recursiveAnchor')"
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/recursive-anchor-true",
+        "type": "object",
+        "required": [ "$recursiveAnchor" ],
+        "properties": {
+          "$recursiveAnchor": {
+            "const": true
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, '$recursiveAnchor')" },
+          {
+            "$$dynamicAnchor": {
+              "$eval": "'anchor-' + jsonHash(original)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "https://json-schema.org/draft/2019-09/vocab/validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-2019-09-to-2020-12/recursive-ref-empty-fragment",
+        "type": "object",
+        "required": [ "$recursiveRef" ],
+        "properties": {
+          "$recursiveRef": {
+            "const": "#"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, '$recursiveRef')" },
+          {
+            "$$dynamicRef": {
+              "$if": "hasContext('$recursiveAnchor', true)",
+              "then": {
+                "$eval": "'#anchor-' + jsonHash(original)"
+              },
+              "else": {
+                "$eval": "schema['$recursiveRef']"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

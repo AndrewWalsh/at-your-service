@@ -35,7 +35,7 @@ export const startUi = (store: Store, options = createDefaults()) => {
   });
   button.onclick = async () => {
     console.log(await store.get());
-    console.log(await (await storeStructToOpenAPI(await store.get())).getJSON());
+    console.log(await (await storeStructToOpenAPI(await store.get())).getSpec());
   };
   mount(document.body, button);
 };

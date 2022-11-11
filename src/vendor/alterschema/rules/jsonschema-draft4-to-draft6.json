@@ -1,0 +1,195 @@
+{
+  "walker": "jsonschema-draft4",
+  "rules": [
+    {
+      "vocabulary": "core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/upgrade-official-metaschema",
+        "type": "object",
+        "required": [ "$schema" ],
+        "properties": {
+          "$schema": {
+            "const": "http://json-schema.org/draft-04/schema#"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "schema" },
+          { "$$schema": "http://json-schema.org/draft-06/schema#" }
+        ]
+      }
+    },
+    {
+      "vocabulary": "core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/id",
+        "type": "object",
+        "required": [ "id" ],
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'id')" },
+          {
+            "$$id": {
+              "$eval": "schema.id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/boolean-exclusive-minimum-true",
+        "type": "object",
+        "required": [ "minimum", "exclusiveMinimum" ],
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "exclusiveMinimum": {
+            "const": true
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'minimum')" },
+          {
+            "exclusiveMinimum": {
+              "$eval": "schema.minimum"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/boolean-exclusive-maximum-true",
+        "type": "object",
+        "required": [ "maximum", "exclusiveMaximum" ],
+        "properties": {
+          "maximum": {
+            "type": "number"
+          },
+          "exclusiveMaximum": {
+            "const": true
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'maximum')" },
+          {
+            "exclusiveMaximum": {
+              "$eval": "schema.maximum"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "vocabulary": "validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/boolean-exclusive-minimum-false",
+        "type": "object",
+        "required": [ "minimum", "exclusiveMinimum" ],
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "exclusiveMinimum": {
+            "const": false
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'exclusiveMinimum')" }
+        ]
+      }
+    },
+    {
+      "vocabulary": "validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/boolean-exclusive-maximum-false",
+        "type": "object",
+        "required": [ "maximum", "exclusiveMaximum" ],
+        "properties": {
+          "maximum": {
+            "type": "number"
+          },
+          "exclusiveMaximum": {
+            "const": false
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'exclusiveMaximum')" }
+        ]
+      }
+    },
+    {
+      "vocabulary": "core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/empty-object",
+        "const": {}
+      },
+      "transform": {
+        "$eval": "true"
+      }
+    },
+    {
+      "vocabulary": "core",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/negated-empty-object",
+        "const": { "not": true }
+      },
+      "transform": {
+        "$eval": "false"
+      }
+    },
+    {
+      "vocabulary": "validation",
+      "condition": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://github.com/sourcemeta/alterschema/rules/jsonschema-draft4-to-draft6/enum-to-const",
+        "type": "object",
+        "required": [ "enum" ],
+        "properties": {
+          "enum": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1
+          }
+        }
+      },
+      "transform": {
+        "$merge": [
+          { "$eval": "omit(schema, 'enum')" },
+          {
+            "const": {
+              "$eval": "schema.enum[0]"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

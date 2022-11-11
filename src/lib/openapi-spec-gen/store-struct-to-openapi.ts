@@ -73,9 +73,11 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
         if (!openAPIValidMethods.has(method.toLowerCase())) {
           continue;
         }
-        for (const status in store[host][pathname][method]) {
+        for (let status in store[host][pathname][method]) {
+          // Remove the prefix character from the status code
           const { reqSamples, resSamples } =
             store[host][pathname][method][status];
+          status = status.slice(1)
 
           /**
            * RESPONSE OBJECT CREATION
@@ -116,12 +118,14 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           /**
            * WRAP UP INTO OPERATION, PATH ITEM, AND PUT INTO PATH
            */
+          // Some methods have no req body https://swagger.io/docs/specification/describing-request-body/
+          const hasRequestBody = !(new Set(['get', 'delete', 'head']).has(method.toLowerCase()))
           // The req/res associated with a HTTP [VERB] request
           const operation: OperationObject = {
             summary: `Summary for ${pathname} ${method} ${status}`,
             description: `${method} call to ${pathname} with status ${status}`,
             responses,
-            requestBody,
+            requestBody: hasRequestBody ? requestBody : undefined,
           };
           // The method (e.g. get) and the operation on it
           const pathItem: PathItemObject = {
