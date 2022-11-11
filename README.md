@@ -16,7 +16,7 @@
 <h3 align="center">at-your-service</h3>
 
   <p align="center">
-    Generate OpenAPI 3.1 specifications on the frontend with a click by intercepting requests with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> and amalgating the result
+    Generate OpenAPI 3.1 specifications on the frontend with a click by intercepting requests with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> and combining the result
     <br />
     <br />
     👷 alpha / experimental 👷
