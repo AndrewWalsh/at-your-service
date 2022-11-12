@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Use the power of service workers to automagically create specifications",
   "files": [
     "dist"
@@ -34,6 +34,7 @@
     "@faker-js/faker": "^7.6.0",
     "@seriousme/openapi-schema-validator": "^2.1.0",
     "@types/yargs": "^17.0.13",
+    "@vitest/coverage-c8": "^0.25.1",
     "prettier": "2.7.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "vite": "^3.2.2",

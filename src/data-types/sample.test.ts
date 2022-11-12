@@ -20,6 +20,11 @@ test("getSample blanks all fields in the underlying struct to a zero value", () 
   expect(allBlank).toEqual(result);
 });
 
+test("create creates a new sample", () => {
+  const sample = Sample.create(JSON.stringify(dummyData)).getSample();
+  expect(Object.keys(sample).length).toBeGreaterThan(0);
+});
+
 const equalSampleCases = [
   [
     new Sample(JSON.stringify(dummyData)),
