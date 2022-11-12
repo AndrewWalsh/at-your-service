@@ -53,6 +53,45 @@ const createExpected: CreateExpected = ({
   return expected;
 };
 
+type CreateStoreStructureAndExpectedReturns = [
+  ss: StoreStructure,
+  ex: Readonly<StoreStructure>,
+  meta: {
+    host: string;
+    pathname: string;
+    method: string;
+    status: string;
+  }
+];
+const createStoreStructureAndExpected =
+  async (): Promise<CreateStoreStructureAndExpectedReturns> => {
+    const message = createMessage();
+    const data = message.get();
+    const url = new URL(data.request.url);
+    const { host, pathname } = url;
+    const { method } = data.request;
+    const { status } = data.response;
+
+    await store.update(message);
+    const storeStructure = await store.get();
+
+    const expected = createExpected({
+      host,
+      pathname,
+      method,
+      status: `s${status}`,
+      reqSamples: [
+        storeStructure[host][pathname][method][`s${status}`].reqSamples[0],
+      ],
+      resSamples: [
+        storeStructure[host][pathname][method][`s${status}`].resSamples[0],
+      ],
+      data,
+    });
+
+    return [storeStructure, expected, { host, pathname, method, status }];
+  };
+
 beforeEach(() => {
   localStorage.clearAll();
   store.clear();
@@ -68,58 +107,13 @@ test(".get() returns the same instance", async () => {
 });
 
 test("updates state for a single message", async () => {
-  const message = createMessage();
-  const data = message.get();
-  const url = new URL(data.request.url);
-  const { host, pathname } = url;
-  const { method } = data.request;
-  const { status } = data.response;
-
-  await store.update(message);
-  const storeStructure = await store.get();
-
-  const expected = createExpected({
-    host,
-    pathname,
-    method,
-    status: `s${status}`,
-    reqSamples: [
-      storeStructure[host][pathname][method][`s${status}`].reqSamples[0],
-    ],
-    resSamples: [
-      storeStructure[host][pathname][method][`s${status}`].resSamples[0],
-    ],
-    data,
-  });
-
-  expect(await store.get()).toEqual(expected);
+  const [storeStructure, expected] = await createStoreStructureAndExpected();
+  expect(storeStructure).toEqual(expected);
 });
 
 test("restores state from storage", async () => {
-  const message = createMessage();
-  const data = message.get();
-  const url = new URL(data.request.url);
-  const { host, pathname } = url;
-  const { method } = data.request;
-  const { status } = data.response;
-
-  // 1. Create the store and an expectation
-  await store.update(message);
-  const storeStructure = await store.get();
-
-  const expected = createExpected({
-    host,
-    pathname,
-    method,
-    status: `s${status}`,
-    reqSamples: [
-      storeStructure[host][pathname][method][`s${status}`].reqSamples[0],
-    ],
-    resSamples: [
-      storeStructure[host][pathname][method][`s${status}`].resSamples[0],
-    ],
-    data,
-  });
+  const [_, expected, { host, pathname, method, status }] =
+    await createStoreStructureAndExpected();
 
   const key = [host, pathname, method, status].join("/");
 
