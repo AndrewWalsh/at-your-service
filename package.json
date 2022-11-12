@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Use the power of service workers to automagically create specifications",
   "files": [
     "dist"
