@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndrewWalsh/at-your-service">
-    <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.svg" alt="Logo">
+    <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.png" alt="Logo">
   </a>
 
 <h3 align="center">at-your-service</h3>
