@@ -91,6 +91,26 @@ Some other envisioned benefits:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- HOW -->
+
+## How
+
+The function `at-your-service` can be broken down into three steps:
+
+**Setup**
+- A service worker is installed at the root of your application `/at-your-service-sw.js`
+- The function `startAtYourService()` starts the client in the application
+  
+**Operation**
+- The service worker sends requests and responses to the application client. It acts as a proxy, intercepting requests and forwarding them on. This means that no work is required to integrate with application code
+- The client collects information over time based on use of an application
+
+**Query**
+- At any point, information about this state can be queried. At present, the goal is to output an OAI 3.1 specification
+- Given the data that is available, other potentially useful dev functionalities are possible, such as immediate codegen from responses into various languages
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- LICENSE -->
 
 ## License
