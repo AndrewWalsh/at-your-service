@@ -2,7 +2,7 @@ import {
   quicktype,
   InputData,
   jsonInputForTargetLanguage,
-  languageNamed,
+  getTargetLanguage,
 } from "quicktype-core";
 import type { Sample } from "../data-types";
 import { QUICKTYPE_CONFIG } from "./constants";
@@ -16,7 +16,7 @@ export default async function samplesToJSONSchema(
   samples: Array<Sample>
 ): Promise<string> {
   const jsonInput = jsonInputForTargetLanguage(
-    languageNamed("JSON Schema") || "JSON Schema"
+    getTargetLanguage("JSON Schema")
   );
 
   await jsonInput.addSource({
