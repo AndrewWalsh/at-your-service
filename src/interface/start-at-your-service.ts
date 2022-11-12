@@ -61,7 +61,9 @@ const defaultConfig: Config = {
 
 // TODO: remember to have a cancel script here to stop the worker
 // and to ensure that this cant be called twice (cancel the existing one first or something)
-export default async function startAtYourService(config: Config = defaultConfig) {
+export default async function startAtYourService(
+  config: Config = defaultConfig
+) {
   const registration = await navigator.serviceWorker.register(
     "./at-your-service-sw.js"
   );

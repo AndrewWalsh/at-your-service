@@ -34,8 +34,10 @@ export const startUi = (store: Store, options = createDefaults()) => {
     style: bottomLeftAbsolute("bottomLeft"),
   });
   button.onclick = async () => {
-    const spec = await (await storeStructToOpenAPI(await store.get())).getJSON();
-    navigator.clipboard.writeText(spec)
+    const spec = await (
+      await storeStructToOpenAPI(await store.get())
+    ).getJSON();
+    navigator.clipboard.writeText(spec);
   };
   mount(document.body, button);
 };

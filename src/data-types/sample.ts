@@ -54,18 +54,14 @@ export default class Sample {
           setPropertiesToEmpty(obj[key]);
           // Remove duplicates after zeroing items in the array
           obj[key] = uniqWith(obj[key], isEqual);
-          obj[key].sort()
-        }
-        else if (typeof obj[key] === "object") {
+          obj[key].sort();
+        } else if (typeof obj[key] === "object") {
           setPropertiesToEmpty(obj[key]);
-        }
-        else if (typeof obj[key] === "string") {
+        } else if (typeof obj[key] === "string") {
           obj[key] = "";
-        }
-        else if (typeof obj[key] === "number") {
+        } else if (typeof obj[key] === "number") {
           obj[key] = 0;
-        }
-        else if (typeof obj[key] === "boolean") {
+        } else if (typeof obj[key] === "boolean") {
           // This is to ensure the value is always the same for sake of comparison
           obj[key] = true;
         }

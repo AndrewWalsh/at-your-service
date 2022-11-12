@@ -49,7 +49,13 @@ export const createDummyData = () => ({
     { cat: { dog: null, cat: 1 } },
     { cat: { dog: null, cat: 1 } },
     { cat: { dog: null, cat: 1 } },
-    { cat: { dog: null, cat: 1, snail: { toga: { rabbit: [1,1,2,'cat',false,null,[],{}] } } } },
+    {
+      cat: {
+        dog: null,
+        cat: 1,
+        snail: { toga: { rabbit: [1, 1, 2, "cat", false, null, [], {}] } },
+      },
+    },
   ],
 });
 
@@ -78,6 +84,12 @@ export const createAllBlank = () => ({
         cat: 0,
       },
     },
-    { cat: { dog: null, cat: 0, snail: { toga: { rabbit: ['', [], 0, {}, null, true] } } } },
+    {
+      cat: {
+        dog: null,
+        cat: 0,
+        snail: { toga: { rabbit: ["", [], 0, {}, null, true] } },
+      },
+    },
   ],
 });

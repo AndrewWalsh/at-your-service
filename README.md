@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndrewWalsh/at-your-service">
-    <img src="resources/logo.svg" alt="Logo">
+    <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.svg" alt="Logo">
   </a>
 
 <h3 align="center">at-your-service</h3>
@@ -23,6 +23,8 @@
     <br />
     <br />
     <br />
+    <a href="https://github.com/AndrewWalsh/at-your-service">View on GitHub</a>
+    ·
     <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
     ·
     <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
@@ -65,10 +67,11 @@ Once this is installed, run the start script in your application code.
 3. Run the start script in your application
 
    ```ts
-   import { startAtYourService } from "at-your-service"
-   
-   startAtYourService()
+   import { startAtYourService } from "at-your-service";
+
+   startAtYourService();
    ```
+
 4. Use your application, then click `Copy OpenAPI Spec` once sufficient requests have been dispatched to generate a specification with the information you are looking for
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -83,7 +86,7 @@ Some other envisioned benefits:
 
 - **Convenience**: it's easy to load the service worker, run some requests, and copy the specification
 - **Code gen**: there are opportunities for automatic code generation into multiple language on the FE from samples of responses
-- **Investigation**: generate specifications from third party sites/applications
+- **Investigation**: generate specifications from third party sites/applications, or see what requests were dispatched following a particular use of an application using a tool such as [Puppeteer](https://github.com/puppeteer/puppeteer)
 - **Dev tooling**: the tool could provide useful information about the network layer while developing an application
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -12,7 +12,9 @@ import { QUICKTYPE_CONFIG } from "./constants";
  * @param samples an array of Sample objects, each of which will determine the JSON Schema
  * @returns a string of a JSON Schema representation for the samples
  */
-export default async function samplesToJSONSchema(samples: Array<Sample>): Promise<string> {
+export default async function samplesToJSONSchema(
+  samples: Array<Sample>
+): Promise<string> {
   const jsonInput = jsonInputForTargetLanguage(
     languageNamed("JSON Schema") || "JSON Schema"
   );

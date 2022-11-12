@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 
-import { Sample } from '../data-types'
+import { Sample } from "../data-types";
 import { StoreStructure } from "../types";
 
-const generateFakeSample = (): Sample => new Sample(faker.datatype.json())
+const generateFakeSample = (): Sample => new Sample(faker.datatype.json());
 
 type Options = {
   reqSamples: Array<Sample>;
@@ -13,13 +13,13 @@ type Options = {
 const defaults: () => Options = () => ({
   reqSamples: [generateFakeSample()],
   resSamples: [generateFakeSample()],
-})
+});
 
 export const createStoreStructure = (opts = defaults()) => {
-  const host = faker.internet.url()
-  const pathname = `/${faker.lorem.word()}`
-  const method = faker.internet.httpMethod()
-  const status = 's' + faker.internet.httpStatusCode()
+  const host = faker.internet.url();
+  const pathname = `/${faker.lorem.word()}`;
+  const method = faker.internet.httpMethod();
+  const status = "s" + faker.internet.httpStatusCode();
 
   const storeStructure: StoreStructure = {
     [host]: {
@@ -31,11 +31,11 @@ export const createStoreStructure = (opts = defaults()) => {
             parameters: {},
             meta: [],
             pathName: pathname,
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  };
 
   return {
     storeStructure,
@@ -43,5 +43,5 @@ export const createStoreStructure = (opts = defaults()) => {
     pathname,
     method,
     status,
-  }
-}
+  };
+};

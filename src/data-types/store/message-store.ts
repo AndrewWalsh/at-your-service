@@ -178,8 +178,12 @@ class Store {
     const requestJSON = JSON.stringify(data.request.body);
     const responseJSON = JSON.stringify(data.response.body);
 
-    const requestSample = data.request.body ? new Sample(requestJSON) : undefined;
-    const responseSample = data.response.body ? new Sample(responseJSON) : undefined;
+    const requestSample = data.request.body
+      ? new Sample(requestJSON)
+      : undefined;
+    const responseSample = data.response.body
+      ? new Sample(responseJSON)
+      : undefined;
 
     const storeRoute: undefined | StoreRoute = get(
       this.store,
@@ -204,7 +208,10 @@ class Store {
       if (requestSample && !storeRoute.reqSamples.some(requestSample.isEqual)) {
         storeRoute.reqSamples.push(requestSample);
       }
-      if (responseSample && !storeRoute.resSamples.some(responseSample.isEqual)) {
+      if (
+        responseSample &&
+        !storeRoute.resSamples.some(responseSample.isEqual)
+      ) {
         storeRoute.resSamples.push(responseSample);
       }
       storeRoute.meta.push({
@@ -239,7 +246,7 @@ let store: Store | null = null;
  * Return the message store
  * The store is a singleton, so each call returns the same store
  * The store is created when getStore is first called
- * 
+ *
  * @returns the message store instance
  */
 export default function getStore(): Store {

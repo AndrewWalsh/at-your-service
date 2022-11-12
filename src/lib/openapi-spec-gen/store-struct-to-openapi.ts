@@ -12,7 +12,7 @@ import {
   ParameterObject,
 } from "openapi3-ts";
 import { ReadonlyDeep } from "type-fest";
-import { convert } from '@redocly/json-to-json-schema';
+import { convert } from "@redocly/json-to-json-schema";
 
 const extractPathNames = (str: string) => {
   const regex = /({.+?})/gm;
@@ -22,7 +22,7 @@ const extractPathNames = (str: string) => {
 
   let m;
 
-  const out = []
+  const out = [];
   while ((m = regex.exec(str)) !== null) {
     // This is necessary to avoid infinite loops with zero-width matches
     if (m.index === regex.lastIndex) {
@@ -32,10 +32,10 @@ const extractPathNames = (str: string) => {
     // The result can be accessed through the `m`-variable.
     m.forEach((match, groupIndex) => {
       // @ts-ignore
-      out.push(match)
+      out.push(match);
     });
   }
-  return out
+  return out;
 };
 
 type StoreStructToOpenApi = (store: StoreStructure) => Promise<
@@ -103,7 +103,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * RESPONSE OBJECT CREATION
            */
           const resMediaType: MediaTypeObject = {
-            schema: convert(resSamples.map(s => s.toJSON())) as any,
+            schema: convert(resSamples.map((s) => s.toJSON())) as any,
           };
           const resContent: ContentObject = {
             "application/json": resMediaType,
@@ -121,7 +121,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * REQUEST OBJECT CREATION
            */
           const reqMediaType: MediaTypeObject = {
-            schema: convert(reqSamples.map(s => s.toJSON())) as any,
+            schema: convert(reqSamples.map((s) => s.toJSON())) as any,
           };
           const reqContent: ContentObject = {
             "application/json": reqMediaType,
@@ -138,12 +138,12 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           const hasRequestBody = !new Set(["get", "delete", "head"]).has(
             method.toLowerCase()
           );
-          const pathNames = extractPathNames(pathname)
+          const pathNames = extractPathNames(pathname);
           const parameters: ParameterObject[] = pathNames.map((name) => ({
             name,
             in: "path",
             required: true,
-          }))
+          }));
           // The req/res associated with a HTTP [VERB] request
           const operation: OperationObject = {
             summary: `Summary for ${pathname} ${method} ${status}`,
@@ -151,7 +151,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             responses,
           };
           if (parameters.length) {
-            operation.parameters = parameters
+            operation.parameters = parameters;
           }
           if (hasRequestBody) {
             operation.requestBody = requestBody;
