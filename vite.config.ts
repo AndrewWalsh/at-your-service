@@ -39,7 +39,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      exclude: ["test-utils/*.test.ts"],
+      exclude: ["src/test-utils", "**/*.test.ts"],
     }
   }
 });

@@ -197,9 +197,6 @@ describe("persistence to and hydration from client storage", () => {
 
 describe("updates with multiple request/response types", () => {
   test("stores new request samples if those samples are different to existing request samples", async () => {
-    /**
-     * Update the store with two messages, both equivalent, except for the request body
-     */
     const url = new URL("https://example.com/api");
     const values = {
       url: url.href,
@@ -236,6 +233,47 @@ describe("updates with multiple request/response types", () => {
     const expectSamples = ['""', 0, null, true];
 
     expect(storeRoute.reqSamples.map((s) => s.getSample())).toEqual(
+      expectSamples
+    );
+  });
+
+  test("stores new response samples if those samples are different to existing response samples", async () => {
+    const url = new URL("https://example.com/api");
+    const values = {
+      url: url.href,
+      status: 200,
+      requestBody: null,
+      responseBody: "test",
+      method: "GET" as const,
+    };
+
+    const messages = [
+      createMessage(values),
+      createMessage({ ...values, responseBody: 1 }),
+      createMessage({ ...values, responseBody: null }),
+      createMessage({ ...values, responseBody: false }),
+      // Along with duplicates, we still expect flat values
+      createMessage(values),
+      createMessage({ ...values, responseBody: 1 }),
+      createMessage({ ...values, responseBody: null }),
+      createMessage({ ...values, responseBody: false }),
+    ]
+
+    for (const message of messages) {
+      await store.update(message);
+    }
+    const storeStructure = await store.get();
+    // @ts-expect-error
+    const { pathToStoreRoute } = Store.getPathToStoreRoute({
+      url,
+      method: values.method,
+      status: `s${values.status}`,
+    });
+    const storeRoute = get(storeStructure, pathToStoreRoute);
+
+    const expectSamples = ['""', 0, null, true];
+
+    expect(storeRoute.resSamples.map((s) => s.getSample())).toEqual(
       expectSamples
     );
   });
