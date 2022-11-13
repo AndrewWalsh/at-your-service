@@ -1,11 +1,20 @@
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import nodePolyfills from "rollup-plugin-node-polyfills";
+import typescript from "@rollup/plugin-typescript";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
+  plugins: [
+    peerDepsExternal(),
+    typescript({ tsconfig: "./tsconfig.json" }),
+  ],
   resolve: {
     alias: {
       buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6",
@@ -34,7 +43,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "at-your-service",
-      fileName: (format) => `at-your-service.${format}.js`,
+      fileName: (format) => `index.${format}.js`,
     },
   },
   test: {

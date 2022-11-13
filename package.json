@@ -1,19 +1,20 @@
 {
   "name": "at-your-service",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Generate OpenAPI 3.1 specifications on the frontend with a click by intercepting requests with service workers and combining the result",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "bin": {
     "at-your-service": "./dist/cli.js"
   },
-  "main": "./dist/at-your-service.umd.js",
-  "module": "./dist/at-your-service.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "exports": {
     ".": {
-      "import": "./dist/at-your-service.es.js",
-      "require": "./dist/at-your-service.umd.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
     }
   },
   "repository": "https://github.com/AndrewWalsh/at-your-service",
@@ -35,11 +36,14 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@faker-js/faker": "^7.6.0",
+    "@rollup/plugin-typescript": "^9.0.2",
     "@seriousme/openapi-schema-validator": "^2.1.0",
     "@types/yargs": "^17.0.13",
     "@vitest/coverage-c8": "^0.25.1",
     "prettier": "2.7.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.4.1",
     "vite": "^3.2.2",
     "vitest": "^0.24.5"
   },
