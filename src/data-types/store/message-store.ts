@@ -61,9 +61,10 @@ class Store {
         const status = splitPath[splitPath.length - 1];
         const pathToStoreRoute = [host, fullPath, method, status];
 
+        const reqSamples = route.reqSamples.map(Sample.create);
         const resSamples = route.resSamples.map(Sample.create);
 
-        set(out, pathToStoreRoute, { ...route, resSamples });
+        set(out, pathToStoreRoute, { ...route, resSamples, reqSamples });
       }
 
       return out;
