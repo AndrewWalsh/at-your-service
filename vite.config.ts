@@ -37,4 +37,9 @@ export default defineConfig({
       fileName: (format) => `at-your-service.${format}.js`,
     },
   },
+  test: {
+    coverage: {
+      exclude: ["test-utils/*.test.ts"],
+    }
+  }
 });

@@ -1,5 +1,37 @@
 import { isEqual, uniqWith } from "lodash";
 
+// Returns the JSON string equivalent of a zero value for the given primitive
+const setPrimitiveToEmpty = (value: string | number | boolean | null) => {
+  if (typeof value === "string") {
+    return '""';
+  } else if (typeof value === "number") {
+    return 0;
+  } else if (typeof value === "boolean") {
+    // This is to ensure the value is always the same for sake of comparison
+    return true;
+  }
+  return null;
+};
+
+// Valid data types for JSON are
+// string number object boolean array null
+// We can ignore null as that is always just null
+const setObjOrArrPropertiesToEmpty = (obj: {} | {}[]) => {
+  for (const key in obj) {
+    // Array is an object, so test it first
+    if (Array.isArray(obj[key])) {
+      setObjOrArrPropertiesToEmpty(obj[key]);
+      // Remove duplicates after zeroing items in the array
+      obj[key] = uniqWith(obj[key], isEqual);
+      obj[key].sort();
+    } else if (typeof obj[key] === "object") {
+      setObjOrArrPropertiesToEmpty(obj[key]);
+    } else {
+      obj[key] = setPrimitiveToEmpty(obj[key]);
+    }
+  }
+};
+
 /**
  * A data type that wraps logic around how samples are handled
  * To minimise disk use, sample properties are set to their zero value
@@ -42,33 +74,19 @@ export default class Sample {
   };
 
   private static fromJSON(json: string): {} {
-    const parsedJSON: {} = Object.assign(Object.create(null), JSON.parse(json));
+    const parsedJSON = JSON.parse(json);
 
-    // Valid data types for JSON are
-    // string number object boolean array null
-    // We can ignore null as that is always just null
-    const setPropertiesToEmpty = (obj: {} | {}[]) => {
-      for (const key in obj) {
-        // Array is an object, so test it first
-        if (Array.isArray(obj[key])) {
-          setPropertiesToEmpty(obj[key]);
-          // Remove duplicates after zeroing items in the array
-          obj[key] = uniqWith(obj[key], isEqual);
-          obj[key].sort();
-        } else if (typeof obj[key] === "object") {
-          setPropertiesToEmpty(obj[key]);
-        } else if (typeof obj[key] === "string") {
-          obj[key] = "";
-        } else if (typeof obj[key] === "number") {
-          obj[key] = 0;
-        } else if (typeof obj[key] === "boolean") {
-          // This is to ensure the value is always the same for sake of comparison
-          obj[key] = true;
-        }
-      }
-    };
+    if (
+      ["string", "number", "boolean"].includes(typeof parsedJSON) ||
+      parsedJSON === null
+    ) {
+      // @ts-expect-error
+      return setPrimitiveToEmpty(
+        parsedJSON as string | number | boolean | null
+      );
+    }
 
-    setPropertiesToEmpty(parsedJSON);
+    setObjOrArrPropertiesToEmpty(parsedJSON);
     return Object.freeze(parsedJSON);
   }
 }

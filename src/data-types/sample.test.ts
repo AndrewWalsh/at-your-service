@@ -80,3 +80,47 @@ test("resolves to an empty sample when instantiated with invalid JSON", () => {
   const sample = new Sample("a");
   expect(sample.getSample()).toEqual({});
 });
+
+test("handles JSON string primitive", () => {
+  const validJSON = '"test"';
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toBe('""');
+});
+
+test("handles JSON boolean primitive", () => {
+  const validJSON = "false";
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toBe(true);
+});
+
+test("handles JSON number primitive", () => {
+  const validJSON = "1";
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toBe(0);
+});
+
+test("handles JSON null primitive", () => {
+  const validJSON = "null";
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toBeNull();
+});
+
+test("handles array of JSON primitives", () => {
+  const validJSON = '[false, 1, "test", null, { "test": 1 }]';
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toEqual([true, 0, '""', null, { test: 0 }]);
+});
+
+test("handles object of JSON primitives", () => {
+  const validJSON =
+    '{ "str": "test", "num": 1, "bool": false, "null": null, "obj": { "test": 1 }, "arr": [1] }';
+  const sample = new Sample(validJSON);
+  expect(sample.getSample()).toEqual({
+    str: '""',
+    num: 0,
+    bool: true,
+    null: null,
+    obj: { test: 0 },
+    arr: [0],
+  });
+});

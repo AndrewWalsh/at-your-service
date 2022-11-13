@@ -14,7 +14,9 @@ export const messagePayloadSchema = object({
     headers: object({}),
     referrer: string().nullable(),
     url: string().required(),
-    method: string().required(),
+    method: string()
+      .required()
+      .oneOf(["GET", "POST", "PUT", "DELETE", "PATCH"]),
   }),
   response: object({
     body: object({

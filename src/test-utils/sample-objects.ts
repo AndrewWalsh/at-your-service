@@ -3,23 +3,35 @@ import { faker } from "@faker-js/faker";
 import { Message } from "../data-types";
 import type { PayloadFromWorker } from "../types";
 
-export const createPayloadFromWorker = (): PayloadFromWorker => {
+const createPayloadFromWorkerDefaults = () => ({
+  url: faker.internet.url(),
+  status: faker.internet.httpStatusCode(),
+  requestBody: { data: { test: "message" } } as any,
+  responseBody: { data: { test: "message" } } as any,
+  method: faker.internet.httpMethod(),
+});
+type CreatePayloadFromWorker = (
+  values?: ReturnType<typeof createPayloadFromWorkerDefaults>
+) => PayloadFromWorker;
+export const createPayloadFromWorker: CreatePayloadFromWorker = (
+  values = createPayloadFromWorkerDefaults()
+) => {
   return {
     beforeRequestTime: faker.datatype.number({ min: Date.now() }),
     afterRequestTime: faker.datatype.number({ min: Date.now() }),
     request: {
-      body: { data: { test: "message" } },
+      body: values.requestBody,
       headers: { "content-type": "application/json" },
-      method: faker.internet.httpMethod(),
-      url: faker.internet.url(),
+      method: values.method,
+      url: values.url,
       referrer: null,
     },
     response: {
-      body: { data: { test: "message" } },
+      body: values.responseBody,
       headers: { "content-type": "application/json" },
-      status: faker.internet.httpStatusCode(),
+      status: values.status,
       referrer: null,
-      url: faker.internet.url(),
+      url: values.url,
       statusText: "OK",
       redirected: false,
       type: "basic",
@@ -27,8 +39,9 @@ export const createPayloadFromWorker = (): PayloadFromWorker => {
   };
 };
 
-export const createMessage = (): Message =>
-  new Message(createPayloadFromWorker());
+export const createMessage = (
+  values?: ReturnType<typeof createPayloadFromWorkerDefaults>
+): Message => new Message(createPayloadFromWorker(values));
 
 export const createDummyData = () => ({
   text: "text",
@@ -63,12 +76,12 @@ export const createDummyData = () => ({
 // Has duplicates removed
 // It's a minimal data structure for storing responses
 export const createAllBlank = () => ({
-  text: "",
+  text: '""',
   nested: {
-    text: "",
+    text: '""',
     nested: {
-      text: "",
-      other_test: "",
+      text: '""',
+      other_test: '""',
     },
   },
   integer: 0,
@@ -88,7 +101,7 @@ export const createAllBlank = () => ({
       cat: {
         dog: null,
         cat: 0,
-        snail: { toga: { rabbit: ["", [], 0, {}, null, true] } },
+        snail: { toga: { rabbit: [[], '""', 0, {}, null, true] } },
       },
     },
   ],

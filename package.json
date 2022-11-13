@@ -22,7 +22,7 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "build": "vite build -c ./vite.config.ts && npm run build:cli && npm run build:sw",
-    "format": "prettier . --write",
+    "format": "prettier ./src --write",
     "build:cli": "cpy src/_not_exported/cli.js dist --flat",
     "build:sw": "cpy src/_not_exported/at-your-service-sw.js dist --flat",
     "preview": "vite preview -c ./vite.config.ts",
