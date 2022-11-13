@@ -118,7 +118,7 @@ test("updates state for a single message", async () => {
   expect(storeStructure).toEqual(expected);
 });
 
-test("updates state for multiple of the same message", async () => {
+test("updates state for multiple of the same message without duplicating values", async () => {
   const [
     storeStructure,
     expected,
@@ -134,12 +134,14 @@ test("updates state for multiple of the same message", async () => {
   );
 
   expect(storeStructure).toEqual(expected);
+  expect(
+    storeStructure[host][pathname][method][prependStatus].meta.length
+  ).toBe(11);
 });
 
 test("restores state from client storage", async () => {
   // create a store structure that saves to local storage
-  const [storeStructure] =
-    await createStoreStructureAndExpected();
+  const [storeStructure] = await createStoreStructureAndExpected();
 
   // create a new store instance that loads from local storage
   const newStore = new Store();
