@@ -1,10 +1,12 @@
 import { test, expect, beforeEach, vi } from "vitest";
 import store2 from "store2";
+import { times, cloneDeep } from "lodash";
 
 import { createMessage } from "../../test-utils";
 import getStore, { Store, STORE_STORAGE_NAMESPACE } from "./message-store";
 import { Meta, StoreStructure } from "../../types";
 import type Sample from "../sample";
+import Message from "../message";
 
 const localStorage = store2.namespace(STORE_STORAGE_NAMESPACE).local;
 const store = getStore();
@@ -60,6 +62,8 @@ type CreateStoreStructureAndExpectedReturns = [
     pathname: string;
     method: string;
     status: string;
+    message: Message;
+    store: Store;
   }
 ];
 const createStoreStructureAndExpected =
@@ -88,7 +92,11 @@ const createStoreStructureAndExpected =
       data,
     });
 
-    return [storeStructure, expected, { host, pathname, method, status }];
+    return [
+      storeStructure,
+      expected,
+      { host, pathname, method, status, message, store },
+    ];
   };
 
 beforeEach(() => {
@@ -110,25 +118,45 @@ test("updates state for a single message", async () => {
   expect(storeStructure).toEqual(expected);
 });
 
+test("updates state for multiple of the same message", async () => {
+  const [
+    storeStructure,
+    expected,
+    { message, store, host, pathname, method, status },
+  ] = await createStoreStructureAndExpected();
+  const prependStatus = "s" + status;
+  times(10, () => store.update(message));
+
+  // Copy meta array from storeStructure to expected, as this includes additional updates
+  // Beyond this though, the storeStructure should be the same as the expected
+  expected[host][pathname][method][prependStatus].meta = cloneDeep(
+    storeStructure[host][pathname][method][prependStatus].meta
+  );
+
+  expect(storeStructure).toEqual(expected);
+});
+
 test("restores state from client storage", async () => {
   // create a store structure that saves to local storage
-  const [storeStructure, expected, { host, pathname, method, status }] =
+  const [storeStructure] =
     await createStoreStructureAndExpected();
 
   // create a new store instance that loads from local storage
   const newStore = new Store();
-  const newStoreStructure = await newStore.get()
+  const newStoreStructure = await newStore.get();
 
-  expect(JSON.stringify(newStoreStructure)).toEqual(JSON.stringify(storeStructure));
+  expect(JSON.stringify(newStoreStructure)).toEqual(
+    JSON.stringify(storeStructure)
+  );
 });
 
 test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {
-  localStorage.set(`${STORE_STORAGE_NAMESPACE}.some_key`, { invalid: null })
-  localStorage.clearAll = vi.fn()
+  localStorage.set(`${STORE_STORAGE_NAMESPACE}.some_key`, { invalid: null });
+  localStorage.clearAll = vi.fn();
   const newStore = new Store();
-  const newStoreStructure = await newStore.get()
+  const newStoreStructure = await newStore.get();
 
   expect(newStoreStructure).toEqual({});
-  expect(localStorage.clearAll).toHaveBeenCalled()
-  expect(localStorage.clearAll).toHaveBeenCalledTimes(1)
+  expect(localStorage.clearAll).toHaveBeenCalled();
+  expect(localStorage.clearAll).toHaveBeenCalledTimes(1);
 });
