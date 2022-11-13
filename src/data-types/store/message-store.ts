@@ -112,8 +112,8 @@ class Store {
       pathToStoreRoute: PathToStoreRoute;
       url: URL;
       pathName: string;
-      responseSample?: Sample;
-      requestSample?: Sample;
+      responseSample: Sample;
+      requestSample: Sample;
     } & MessageData
   ) {
     const initialData: StoreRoute = {
@@ -126,8 +126,8 @@ class Store {
           latencyMs: withData.latencyMs,
         },
       ],
-      reqSamples: withData.requestSample ? [withData.requestSample] : [],
-      resSamples: withData.responseSample ? [withData.responseSample] : [],
+      reqSamples: [withData.requestSample],
+      resSamples: [withData.responseSample],
     };
 
     set(this.store, withData.pathToStoreRoute, initialData);
@@ -218,9 +218,6 @@ class Store {
 
     // The route in this.store exists at this point, either created or updated
     const theRouteExistsNow: StoreRoute = get(this.store, pathToStoreRoute);
-    if (!theRouteExistsNow) {
-      throw new Error("Something went wrong in the store, route should exist");
-    }
     this.saveRouteToStorage(theRouteExistsNow, pathToStoreRoute);
   }
 
