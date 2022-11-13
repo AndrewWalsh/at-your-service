@@ -4,7 +4,7 @@ import store2 from "store2";
 import { STORE_STORAGE_NAMESPACE } from "./message-store";
 import { createMessage } from "../../test-utils";
 import getStore, { Store } from "./message-store";
-import { Meta, StoreRoute, StoreStructure } from "../../types";
+import { Meta, StoreStructure } from "../../types";
 import type Sample from "../sample";
 
 const localStorage = store2.namespace(STORE_STORAGE_NAMESPACE);
@@ -112,16 +112,13 @@ test("updates state for a single message", async () => {
 });
 
 test("restores state from storage", async () => {
-  const [_, expected, { host, pathname, method, status }] =
+  // create a store structure that saves to local storage
+  const [storeStructure, expected, { host, pathname, method, status }] =
     await createStoreStructureAndExpected();
 
-  const key = [host, pathname, method, status].join("/");
-
-  const storeRoute: StoreRoute = expected[host][pathname][method][`s${status}`];
-  localStorage.set(key, storeRoute, true);
-  localStorage.set(key + "/a", storeRoute, true);
-  store.clear();
+  // create a new store instance that loads from local storage
   const newStore = new Store();
+  const newStoreStructure = await newStore.get()
 
-  expect(await newStore.get()).toEqual(await store.get());
+  expect(JSON.stringify(newStoreStructure)).toEqual(JSON.stringify(storeStructure));
 });

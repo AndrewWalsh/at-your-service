@@ -9,14 +9,16 @@ export default class Message {
   private data: MessageData;
   constructor(payload: PayloadFromWorker) {
     const latencyMs = payload.afterRequestTime - payload.beforeRequestTime;
-    this.data = {
-      ...payload,
+    const additionalFields = {
       latencyMs,
       response: {
         ...payload.response,
         status: String(payload.response.status),
       },
     };
+    const data: MessageData = Object.create(null);
+    Object.assign(data, payload, additionalFields);
+    this.data = data;
   }
 
   get(): MessageData {

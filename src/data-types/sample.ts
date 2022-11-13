@@ -15,7 +15,7 @@ export default class Sample {
     } catch (e) {
       console.warn(new Error(`Failed to parse JSON in Sample: ${JSON}`));
       console.error(e);
-      this.sample = {};
+      this.sample = Object.create(null);
     }
   }
 
@@ -42,7 +42,7 @@ export default class Sample {
   };
 
   private static fromJSON(json: string): {} {
-    const parsedJSON: {} = JSON.parse(json);
+    const parsedJSON: {} = Object.assign(Object.create(null), JSON.parse(json));
 
     // Valid data types for JSON are
     // string number object boolean array null

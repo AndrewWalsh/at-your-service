@@ -1,5 +1,5 @@
 import { get, set, isUndefined } from "lodash";
-import store2, { StoreType } from "store2";
+import store2, { StoreBase } from "store2";
 
 import type { MessageData, StoreRoute, StoreStructure } from "../../types";
 import parseQueryParameters from "./parse-query-parameters";
@@ -34,9 +34,9 @@ type PathToStoreRoute = [
  */
 class Store {
   private store: StoreStructure;
-  private localStorage: StoreType;
+  private localStorage: StoreBase;
   constructor() {
-    this.localStorage = store2.namespace(STORE_STORAGE_NAMESPACE);
+    this.localStorage = store2.namespace(STORE_STORAGE_NAMESPACE).local;
     this.store = this.getStoreStructureFromStorage();
   }
 
@@ -48,7 +48,7 @@ class Store {
     try {
       const all: { [k: string]: StoreRouteSerialised } =
         this.localStorage.getAll();
-      const out: StoreStructure = {};
+      const out: StoreStructure = Object.create(null);
 
       for (const [path, route] of Object.entries(all)) {
         const splitPath = path.split("/");
