@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Generate OpenAPI 3.1 specifications on the frontend with a click by intercepting requests with service workers and combining the result",
   "files": [
     "dist"
@@ -43,10 +43,10 @@
     "vite": "^3.2.2",
     "vitest": "^0.24.5"
   },
-  "dependencies": {
-    "@redocly/json-to-json-schema": "^0.0.1",
+  "peerDependencies": {
     "alterschema": "^1.1.1",
     "cpy-cli": "^4.2.0",
+    "genson-js": "^0.0.8",
     "lodash": "^4.17.21",
     "openapi3-ts": "^3.1.1",
     "quicktype-core": "^6.1.0",

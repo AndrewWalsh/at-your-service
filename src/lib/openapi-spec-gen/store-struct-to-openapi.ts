@@ -12,7 +12,8 @@ import {
   ParameterObject,
 } from "openapi3-ts";
 import { ReadonlyDeep } from "type-fest";
-import { convert } from "@redocly/json-to-json-schema";
+
+import convert from "./json-to-json-schema";
 
 const extractPathNames = (str: string) => {
   const regex = /({.+?})/gm;
@@ -103,7 +104,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * RESPONSE OBJECT CREATION
            */
           const resMediaType: MediaTypeObject = {
-            schema: convert(resSamples.map((s) => s.toJSON())) as any,
+            schema: convert(resSamples),
           };
           const resContent: ContentObject = {
             "application/json": resMediaType,
@@ -121,7 +122,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * REQUEST OBJECT CREATION
            */
           const reqMediaType: MediaTypeObject = {
-            schema: convert(reqSamples.map((s) => s.toJSON())) as any,
+            schema: convert(reqSamples),
           };
           const reqContent: ContentObject = {
             "application/json": reqMediaType,

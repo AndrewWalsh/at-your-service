@@ -216,7 +216,7 @@ describe("updates with multiple request/response types", () => {
       createMessage({ ...values, requestBody: 1 }),
       createMessage({ ...values, requestBody: null }),
       createMessage({ ...values, requestBody: false }),
-    ]
+    ];
 
     for (const message of messages) {
       await store.update(message);
@@ -257,7 +257,7 @@ describe("updates with multiple request/response types", () => {
       createMessage({ ...values, responseBody: 1 }),
       createMessage({ ...values, responseBody: null }),
       createMessage({ ...values, responseBody: false }),
-    ]
+    ];
 
     for (const message of messages) {
       await store.update(message);

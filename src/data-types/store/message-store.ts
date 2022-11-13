@@ -177,12 +177,8 @@ class Store {
     const requestJSON = JSON.stringify(data.request.body);
     const responseJSON = JSON.stringify(data.response.body);
 
-    const requestSample = requestJSON
-      ? new Sample(requestJSON)
-      : undefined;
-    const responseSample = responseJSON
-      ? new Sample(responseJSON)
-      : undefined;
+    const requestSample = new Sample(requestJSON);
+    const responseSample = new Sample(responseJSON);
 
     const storeRoute: undefined | StoreRoute = get(
       this.store,
