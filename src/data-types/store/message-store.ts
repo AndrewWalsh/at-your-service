@@ -68,8 +68,7 @@ class Store {
 
       return out;
     } catch (e) {
-      console.warn("Error in message-store getStorageStructureFromStorage");
-      console.warn(e);
+      this.localStorage.clearAll();
       // Localstorage could be blocked for various reasons
       return {};
     }

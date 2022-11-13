@@ -1,13 +1,12 @@
-import { test, expect, beforeEach } from "vitest";
+import { test, expect, beforeEach, vi } from "vitest";
 import store2 from "store2";
 
-import { STORE_STORAGE_NAMESPACE } from "./message-store";
 import { createMessage } from "../../test-utils";
-import getStore, { Store } from "./message-store";
+import getStore, { Store, STORE_STORAGE_NAMESPACE } from "./message-store";
 import { Meta, StoreStructure } from "../../types";
 import type Sample from "../sample";
 
-const localStorage = store2.namespace(STORE_STORAGE_NAMESPACE);
+const localStorage = store2.namespace(STORE_STORAGE_NAMESPACE).local;
 const store = getStore();
 
 type CreateExpected = (values: {
@@ -111,7 +110,7 @@ test("updates state for a single message", async () => {
   expect(storeStructure).toEqual(expected);
 });
 
-test("restores state from storage", async () => {
+test("restores state from client storage", async () => {
   // create a store structure that saves to local storage
   const [storeStructure, expected, { host, pathname, method, status }] =
     await createStoreStructureAndExpected();
@@ -121,4 +120,15 @@ test("restores state from storage", async () => {
   const newStoreStructure = await newStore.get()
 
   expect(JSON.stringify(newStoreStructure)).toEqual(JSON.stringify(storeStructure));
+});
+
+test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {
+  localStorage.set(`${STORE_STORAGE_NAMESPACE}.some_key`, { invalid: null })
+  localStorage.clearAll = vi.fn()
+  const newStore = new Store();
+  const newStoreStructure = await newStore.get()
+
+  expect(newStoreStructure).toEqual({});
+  expect(localStorage.clearAll).toHaveBeenCalled()
+  expect(localStorage.clearAll).toHaveBeenCalledTimes(1)
 });
