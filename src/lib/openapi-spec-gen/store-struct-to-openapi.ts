@@ -13,7 +13,7 @@ import {
 } from "openapi3-ts";
 import { ReadonlyDeep } from "type-fest";
 
-import convert from "./json-to-json-schema";
+import convert from "./samples-to-json-schema";
 
 const extractPathNames = (str: string) => {
   const regex = /({.+?})/gm;

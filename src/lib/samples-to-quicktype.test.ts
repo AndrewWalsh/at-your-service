@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { createDummyData, createAllBlank } from "../test-utils";
-import samplesToJSONSchema from "./samples-to-json-schema";
+import samplesToJSONSchema from "./samples-to-quicktype";
 import { Sample } from "../data-types";
 
 test("the order of elements in the first argument does not affect the output", async () => {

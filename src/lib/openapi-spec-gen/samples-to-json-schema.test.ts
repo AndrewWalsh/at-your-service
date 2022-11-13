@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 
-import toJSONSchema from "./json-to-json-schema";
+import toJSONSchema from "./samples-to-json-schema";
 import { Sample } from "../../data-types";
 
 test("combines string sample into a string JSON schema", async () => {
