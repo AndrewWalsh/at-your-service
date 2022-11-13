@@ -1,7 +1,7 @@
 {
   "name": "at-your-service",
   "version": "0.0.14",
-  "description": "Generate OpenAPI 3.1 specifications on the frontend with a click by intercepting requests with service workers and combining the result",
+  "description": "Generate OpenAPI 3.1 specifications on the frontend with zero config via a service worker proxy",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
