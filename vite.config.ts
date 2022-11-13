@@ -5,14 +5,12 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import typescript from "@rollup/plugin-typescript";
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
   plugins: [
-    peerDepsExternal(),
     typescript({ tsconfig: "./tsconfig.json" }),
   ],
   resolve: {
