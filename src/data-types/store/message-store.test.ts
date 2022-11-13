@@ -129,6 +129,14 @@ describe("updates with a single request/response type", () => {
     expect(storeStructure).toEqual(expected);
   });
 
+  test("updates state for a single message where the response body is undefined", async () => {
+    const message = createMessage();
+    // @ts-expect-error
+    message.data.response.body = null;
+    const [storeStructure, expected] = await createStoreStructureAndExpected(message);
+    expect(storeStructure).toEqual(expected);
+  });
+
   test("updates state for multiple of the same message without duplicating values", async () => {
     const [
       storeStructure,
