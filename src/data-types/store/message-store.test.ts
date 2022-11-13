@@ -209,10 +209,14 @@ describe("updates with multiple request/response types", () => {
       method: "GET" as const,
     };
 
-    const messageOne = createMessage(values);
-    const messageTwo = createMessage({ ...values, requestBody: 1 });
+    const messages = [
+      createMessage(values),
+      createMessage({ ...values, requestBody: 1 }),
+      createMessage({ ...values, requestBody: null }),
+      createMessage({ ...values, requestBody: false }),
+    ]
 
-    for (const message of [messageOne, messageTwo]) {
+    for (const message of messages) {
       await store.update(message);
     }
     const storeStructure = await store.get();
@@ -224,7 +228,7 @@ describe("updates with multiple request/response types", () => {
     });
     const storeRoute = get(storeStructure, pathToStoreRoute);
 
-    const expectSamples = ['""', 0];
+    const expectSamples = ['""', 0, null, true];
 
     expect(storeRoute.reqSamples.map((s) => s.getSample())).toEqual(
       expectSamples

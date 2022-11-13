@@ -177,10 +177,10 @@ class Store {
     const requestJSON = JSON.stringify(data.request.body);
     const responseJSON = JSON.stringify(data.response.body);
 
-    const requestSample = data.request.body
+    const requestSample = requestJSON
       ? new Sample(requestJSON)
       : undefined;
-    const responseSample = data.response.body
+    const responseSample = responseJSON
       ? new Sample(responseJSON)
       : undefined;
 
