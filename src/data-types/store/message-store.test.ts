@@ -1,4 +1,4 @@
-import { test, expect, beforeEach, vi } from "vitest";
+import { test, expect, beforeEach, vi, describe } from "vitest";
 import store2 from "store2";
 import { times, cloneDeep } from "lodash";
 
@@ -67,28 +67,28 @@ type CreateStoreStructureAndExpectedReturns = [
   }
 ];
 const createStoreStructureAndExpected =
-  async (): Promise<CreateStoreStructureAndExpectedReturns> => {
-    const message = createMessage();
+  async (message = createMessage()): Promise<CreateStoreStructureAndExpectedReturns> => {
     const data = message.get();
     const url = new URL(data.request.url);
     const { host, pathname } = url;
     const { method } = data.request;
     const { status } = data.response;
+    const statusPrepended = `s${status}`;
 
     await store.update(message);
     const storeStructure = await store.get();
+    const storeRoute = storeStructure[host][pathname][method][statusPrepended]
+
+    const reqSamples = storeRoute.reqSamples.length ? [...storeRoute.reqSamples] : [];
+    const resSamples = storeRoute.resSamples.length ? [...storeRoute.resSamples] : [];
 
     const expected = createExpected({
       host,
       pathname,
       method,
-      status: `s${status}`,
-      reqSamples: [
-        storeStructure[host][pathname][method][`s${status}`].reqSamples[0],
-      ],
-      resSamples: [
-        storeStructure[host][pathname][method][`s${status}`].resSamples[0],
-      ],
+      status: statusPrepended,
+      reqSamples,
+      resSamples,
       data,
     });
 
@@ -104,61 +104,76 @@ beforeEach(() => {
   store.clear();
 });
 
-test("default export function always returns the same instance", () => {
-  // toBe not toEqual due to reference equality
-  expect(store).toBe(getStore());
+describe("singleton behaviour", () => {
+  test("default export function always returns the same instance", () => {
+    // toBe not toEqual due to reference equality
+    expect(store).toBe(getStore());
+  });
+
+  test(".get() returns the same instance", async () => {
+    expect(await store.get()).toBe(await getStore().get());
+  });
 });
 
-test(".get() returns the same instance", async () => {
-  expect(await store.get()).toBe(await getStore().get());
+describe("updates with a single request/response type", () => {
+  test("updates state for a single message", async () => {
+    const [storeStructure, expected] = await createStoreStructureAndExpected();
+    expect(storeStructure).toEqual(expected);
+  });
+
+  test("updates state for a single message where the request body is undefined", async () => {
+    const message = createMessage();
+    // @ts-expect-error
+    message.data.request.body = null;
+    const [storeStructure, expected] = await createStoreStructureAndExpected(message);
+    expect(storeStructure).toEqual(expected);
+  });
+
+  test("updates state for multiple of the same message without duplicating values", async () => {
+    const [
+      storeStructure,
+      expected,
+      { message, store, host, pathname, method, status },
+    ] = await createStoreStructureAndExpected();
+    const prependStatus = "s" + status;
+    times(10, () => store.update(message));
+
+    // Copy meta array from storeStructure to expected, as this includes additional updates
+    // Beyond this though, the storeStructure should be the same as the expected
+    expected[host][pathname][method][prependStatus].meta = cloneDeep(
+      storeStructure[host][pathname][method][prependStatus].meta
+    );
+
+    expect(storeStructure).toEqual(expected);
+    expect(
+      storeStructure[host][pathname][method][prependStatus].meta.length
+    ).toBe(11);
+  });
 });
 
-test("updates state for a single message", async () => {
-  const [storeStructure, expected] = await createStoreStructureAndExpected();
-  expect(storeStructure).toEqual(expected);
-});
+describe("persistence to and hydration from client storage", () => {
+  test("restores state from client storage", async () => {
+    // create a store structure that saves to local storage
+    const [storeStructure] = await createStoreStructureAndExpected();
 
-test("updates state for multiple of the same message without duplicating values", async () => {
-  const [
-    storeStructure,
-    expected,
-    { message, store, host, pathname, method, status },
-  ] = await createStoreStructureAndExpected();
-  const prependStatus = "s" + status;
-  times(10, () => store.update(message));
+    // create a new store instance that loads from local storage
+    const newStore = new Store();
+    const newStoreStructure = await newStore.get();
 
-  // Copy meta array from storeStructure to expected, as this includes additional updates
-  // Beyond this though, the storeStructure should be the same as the expected
-  expected[host][pathname][method][prependStatus].meta = cloneDeep(
-    storeStructure[host][pathname][method][prependStatus].meta
-  );
+    expect(JSON.stringify(newStoreStructure)).toEqual(
+      JSON.stringify(storeStructure)
+    );
+  });
 
-  expect(storeStructure).toEqual(expected);
-  expect(
-    storeStructure[host][pathname][method][prependStatus].meta.length
-  ).toBe(11);
-});
+  test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {
+    localStorage.set(`${STORE_STORAGE_NAMESPACE}.some_key`, { invalid: null });
+    localStorage.clearAll = vi.fn();
 
-test("restores state from client storage", async () => {
-  // create a store structure that saves to local storage
-  const [storeStructure] = await createStoreStructureAndExpected();
+    const newStore = new Store();
+    const newStoreStructure = await newStore.get();
 
-  // create a new store instance that loads from local storage
-  const newStore = new Store();
-  const newStoreStructure = await newStore.get();
-
-  expect(JSON.stringify(newStoreStructure)).toEqual(
-    JSON.stringify(storeStructure)
-  );
-});
-
-test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {
-  localStorage.set(`${STORE_STORAGE_NAMESPACE}.some_key`, { invalid: null });
-  localStorage.clearAll = vi.fn();
-  const newStore = new Store();
-  const newStoreStructure = await newStore.get();
-
-  expect(newStoreStructure).toEqual({});
-  expect(localStorage.clearAll).toHaveBeenCalled();
-  expect(localStorage.clearAll).toHaveBeenCalledTimes(1);
+    expect(newStoreStructure).toEqual({});
+    expect(localStorage.clearAll).toHaveBeenCalled();
+    expect(localStorage.clearAll).toHaveBeenCalledTimes(1);
+  });
 });
