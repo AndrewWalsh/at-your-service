@@ -214,6 +214,11 @@ describe("updates with multiple request/response types", () => {
       createMessage({ ...values, requestBody: 1 }),
       createMessage({ ...values, requestBody: null }),
       createMessage({ ...values, requestBody: false }),
+      // Along with duplicates, we still expect flat values
+      createMessage(values),
+      createMessage({ ...values, requestBody: 1 }),
+      createMessage({ ...values, requestBody: null }),
+      createMessage({ ...values, requestBody: false }),
     ]
 
     for (const message of messages) {
