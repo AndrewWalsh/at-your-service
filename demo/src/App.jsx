@@ -1,5 +1,5 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import logo from "./assets/logo.png";
 import "./App.css";
 
 const LOCALHOST_API = "http://localhost:8080";
@@ -21,8 +21,8 @@ function App() {
   return (
     <div className="App">
       <div>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href="https://github.com/AndrewWalsh/at-your-service" target="_blank">
+          <img src={logo} className="logo react" alt="logo" />
         </a>
       </div>
       <h1>At Your Service</h1>

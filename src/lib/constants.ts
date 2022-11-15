@@ -1,6 +1,6 @@
 import { getTargetLanguage, Options } from "quicktype-core";
 
-export const QUICKTYPE_CONFIG: Partial<Options> = Object.freeze({
+export const QUICKTYPE_CONFIG: Readonly<Partial<Options>> = {
   allPropertiesOptional: false,
   alphabetizeProperties: true,
   combineClasses: true,
@@ -12,7 +12,8 @@ export const QUICKTYPE_CONFIG: Partial<Options> = Object.freeze({
   inferIntegerStrings: true,
   inferMaps: true,
   inferUuids: true,
-  // Output format is JSON Schema
-  lang: getTargetLanguage("JSON Schema"),
-  rendererOptions: {},
-});
+  rendererOptions: {
+    'just-types': 'true',
+    'runtime-typecheck': 'false',
+  }
+};

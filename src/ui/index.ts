@@ -1,1 +1,1 @@
-export { startUi } from "./ui";
+export { startUi } from "./start";

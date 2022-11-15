@@ -2,6 +2,7 @@ import type { InferType } from "yup";
 import type { MergeDeep } from "type-fest";
 import type { Sample } from "./data-types";
 import { messagePayloadSchema } from "./schemas";
+import { CPlusPlusTargetLanguage, CSharpTargetLanguage, DartTargetLanguage, ElmTargetLanguage, FlowTargetLanguage, GoTargetLanguage, HaskellTargetLanguage, JavaScriptPropTypesTargetLanguage, JavaScriptTargetLanguage, JavaTargetLanguage, JSONSchemaTargetLanguage, KotlinTargetLanguage, ObjectiveCTargetLanguage, RubyTargetLanguage, SwiftTargetLanguage, TypeScriptTargetLanguage } from "quicktype-core";
 
 export enum MessageTypeToWorker {
   INIT_PORT = "INIT_PORT",
@@ -72,3 +73,47 @@ export type StoreStructure = {
     };
   };
 };
+
+export enum QuicktypeTargetLanguageNames {
+  Ruby = "Ruby",
+  JavaScript = "JavaScript",
+  Flow = "Flow",
+  Rust = "Rust",
+  Kotlin = "Kotlin",
+  Dart = "Dart",
+  Python = "Python",
+  Csharp = "C#",
+  Go = "Go",
+  Cplusplus = "C++",
+  Java = "Java",
+  TypeScript = "TypeScript",
+  Swift = "Swift",
+  ObjectiveC = "Objective-C",
+  Elm = "Elm",
+  JSONSchema = "JSON Schema",
+  Pike = "Pike",
+  PropTypes = "Prop-Types",
+  Haskell = "Haskell",
+}
+
+export const QuicktypeTargetLanguageEquivalent = {
+  [QuicktypeTargetLanguageNames.Ruby]: RubyTargetLanguage,
+  [QuicktypeTargetLanguageNames.JavaScript]: JavaScriptTargetLanguage,
+  [QuicktypeTargetLanguageNames.Flow]: FlowTargetLanguage,
+  [QuicktypeTargetLanguageNames.Rust]: RubyTargetLanguage,
+  [QuicktypeTargetLanguageNames.Kotlin]: KotlinTargetLanguage,
+  [QuicktypeTargetLanguageNames.Dart]: DartTargetLanguage,
+  [QuicktypeTargetLanguageNames.Python]: "Python",
+  [QuicktypeTargetLanguageNames.Csharp]: CSharpTargetLanguage,
+  [QuicktypeTargetLanguageNames.Go]: GoTargetLanguage,
+  [QuicktypeTargetLanguageNames.Cplusplus]: CPlusPlusTargetLanguage,
+  [QuicktypeTargetLanguageNames.Java]: JavaTargetLanguage,
+  [QuicktypeTargetLanguageNames.TypeScript]: TypeScriptTargetLanguage,
+  [QuicktypeTargetLanguageNames.Swift]: SwiftTargetLanguage,
+  [QuicktypeTargetLanguageNames.ObjectiveC]: ObjectiveCTargetLanguage,
+  [QuicktypeTargetLanguageNames.Elm]: ElmTargetLanguage,
+  [QuicktypeTargetLanguageNames.JSONSchema]: JSONSchemaTargetLanguage,
+  [QuicktypeTargetLanguageNames.Pike]: "Pike",
+  [QuicktypeTargetLanguageNames.PropTypes]: JavaScriptPropTypesTargetLanguage,
+  [QuicktypeTargetLanguageNames.Haskell]: HaskellTargetLanguage,
+}

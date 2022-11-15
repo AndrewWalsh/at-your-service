@@ -1,13 +1,14 @@
 import { test, expect } from "vitest";
 import { createDummyData, createAllBlank } from "../test-utils";
-import samplesToJSONSchema from "./samples-to-quicktype";
+import samplesToQuicktype from "./samples-to-quicktype";
 import { Sample } from "../data-types";
+import { QuicktypeTargetLanguageNames } from "../types";
 
 test("the order of elements in the first argument does not affect the output", async () => {
   const s1 = new Sample(JSON.stringify(createDummyData()));
   const s2 = new Sample(JSON.stringify(createDummyData()));
-  expect(await samplesToJSONSchema([s1, s2])).toEqual(
-    await samplesToJSONSchema([s2, s1])
+  expect(await samplesToQuicktype([s1, s2])).toEqual(
+    await samplesToQuicktype([s2, s1])
   );
 });
 
@@ -17,7 +18,16 @@ test("the order of elements in the first argument does not affect the output", a
 test("equivalent data types have the same structure", async () => {
   const s1 = new Sample(JSON.stringify(createDummyData()));
   const s2 = new Sample(JSON.stringify(createAllBlank()));
-  expect(await samplesToJSONSchema([s1, s2])).toEqual(
-    await samplesToJSONSchema([s1, s1])
+  expect(await samplesToQuicktype([s1, s2])).toEqual(
+    await samplesToQuicktype([s1, s1])
   );
 });
+
+test("abc", async () => {
+  const s1 = new Sample(JSON.stringify(createDummyData()));
+  const s2 = new Sample(JSON.stringify(createAllBlank()));
+  expect(await samplesToQuicktype([s1, s2], QuicktypeTargetLanguageNames.TypeScript)).toEqual(
+   ""
+  );
+});
+

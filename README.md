@@ -16,7 +16,7 @@
 <h3 align="center">at-your-service</h3>
 
   <p align="center">
-    Generate <a href="https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md">OpenAPI 3.1</a> specifications on the frontend with <strong>zero config</strong> by intercepting requests via a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service worker</a> proxy
+    An easy-install development tool leveraging service workers as proxies to generate OpenAPI 3.1 specifications and models/serializers in 10+ languages directly on the frontend
     <br />
     <br />
     👷 alpha / experimental 👷
@@ -29,18 +29,24 @@
   </p>
 </div>
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/ays-demo.png" alt="banner">
+</div>
+
 <br />
 <br />
 
-<!-- ABOUT THE PROJECT -->
+`at-your-service` is a dev tool for code and spec generation from network requests on the frontend. It is designed to be simple to install and explore in an existing application.
 
-[OpenAPI](https://www.openapis.org/) spec generation on the frontend through a service worker proxy.
+This project uses service workers as proxies to collect information about requests over time. It uses this information to generate OpenAPI 3.1 specifications and allow model code generation of response or request bodies into multiple languages.
 
 **Features**
 
-- Generate a basic OpenAPI specification based on real requests/responses
-- An extensible interface to generate types from responses for multiple language using [quicktype](https://github.com/quicktype/quicktype)
-- **Experimental, it is a POC at this stage**
+- Generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) data types with a single click
+- Minimal config. There is no need to integrate any code whatsoever, just install the service worker and run the start function
+- View your requests in a tree view for further inspection
+- Generate models for 10+ languages including TypeScript, Python, JSON Schema, and even Haskell at the click of a button through integration with [quicktype](https://github.com/quicktype/quicktype)
+- **Experimental, it is a POC at this stage and is in an alpha state**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -48,13 +54,13 @@
 
 ## Getting Started
 
-`at-your-service` features a CLI tool that places a service worker file into a directory. You likely wish to place this in `public` or `static`, as the service worker needs to be served from the root of your site.
+`at-your-service` features a CLI tool that places a service worker file into a directory. You likely wish to place this in `public` or `static` (see [more information here](https://mswjs.io/docs/getting-started/integrate/browser#where-is-my-public-directory)), as the service worker needs to be served from the root of your site.
 
 Once this is installed, run the start script in your application code.
 
 ### Installation
 
-1. Install NPM package
+1. Install npm package
    ```sh
    npm install -D at-your-service@latest
    ```
@@ -74,9 +80,9 @@ Once this is installed, run the start script in your application code.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- WHY -->
+<!-- WHY DO THIS -->
 
-## Why
+## Why Do This
 
 You may not have an OpenAPI specification to hand. OpenAPI specifications offer [powerful opportunities](https://openapi.tools/) that are worth making use of. OpenAPI 3.1 specifications are partially supported in [editor-next.swagger.io](https://editor-next.swagger.io/).
 
@@ -89,23 +95,15 @@ Some other envisioned benefits:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- HOW -->
+<!-- HOW IT WORKS -->
 
-## How
+## How It Works
 
-The function `at-your-service` can be broken down into three steps:
+[Service workers](https://www.freecodecamp.org/news/service-workers-the-little-heroes-behind-progressive-web-apps-431cc22d0f16/) are a special form of web worker that underpin advanced functionalities in progressive web applications. Once installed they have a variety of applications. The application that this library makes use of is their potential to act as a [proxy](https://www.freecodecamp.org/news/what-is-a-proxy-server-in-english-please/).
 
-**Setup**
-- A service worker is installed at the root of your application `/at-your-service-sw.js`
-- The function `startAtYourService()` starts the client in the application
-  
-**Operation**
-- The service worker sends requests and responses to the application client. It acts as a proxy, intercepting requests and forwarding them on. This means that no work is required to integrate with application code
-- The client collects information over time based on use of an application
+A "service worker" itself is just a file containing functional calls and other behaviour specific to the context of a service worker. Libraries such as Google's [Workbox](https://developer.chrome.com/docs/workbox/) exist to ease development of service workers specifically. This library features a custom service worker script that performs a very specific role. It captures *request* / *response* pairs and emits these as events.
 
-**Query**
-- At any point, information about this state can be queried. At present, the goal is to output an OAI 3.1 specification
-- Given the data that is available, other potentially useful dev functionalities are possible, such as immediate codegen from responses into various languages
+The client captures these events and collects them into an approriate data structure. Querying that data structure enables a multitude of possibilities.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

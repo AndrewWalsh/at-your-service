@@ -5,12 +5,14 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import typescript from "@rollup/plugin-typescript";
+import react from "@vitejs/plugin-react";
 
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
   plugins: [
+    react(),
     typescript({ tsconfig: "./tsconfig.json" }),
   ],
   resolve: {

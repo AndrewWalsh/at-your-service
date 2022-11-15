@@ -4,23 +4,27 @@ import {
   jsonInputForTargetLanguage,
   getTargetLanguage,
 } from "quicktype-core";
+
 import type { Sample } from "../data-types";
 import { QUICKTYPE_CONFIG } from "./constants";
+import {
+  QuicktypeTargetLanguageNames,
+  QuicktypeTargetLanguageEquivalent,
+} from "../types";
 
 /**
  * Takes an array of samples and returns a string of a JSON Schema representation for them all
  * @param samples an array of Sample objects, each of which will determine the JSON Schema
  * @returns a string of a JSON Schema representation for the samples
  */
-export default async function samplesToJSONSchema(
-  samples: Array<Sample>
+export default async function samplesToQuicktype(
+  samples: Array<Sample>,
+  lang: QuicktypeTargetLanguageNames = QuicktypeTargetLanguageNames.JSONSchema
 ): Promise<string> {
-  const jsonInput = jsonInputForTargetLanguage(
-    getTargetLanguage("JSON Schema")
-  );
+  const jsonInput = jsonInputForTargetLanguage(lang);
 
   await jsonInput.addSource({
-    name: "schema",
+    name: "body",
     samples: samples.map(String),
   });
 
@@ -29,14 +33,9 @@ export default async function samplesToJSONSchema(
 
   const { lines } = await quicktype({
     inputData,
+    lang,
     ...QUICKTYPE_CONFIG,
   });
 
-  let schemaStr = "";
-  for (const [idx, line] of lines.entries()) {
-    const newLine = idx > 0 ? "\n" : "";
-    schemaStr += line + newLine;
-  }
-
-  return schemaStr;
+  return lines.join("\n");
 }

@@ -1,7 +1,7 @@
 {
   "name": "at-your-service",
-  "version": "0.0.16",
-  "description": "Generate OpenAPI 3.1 specifications on the frontend with zero config via a service worker proxy",
+  "version": "0.0.17",
+  "description": "An easy-install development tool leveraging service workers as proxies to generate OpenAPI 3.1 specifications and models/serializers in 10+ languages directly on the frontend",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -67,7 +67,11 @@
     "@faker-js/faker": "^7.6.0",
     "@rollup/plugin-typescript": "^9.0.2",
     "@seriousme/openapi-schema-validator": "^2.1.0",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@types/react-syntax-highlighter": "^15.5.5",
     "@types/yargs": "^17.0.13",
+    "@vitejs/plugin-react": "^2.2.0",
     "@vitest/coverage-c8": "^0.25.1",
     "prettier": "2.7.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
@@ -82,14 +86,18 @@
     "lodash": "^4.17.21",
     "openapi3-ts": "^3.1.1",
     "quicktype-core": "^6.1.0",
-    "redom": "^3.29.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "store2": "^2.14.2",
     "strict-event-emitter": "^0.2.8",
     "type-fest": "^3.1.0",
     "validator": "^13.7.0",
     "yargs": "^17.6.2",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@geist-ui/core": "^2.3.8",
+    "react-syntax-highlighter": "^15.5.0"
   },
+  "bugs": "https://github.com/AndrewWalsh/at-your-service/issues",
   "engines": {
     "node": ">=14"
   }
