@@ -1,4 +1,4 @@
-import { getTargetLanguage, Options } from "quicktype-core";
+import { Options } from "quicktype-core";
 
 export const QUICKTYPE_CONFIG: Readonly<Partial<Options>> = {
   allPropertiesOptional: false,
@@ -13,7 +13,7 @@ export const QUICKTYPE_CONFIG: Readonly<Partial<Options>> = {
   inferMaps: true,
   inferUuids: true,
   rendererOptions: {
-    'just-types': 'true',
-    'runtime-typecheck': 'false',
-  }
+    "just-types": "true",
+    "runtime-typecheck": "false",
+  },
 };

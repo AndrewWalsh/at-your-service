@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AutoComplete, Grid, Spacer, Text } from "@geist-ui/core";
+import { AutoComplete, Grid } from "@geist-ui/core";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
 import { samplesToQuicktype } from "../lib";
@@ -38,13 +38,15 @@ export default function TabView({ samples, meta }: Props) {
             type="success"
             placeholder={language}
             options={languages}
-            onSelect={(lang) => setLanguage(lang as QuicktypeTargetLanguageNames)}
+            onSelect={(lang) =>
+              setLanguage(lang as QuicktypeTargetLanguageNames)
+            }
           />
         </Grid>
       </Grid.Container>
 
       {code && (
-        <div style={{ width: '100%' }}>
+        <div style={{ width: "100%" }}>
           <SyntaxHighlighter language={language}>{code}</SyntaxHighlighter>
         </div>
       )}

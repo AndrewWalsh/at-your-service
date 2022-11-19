@@ -68,7 +68,8 @@ export interface Toga {
 
 export interface RabbitClass {
 }
-`
-  expect(await samplesToQuicktype([s1, s2], QuicktypeTargetLanguageNames.TypeScript)).toEqual(expectStr);
+`;
+  expect(
+    await samplesToQuicktype([s1, s2], QuicktypeTargetLanguageNames.TypeScript)
+  ).toEqual(expectStr);
 });
-

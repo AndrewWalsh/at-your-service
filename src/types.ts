@@ -2,7 +2,24 @@ import type { InferType } from "yup";
 import type { MergeDeep } from "type-fest";
 import type { Sample } from "./data-types";
 import { messagePayloadSchema } from "./schemas";
-import { CPlusPlusTargetLanguage, CSharpTargetLanguage, DartTargetLanguage, ElmTargetLanguage, FlowTargetLanguage, GoTargetLanguage, HaskellTargetLanguage, JavaScriptPropTypesTargetLanguage, JavaScriptTargetLanguage, JavaTargetLanguage, JSONSchemaTargetLanguage, KotlinTargetLanguage, ObjectiveCTargetLanguage, RubyTargetLanguage, SwiftTargetLanguage, TypeScriptTargetLanguage } from "quicktype-core";
+import {
+  CPlusPlusTargetLanguage,
+  CSharpTargetLanguage,
+  DartTargetLanguage,
+  ElmTargetLanguage,
+  FlowTargetLanguage,
+  GoTargetLanguage,
+  HaskellTargetLanguage,
+  JavaScriptPropTypesTargetLanguage,
+  JavaScriptTargetLanguage,
+  JavaTargetLanguage,
+  JSONSchemaTargetLanguage,
+  KotlinTargetLanguage,
+  ObjectiveCTargetLanguage,
+  RubyTargetLanguage,
+  SwiftTargetLanguage,
+  TypeScriptTargetLanguage,
+} from "quicktype-core";
 
 export enum MessageTypeToWorker {
   INIT_PORT = "INIT_PORT",
@@ -116,4 +133,4 @@ export const QuicktypeTargetLanguageEquivalent = {
   [QuicktypeTargetLanguageNames.Pike]: "Pike",
   [QuicktypeTargetLanguageNames.PropTypes]: JavaScriptPropTypesTargetLanguage,
   [QuicktypeTargetLanguageNames.Haskell]: HaskellTargetLanguage,
-}
+};

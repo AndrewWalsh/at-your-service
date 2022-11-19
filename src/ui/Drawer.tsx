@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   Drawer,
   Button,
@@ -11,12 +11,14 @@ import {
 } from "@geist-ui/core";
 
 import { StoreStructure, StoreRoute, Meta } from "../types";
-import { samplesToQuicktype, storeStructToOpenAPI } from "../lib";
-import TabView from './TabView'
+import { storeStructToOpenAPI } from "../lib";
+import TabView from "./TabView";
 
 const meanLatency = (meta: Array<Meta>) => {
-  return Math.round(meta.reduce((acc, { latencyMs }) => latencyMs + acc, 0) / meta.length);
-}
+  return Math.round(
+    meta.reduce((acc, { latencyMs }) => latencyMs + acc, 0) / meta.length
+  );
+};
 
 type Props = {
   visible: boolean;
@@ -51,10 +53,18 @@ export default function App({ visible, onClose, storeStruct }: Props) {
             setContent({ storeRoute: structOrRoute });
             setVisible(true);
           };
-          return <Tree.File key={withoutPrefix} name={withoutPrefix} onClick={onClick} />;
+          return (
+            <Tree.File
+              key={withoutPrefix}
+              name={withoutPrefix}
+              onClick={onClick}
+            />
+          );
         }
         return (
-          <Tree.Folder key={key} name={key}>{recurseTree(structOrRoute)}</Tree.Folder>
+          <Tree.Folder key={key} name={key}>
+            {recurseTree(structOrRoute)}
+          </Tree.Folder>
         );
       });
     }
@@ -70,13 +80,25 @@ export default function App({ visible, onClose, storeStruct }: Props) {
       <Drawer.Content>
         <Grid.Container direction="row" justify="space-around" gap={1}>
           <Grid>
-            <Button auto type="secondary" onClick={() => setTreeValue(createTree())}>Refresh</Button>
+            <Button
+              auto
+              type="secondary"
+              onClick={() => setTreeValue(createTree())}
+            >
+              Refresh
+            </Button>
           </Grid>
           <Grid>
-            <Button auto type="success" onClick={async () => {
-              const res = await storeStructToOpenAPI(storeStruct);
-              navigator.clipboard.writeText(res.getJSON());
-            }}>Copy OAI 3.1</Button>
+            <Button
+              auto
+              type="success"
+              onClick={async () => {
+                const res = await storeStructToOpenAPI(storeStruct);
+                navigator.clipboard.writeText(res.getJSON());
+              }}
+            >
+              Copy OAI 3.1
+            </Button>
           </Grid>
         </Grid.Container>
         <Spacer h={1} />
@@ -86,14 +108,22 @@ export default function App({ visible, onClose, storeStruct }: Props) {
       <Modal {...bindings} width="50vw">
         {content && (
           <>
-            <Modal.Title>{`~${meanLatency(content.storeRoute.meta)}ms`}</Modal.Title>
+            <Modal.Title>{`~${meanLatency(
+              content.storeRoute.meta
+            )}ms`}</Modal.Title>
             <Modal.Content>
               <Tabs initialValue="2">
                 <Tabs.Item label="request" value="1">
-                  <TabView samples={content.storeRoute.reqSamples} meta={content.storeRoute.meta} />
+                  <TabView
+                    samples={content.storeRoute.reqSamples}
+                    meta={content.storeRoute.meta}
+                  />
                 </Tabs.Item>
                 <Tabs.Item label="response" value="2">
-                  <TabView samples={content.storeRoute.resSamples} meta={content.storeRoute.meta} />
+                  <TabView
+                    samples={content.storeRoute.resSamples}
+                    meta={content.storeRoute.meta}
+                  />
                 </Tabs.Item>
               </Tabs>
             </Modal.Content>

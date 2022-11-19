@@ -2,15 +2,11 @@ import {
   quicktype,
   InputData,
   jsonInputForTargetLanguage,
-  getTargetLanguage,
 } from "quicktype-core";
 
 import type { Sample } from "../data-types";
 import { QUICKTYPE_CONFIG } from "./constants";
-import {
-  QuicktypeTargetLanguageNames,
-  QuicktypeTargetLanguageEquivalent,
-} from "../types";
+import { QuicktypeTargetLanguageNames } from "../types";
 
 /**
  * Takes an array of samples and returns a string of a JSON Schema representation for them all

@@ -13,13 +13,15 @@
     <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.png" alt="Logo">
   </a>
 
+<br />
 <h3 align="center">at-your-service</h3>
+<br />
 
   <p align="center">
-    An easy-install development tool leveraging service workers as proxies to generate OpenAPI 3.1 specifications and models/serializers in 10+ languages directly on the frontend
+    🔭 A frontend development tool that uses service workers to automatically create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages | easy installation
     <br />
     <br />
-    👷 alpha / experimental 👷
+    👷 <code>alpha</code> / <code>experimental</code> 👷
     <br />
     <br />
     <br />
@@ -38,15 +40,15 @@
 
 `at-your-service` is a dev tool for code and spec generation from network requests on the frontend. It is designed to be simple to install and explore in an existing application.
 
-This project uses service workers as proxies to collect information about requests over time. It uses this information to generate OpenAPI 3.1 specifications and allow model code generation of response or request bodies into multiple languages.
+This project uses service workers as proxies to collect information about requests over time. It uses this information to generate OpenAPI 3.1 specifications and convert request/response bodies into model code for a variety of languages.
 
 **Features**
 
-- Generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) data types with a single click
-- Minimal config. There is no need to integrate any code whatsoever, just install the service worker and run the start function
-- View your requests in a tree view for further inspection
-- Generate models for 10+ languages including TypeScript, Python, JSON Schema, and even Haskell at the click of a button through integration with [quicktype](https://github.com/quicktype/quicktype)
-- **Experimental, it is a POC at this stage and is in an alpha state**
+- **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with valid [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) request/response bodies
+- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema, and even Haskell at the click of a button through integration with [quicktype](https://github.com/quicktype/quicktype)
+- **Observability**: view all requests that have fired since starting the dev tool in a tree view for further inspection
+- **Easy install**: minimal fuss setup that "just works". Thanks to service workers no integration with your code is required
+- **Experimental**: it is a POC at this stage and is in an `alpha` state
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -54,17 +56,17 @@ This project uses service workers as proxies to collect information about reques
 
 ## Getting Started
 
-`at-your-service` features a CLI tool that places a service worker file into a directory. You likely wish to place this in `public` or `static` (see [more information here](https://mswjs.io/docs/getting-started/integrate/browser#where-is-my-public-directory)), as the service worker needs to be served from the root of your site.
+`at-your-service` features a CLI tool that places its service worker file into a directory. You likely wish to place this in `public` or `static`. See [more information here](https://mswjs.io/docs/getting-started/integrate/browser#where-is-my-public-directory) on common locations for static files.
 
-Once this is installed, run the start script in your application code.
+The service worker must be served from the root of your site. Once this is installed run the start script in your application code.
 
 ### Installation
 
-1. Install npm package
+1. Install the npm package
    ```sh
    npm install -D at-your-service@latest
    ```
-2. Add service worker to `public`, `static`, or otherwise root directory
+2. Add service worker to your `public`, `static`, or otherwise root directory
    ```sh
    npx at-your-service@latest <directory>
    ```
@@ -76,7 +78,7 @@ Once this is installed, run the start script in your application code.
    startAtYourService();
    ```
 
-4. Use your application, then click `Copy OpenAPI Spec` once sufficient requests have been dispatched to generate a specification with the information you are looking for
+4. A button to open the drawer will be visible on your site
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -86,12 +88,12 @@ Once this is installed, run the start script in your application code.
 
 You may not have an OpenAPI specification to hand. OpenAPI specifications offer [powerful opportunities](https://openapi.tools/) that are worth making use of. OpenAPI 3.1 specifications are partially supported in [editor-next.swagger.io](https://editor-next.swagger.io/).
 
-Some other envisioned benefits:
+There are a few reasons to do this on the frontend specifically:
 
-- **Convenience**: it's easy to load the service worker, run some requests, and copy the specification
-- **Code gen**: there are opportunities for automatic code generation into multiple language on the FE from samples of responses
-- **Investigation**: generate specifications from third party sites/applications, or see what requests were dispatched following a particular use of an application using a tool such as [Puppeteer](https://github.com/puppeteer/puppeteer)
-- **Dev tooling**: the tool could provide useful information about the network layer while developing an application
+- It mitigates issues around accounting for the topology of the backend. In other words, the frontent may call out to a multitude of services and we would otherwise have to aggregate the specifications of those services in order to provide a full specification for the system from the perspective of the frontend
+- There are opportunities to investigate third party services through use of this tool
+- The process could be automated using tools such as [Puppeteer](https://github.com/puppeteer/puppeteer) to serve specific use cases
+- There are opportunities to provide tooling for observability on network requests in real time. This is a common source of issues for frontend developers
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -99,11 +101,15 @@ Some other envisioned benefits:
 
 ## How It Works
 
-[Service workers](https://www.freecodecamp.org/news/service-workers-the-little-heroes-behind-progressive-web-apps-431cc22d0f16/) are a special form of web worker that underpin advanced functionalities in progressive web applications. Once installed they have a variety of applications. The application that this library makes use of is their potential to act as a [proxy](https://www.freecodecamp.org/news/what-is-a-proxy-server-in-english-please/).
+[Service workers](https://www.freecodecamp.org/news/service-workers-the-little-heroes-behind-progressive-web-apps-431cc22d0f16/) are a special form of web worker that underpin advanced functionalities in [PWAs](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps). Once installed they have a variety of applications. The application that this library makes use of is their potential to act as a [proxy](https://www.freecodecamp.org/news/what-is-a-proxy-server-in-english-please/).
 
-A "service worker" itself is just a file containing functional calls and other behaviour specific to the context of a service worker. Libraries such as Google's [Workbox](https://developer.chrome.com/docs/workbox/) exist to ease development of service workers specifically. This library features a custom service worker script that performs a very specific role. It captures *request* / *response* pairs and emits these as events.
+A *"service worker"* itself is just a file containing function calls and other behaviour specific to the context of a service worker. Libraries such as Google's [Workbox](https://developer.chrome.com/docs/workbox/) exist to ease development of service workers specifically. This library features a custom service worker script that performs a very specific role. It captures *request* / *response* pairs and emits these as events.
 
-The client captures these events and collects them into an approriate data structure. Querying that data structure enables a multitude of possibilities.
+The client captures these events and places them into an optimised data structure. Request and response bodies are parsed before storage. Each property is [zeroed](https://yourbasic.org/golang/default-zero-value/) as only the type itself is relevant for sake of spec and code gen. When a request or response body differs for the same path the sample is stored alongside existing samples. This means that code and spec generation accounts for the full spectrum of type information given the observations from the network requests that have occurred since the `at-your-service` tool was started.
+
+The functionality of the application with regard to spec and code gen is nothing more than a conversion operation on the data structure above.
+
+This information is visible in the drawer that can be opened by clicking on the button that shows once the library has started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
