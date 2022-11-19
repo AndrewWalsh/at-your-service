@@ -18,10 +18,10 @@
 <br />
 
   <p align="center">
-    🔭 A frontend development tool that uses service workers to automatically create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages | easy installation
+    🔭 A frontend development tool that uses service workers to automatically create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages
     <br />
     <br />
-    👷 <code>alpha</code> / <code>experimental</code> 👷
+    👷 <code>alpha</code> / <code>POC</code> 👷
     <br />
     <br />
     <br />
@@ -38,17 +38,19 @@
 <br />
 <br />
 
-`at-your-service` is a dev tool for code and spec generation from network requests on the frontend. It is designed to be simple to install and explore in an existing application.
+`at-your-service` is a dev tool for code and spec generation from network requests on the frontend.
 
-This project uses service workers as proxies to collect information about requests over time. It uses this information to generate OpenAPI 3.1 specifications and convert request/response bodies into model code for a variety of languages.
+It installs a service worker that acts as a proxy and sends requests and responses to a client. That client stores this information efficiently and provides the ability to create a complete OpenAPI specification from the network requests that have executed since the client began.
+
+It can also generate code samples from request/response bodies. These samples reflect the type information in these bodies.
 
 **Features**
 
 - **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with valid [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) request/response bodies
-- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema, and even Haskell at the click of a button through integration with [quicktype](https://github.com/quicktype/quicktype)
-- **Observability**: view all requests that have fired since starting the dev tool in a tree view for further inspection
+- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema thanks to integration with [quicktype](https://github.com/quicktype/quicktype)
+- **Observability**: view all requests that have transpired since starting the dev tool in a tree view
 - **Easy install**: minimal fuss setup that "just works". Thanks to service workers no integration with your code is required
-- **Experimental**: it is a POC at this stage and is in an `alpha` state
+- **Experimental**: it is a proof of concept at this stage
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
