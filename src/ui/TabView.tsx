@@ -23,7 +23,6 @@ export default function TabView({ samples, meta }: Props) {
   const [code, setCode] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(samples, language);
     samplesToQuicktype(samples, language).then((s) => setCode(s));
   }, [language, samples]);
 

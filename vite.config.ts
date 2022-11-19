@@ -6,15 +6,13 @@ import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfil
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import typescript from "@rollup/plugin-typescript";
 import react from "@vitejs/plugin-react";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    typescript({ tsconfig: "./tsconfig.json" }),
-  ],
+  plugins: [peerDepsExternal(), react(), typescript({ tsconfig: "./tsconfig.json" })],
   resolve: {
     alias: {
       buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6",
@@ -39,6 +37,13 @@ export default defineConfig({
     rollupOptions: {
       // @ts-ignore
       plugins: [nodePolyfills()],
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
     },
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
@@ -49,6 +54,6 @@ export default defineConfig({
   test: {
     coverage: {
       exclude: ["src/test-utils", "**/*.test.ts"],
-    }
-  }
+    },
+  },
 });

@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "at-your-service": "file:..",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
