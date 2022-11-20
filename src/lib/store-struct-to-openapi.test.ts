@@ -3,7 +3,7 @@ import { Validator } from "@seriousme/openapi-schema-validator";
 import { merge, times } from "lodash";
 
 import storeStructToOpenAPI from "./store-struct-to-openapi";
-import { createStoreStructure } from "../../test-utils/store-structure-generator";
+import { createStoreStructure } from "../test-utils/store-structure-generator";
 
 test("getJSON returns JSON", async () => {
   const { storeStructure } = createStoreStructure();
