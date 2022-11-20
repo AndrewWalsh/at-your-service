@@ -1,4 +1,4 @@
-import type { StoreStructure } from "../types";
+import type { ReadonlyDeep } from "type-fest";
 import {
   OpenAPIObject,
   OpenApiBuilder,
@@ -11,41 +11,39 @@ import {
   RequestBodyObject,
   ParameterObject,
 } from "openapi3-ts";
-import { ReadonlyDeep } from "type-fest";
+import { uniq } from "lodash";
 
+import type { StoreStructure } from "../types";
 import convert from "./samples-to-json-schema";
 
-const extractPathNames = (str: string) => {
+/**
+ * Extracts path names e.g. /api/{extractsThis}/example
+ *  = ["extractsThis"]
+ */
+const extractPathNames = (str: string): Array<string> => {
   const regex = /({.+?})/gm;
-
-  // Alternative syntax using RegExp constructor
-  // const regex = new RegExp('({.+?})', 'gm')
-
   let m;
-
   const out: Array<string> = [];
   while ((m = regex.exec(str)) !== null) {
-    // This is necessary to avoid infinite loops with zero-width matches
     if (m.index === regex.lastIndex) {
       regex.lastIndex++;
     }
-
-    // The result can be accessed through the `m`-variable.
-    m.forEach((match, groupIndex) => {
-      // @ts-ignore
+    m.forEach((match) => {
       out.push(match);
     });
   }
   return out;
 };
 
-type StoreStructToOpenApi = (store: StoreStructure) => Promise<
-  ReadonlyDeep<{
-    getSpec: () => OpenAPIObject;
-    getJSON: () => string;
-    getYAML: () => string;
-  }>
->;
+type OpenAPI = {
+  getSpec: () => OpenAPIObject;
+  getJSON: () => string;
+  getYAML: () => string;
+};
+
+type StoreStructToOpenApi = (
+  store: StoreStructure
+) => Promise<ReadonlyDeep<OpenAPI>>;
 
 type Defaults = {
   title: string;
@@ -71,18 +69,13 @@ const openAPIValidMethods = new Set([
 ]);
 
 /**
- * Based on the OpenAPI 3.1 spec
- *
- * - OpenAPIObject
- *  - PathObject
- */
-
-/**
  * Takes a StoreStructure and converts it to an OpenAPIObject
  * Returns an interface to get the OpenAPIObject, JSON, or YAML
  */
 const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
   const spec: OpenApiBuilder = OpenApiBuilder.create();
+  // The library assumes 3.0.0, but the generated spec is 3.1.0
+  spec.rootDoc.openapi = '3.1.0';
 
   spec.addTitle(DEFAULTS.title);
   spec.addDescription(DEFAULTS.description);
@@ -139,11 +132,14 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           const hasRequestBody = !new Set(["get", "delete", "head"]).has(
             method.toLowerCase()
           );
-          const pathNames = extractPathNames(pathname);
+          const pathNames = uniq(extractPathNames(pathname));
           const parameters: ParameterObject[] = pathNames.map((name) => ({
             name,
             in: "path",
             required: true,
+            schema: {
+              type: "string",
+            }
           }));
           // The req/res associated with a HTTP [VERB] request
           const operation: OperationObject = {

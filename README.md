@@ -88,7 +88,7 @@ The service worker must be served from the root of your site. Once this is insta
 
 ## Why Do This
 
-You may not have an OpenAPI specification to hand. OpenAPI specifications offer [powerful opportunities](https://openapi.tools/) that are worth making use of. OpenAPI 3.1 specifications are partially supported in [editor-next.swagger.io](https://editor-next.swagger.io/).
+You may not have an OpenAPI specification to hand. OpenAPI specifications have [a variety of applications](https://openapi.tools/) that can be extremely useful and save countless hours of development time. For example you can automatically [generate API client libraries, stubs, and documentation](https://github.com/OpenAPITools/openapi-generator). OpenAPI 3.1 specifications are partially supported in [editor-next.swagger.io](https://editor-next.swagger.io/) and will be the standard going forwards.
 
 There are a few reasons to do this on the frontend specifically:
 
