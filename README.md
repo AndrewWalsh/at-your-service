@@ -42,9 +42,39 @@
 
 It installs a service worker that acts as a proxy and sends requests and responses to a client. That client stores this information efficiently and provides the ability to create a complete OpenAPI specification from the network requests that have executed since the client began.
 
-It can also generate code samples from request/response bodies. These samples reflect the type information in these bodies.
+It can also generate code samples from request/response bodies.
 
-**Features**
+<!-- WHY? -->
+
+## Why?
+
+This tool is designed to solve a particular problem, a kind of problem that occurs frequently in the real world.
+
+Frontend developers often work on legacy projects that rely on backend services that are undocumented. Since they are undocumented, dealing with requests and responses is an immense hassle. The ideal solution to this problem is to document the backend, but in practice this can be immensely challenging.
+
+There are several ways of programatically generating an OpenAPI specification for an existing backend service. Examples include schema generation [from code](https://www.blazemeter.com/blog/openapi-spec-from-code), [intercepted requests/responses via a proxy](https://apievangelist.com/2017/07/20/charles-proxy-generated-har-to-openapi-using-api-transformer/), and recently [commercial offerings that derive a specification from network observations](https://www.akitasoftware.com/). These solutions may or may not work for you.
+
+**Generating specifications and documentation is hard**
+
+Generating a schema from code only works if the backend deserialises all data into defined structures. Without this schema generation tools such as [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/) cannot generate an accurate specification as the underlying data models are not known.
+
+Using a proxy lets you [generate an OpenAPI specification from HTTP traffic](https://apisyouwonthate.com/blog/creating-openapi-from-http-traffic). This can be achieved locally with a proxy such as [Charles](https://www.charlesproxy.com/) that intercepts network requests and emits a [HAR](https://en.wikipedia.org/wiki/HAR_(file_format)) file. Tools such as [har-to-openapi](https://github.com/jonluca/har-to-openapi) can then convert this file into a specification. This is an effective approach as it uses real network observations and doesn't rely on assumptions in code.
+
+**Addressing network observability on the frontend itself**
+
+So if using a proxy for the purpose of gaining insight into what backend services are doing is an effective solution, why isn't it more commonplace? Because it's extremely cumbersome in practice. The config involved is non-trivial and without a considerable time investment in automation it is a very manually involved process.
+
+`at-your-service` sidesteps this hassle entirely by installing a proxy on the frontend directly. There is nothing to configure or setup. The frontend is where all network requests converge and all underlying services it calls out to are accounted for.
+
+When the tool is installed it records API requests and responses independently without affecting your application. It can produce an OpenAPI specification from these. This specification is a best-effort guess based on observations.
+
+It can also generate code such as TypeScript definitions for responses from backend APIs. For example, if you have a response that returns variously both `{ dog: "collie" }` and `{ dog: null }` then the tool can produce model code for serialization into many languages thanks to [quicktype](https://github.com/quicktype/quicktype) under the hood. This translates into a data structure where `dog` is of [JSON type](https://cswr.github.io/JsonSchema/spec/basic_types/) `string` or `null`. All type information that can be derived from observations is accounted.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- FEATURES -->
+
+## Features
 
 - **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with valid [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) request/response bodies
 - **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema thanks to integration with [quicktype](https://github.com/quicktype/quicktype)
@@ -81,21 +111,7 @@ The service worker must be served from the root of your site. Once this is insta
    ```
 
 4. A button to open the drawer will be visible on your site
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- WHY DO THIS -->
-
-## Why Do This
-
-You may not have an OpenAPI specification to hand. OpenAPI specifications have [a variety of applications](https://openapi.tools/) that can be extremely useful and save countless hours of development time. For example you can automatically [generate API client libraries, stubs, and documentation](https://github.com/OpenAPITools/openapi-generator). OpenAPI 3.1 specifications are partially supported in [editor-next.swagger.io](https://editor-next.swagger.io/) and will be the standard going forwards.
-
-There are a few reasons to do this on the frontend specifically:
-
-- It mitigates issues around accounting for the topology of the backend. In other words, the frontent may call out to a multitude of services and we would otherwise have to aggregate the specifications of those services in order to provide a full specification for the system from the perspective of the frontend
-- There are opportunities to investigate third party services through use of this tool
-- The process could be automated using tools such as [Puppeteer](https://github.com/puppeteer/puppeteer) to serve specific use cases
-- There are opportunities to provide tooling for observability on network requests in real time. This is a common source of issues for frontend developers
+5. You can view copied OpenAPI 3.1 specifications in [editor-next.swagger.io](https://editor-next.swagger.io/). At the time of writing, you need to manually change the version from `3.1.0` to `3.0.0` after pasting the specification. Support for the new version of the specifcation is an ongoing process
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -107,7 +123,7 @@ There are a few reasons to do this on the frontend specifically:
 
 A *"service worker"* itself is just a file containing function calls and other behaviour specific to the context of a service worker. Libraries such as Google's [Workbox](https://developer.chrome.com/docs/workbox/) exist to ease development of service workers specifically. This library features a custom service worker script that performs a very specific role. It captures *request* / *response* pairs and emits these as events.
 
-The client captures these events and places them into an optimised data structure. Request and response bodies are parsed before storage. Each property is [zeroed](https://yourbasic.org/golang/default-zero-value/) as only the type itself is relevant for sake of spec and code gen. When a request or response body differs for the same path the sample is stored alongside existing samples. This means that code and spec generation accounts for the full spectrum of type information given the observations from the network requests that have occurred since the `at-your-service` tool was started.
+The main client captures these events and places them into an optimised data structure. Request and response bodies are parsed before storage. Each property is [zeroed](https://yourbasic.org/golang/default-zero-value/) as only the type itself is relevant for sake of spec and code gen. When a request or response body differs for the same path the sample is stored alongside existing samples. This means that code and spec generation accounts for the full spectrum of type information given the observations from the network requests that have occurred since the `at-your-service` tool began.
 
 The functionality of the application with regard to spec and code gen is nothing more than a conversion operation on the data structure above.
 
