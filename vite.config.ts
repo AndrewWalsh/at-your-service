@@ -53,7 +53,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      exclude: ["src/test-utils", "**/*.test.ts"],
+      exclude: ["src/test-utils"],
       reporter: ["lcov"],
     },
   },
