@@ -1,1 +1,0 @@
-export { startAtYourService } from "./interface";
