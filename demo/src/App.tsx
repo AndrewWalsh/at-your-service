@@ -22,7 +22,9 @@ const worker = setupWorker(
   })
 );
 
-worker.start();
+worker.start({ findWorker(scriptUrl) {
+  return scriptUrl.includes("mockServiceWorker.js");
+}, });
 
 if (window.navigator) {
   window.navigator.serviceWorker.ready.then(() => {
