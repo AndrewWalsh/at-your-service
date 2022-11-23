@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { setupWorker, rest } from "msw";
 
-// import { startAtYourService } from "at-your-service";
-import { startAtYourService } from "../../src";
+import { startAtYourService } from "at-your-service";
+// import { startAtYourService } from "../../src";
 
 // @ts-expect-error
 import logo from "./assets/logo.png";
