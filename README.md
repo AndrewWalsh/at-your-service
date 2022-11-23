@@ -22,8 +22,6 @@
 
   <p align="center">
     A frontend dev tool for network observability and schema/code generation. Uses service workers as a proxy to record requests/responses as they happen. Generates OpenAPI schemas and model code from these in 10+ languages
-    
-    Create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages
     <br />
     <br />
     👷 <code>alpha</code> / <code>POC</code> 👷
