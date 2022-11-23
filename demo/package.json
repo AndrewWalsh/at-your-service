@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "concurrently \"vite -c vite.config.ts --port 8081\" \"node server.js\"",
     "build": "vite build",
-    "build:docs": "tsc && vite -c vite.config.build.ts build --outDir ../docs --emptyOutDir",
+    "build:docs": "vite -c ./vite.config.build.ts build --outDir ../docs --emptyOutDir",
     "test": "vitest",
     "preview": "vite preview"
   },
