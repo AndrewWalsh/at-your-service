@@ -6,13 +6,11 @@ import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfil
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import typescript from "@rollup/plugin-typescript";
 import react from "@vitejs/plugin-react";
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    peerDepsExternal(),
     react(),
     typescript({ tsconfig: "./tsconfig.json" }),
   ],

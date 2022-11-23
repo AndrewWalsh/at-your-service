@@ -5,9 +5,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite -c vite.config.ts --port 8081\" \"node server.js\"",
-    "build": "vite build",
-    "build:docs": "vite -c ./vite.config.build.ts build --outDir ../docs --emptyOutDir",
+    "dev": "vite -c vite.config.ts",
+    "build": "vite build -c vite.config.ts",
+    "build:docs": "vite -c vite.config.build.ts build --outDir ../docs --emptyOutDir",
     "test": "vitest",
     "preview": "vite preview"
   },
