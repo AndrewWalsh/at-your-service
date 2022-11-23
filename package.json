@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "vite -c ./vite.config.ts",
     "test": "vitest -c ./vite.config.testenv.ts",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest -c ./vite.config.testenv.ts --coverage",
     "build": "vite build -c ./vite.config.ts && npm run build:cli && npm run build:sw",
     "format": "prettier ./src --write",
     "build:cli": "cpy src/_not_exported/cli.js dist --flat",
