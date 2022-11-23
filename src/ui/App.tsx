@@ -8,7 +8,7 @@ import Drawer from "./Drawer";
 export default function App() {
   const [open, setOpen] = useState(false);
   const [storeStruct, setStoreStruct] = useState<StoreStructure | null>(null);
-  const { store, options } = useContext(Ctx);
+  const { store } = useContext(Ctx);
 
   useEffect(() => {
     store.get().then((store) => {
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <GeistProvider>
       <Button style={{ margin: "1em" }} onClick={() => setOpen(true)}>
-        Open at-your-service
+        Open
       </Button>
 
       <Drawer

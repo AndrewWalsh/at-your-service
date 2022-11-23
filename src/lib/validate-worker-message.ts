@@ -10,6 +10,6 @@ export default async function validateWorkerMessage(data: {}) {
     const parsed = await messagePayloadSchema.validate(data);
     return parsed;
   } catch (e) {
-    throw e;
+    return Promise.reject(e);
   }
 }

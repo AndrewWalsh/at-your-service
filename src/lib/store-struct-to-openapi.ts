@@ -75,7 +75,7 @@ const openAPIValidMethods = new Set([
 const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
   const spec: OpenApiBuilder = OpenApiBuilder.create();
   // The library assumes 3.0.0, but the generated spec is 3.1.0
-  spec.rootDoc.openapi = '3.1.0';
+  spec.rootDoc.openapi = "3.1.0";
 
   spec.addTitle(DEFAULTS.title);
   spec.addDescription(DEFAULTS.description);
@@ -139,7 +139,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             required: true,
             schema: {
               type: "string",
-            }
+            },
           }));
           // The req/res associated with a HTTP [VERB] request
           const operation: OperationObject = {

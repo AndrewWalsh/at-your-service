@@ -48,11 +48,11 @@ describe("specific behaviour tests", () => {
    * do not end result in duplicated path names in the ParameterObject list
    */
   test("the extracted path name does not duplicate when a path has multiple samples", async () => {
-    const path = "test"
-    const pathname = `/{${path}}`
-    const method = "get"
-    const JSONStr = '"some_text"'
-    const JSONNum = "1"
+    const path = "test";
+    const pathname = `/{${path}}`;
+    const method = "get";
+    const JSONStr = '"some_text"';
+    const JSONNum = "1";
 
     const sampleOne = new Sample(JSONStr);
     const sampleTwo = new Sample(JSONNum);

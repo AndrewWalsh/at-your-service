@@ -15,6 +15,9 @@ const startOnHandler = (emitter: StrictEventEmitter<EventsMap>) => {
   navigator.serviceWorker.addEventListener(
     "message",
     async (event: MessageEvent<FETCHFromWorker>) => {
+      if (event.data.type !== MessageTypeFromWorker.FETCH) {
+        return;
+      }
       // If the message is not valid for some reason, ignore it
       // This step discards a lot of messages that we don't care about
       try {
@@ -47,43 +50,46 @@ function sendMessage(
   });
 }
 
-/**
- * @namespace
- * @property {string} ApiDetails.title - The title of the specification. If there are multiple specifications, this acts as a prefix
- */
 export type Config = {
   title: string;
+  registerWorker: boolean;
 };
 
 const defaultConfig: Config = {
   title: "API",
+  registerWorker: true,
 };
 
-// TODO: remember to have a cancel script here to stop the worker
-// and to ensure that this cant be called twice (cancel the existing one first or something)
 export default async function startAtYourService(
-  config: Config = defaultConfig
+  config: Partial<Config> = defaultConfig
 ) {
-  const registration = await navigator.serviceWorker.register(
-    "./at-your-service-sw.js"
-  );
+  try {
+    if (config.registerWorker) {
+      await navigator.serviceWorker.register("./at-your-service-sw.js");
+    }
 
-  // Sometimes, things go wrong relating to dev servers
-  if (!navigator.serviceWorker.controller) {
-    location.reload();
-    return;
+    // Sometimes, things go wrong relating to dev servers
+    if (config.registerWorker && !navigator.serviceWorker.controller) {
+      location.reload();
+      return;
+    }
+
+    const store = getStore();
+    const emitter = startOnHandler(new StrictEventEmitter<EventsMap>());
+
+    emitter.on(MessageTypeFromWorker.FETCH, (data) => {
+      store.update(new Message(data.payload));
+    });
+
+    // sendMessage(navigator.serviceWorker.controller, {
+    //   type: MessageTypeToWorker.INIT_PORT,
+    // });
+
+    startUi(store);
+  } catch (error) {
+    console.error(
+      "[at-your-service] could not start tool, did you install the service worker with 'npx at-your-service@latest <publicDir>' ?",
+      error
+    );
   }
-
-  const store = getStore();
-  const emitter = startOnHandler(new StrictEventEmitter<EventsMap>());
-
-  emitter.on(MessageTypeFromWorker.FETCH, (data) => {
-    store.update(new Message(data.payload));
-  });
-
-  sendMessage(navigator.serviceWorker.controller, {
-    type: MessageTypeToWorker.INIT_PORT,
-  });
-
-  startUi(store);
 }

@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
-  Drawer,
+  Drawer as GeistDrawer,
   Button,
   Tree,
   useModal,
@@ -37,7 +37,7 @@ const isStoreRoute = (
   route: StoreRoute | StoreStructureDeep
 ): route is StoreRoute => !!route.pathName;
 
-export default function App({ visible, onClose, storeStruct }: Props) {
+export default function Drawer({ visible, onClose, storeStruct }: Props) {
   const { setVisible, bindings } = useModal();
   const [content, setContent] = useState<{ storeRoute: StoreRoute } | null>(
     null
@@ -73,11 +73,15 @@ export default function App({ visible, onClose, storeStruct }: Props) {
 
   const [treeValue, setTreeValue] = useState(createTree());
 
+  useEffect(() => {
+    setTreeValue(createTree());
+  }, [visible]);
+
   return (
-    <Drawer visible={visible} onClose={onClose} placement="left">
-      <Drawer.Title>at-your-service</Drawer.Title>
-      <Drawer.Subtitle>recorded API calls</Drawer.Subtitle>
-      <Drawer.Content>
+    <GeistDrawer visible={visible} onClose={onClose} placement="left">
+      <GeistDrawer.Title>at-your-service</GeistDrawer.Title>
+      <GeistDrawer.Subtitle>recorded API calls</GeistDrawer.Subtitle>
+      <GeistDrawer.Content>
         <Grid.Container direction="row" justify="space-around" gap={1}>
           <Grid>
             <Button
@@ -103,7 +107,7 @@ export default function App({ visible, onClose, storeStruct }: Props) {
         </Grid.Container>
         <Spacer h={1} />
         <Tree>{treeValue}</Tree>
-      </Drawer.Content>
+      </GeistDrawer.Content>
 
       <Modal {...bindings} width="50vw">
         {content && (
@@ -130,6 +134,6 @@ export default function App({ visible, onClose, storeStruct }: Props) {
           </>
         )}
       </Modal>
-    </Drawer>
+    </GeistDrawer>
   );
 }
