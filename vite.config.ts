@@ -13,6 +13,9 @@ import path from "path";
 
 export default defineConfig({
   plugins: [peerDepsExternal(), react(), typescript({ tsconfig: "./tsconfig.json" })],
+  define: {
+    global: "window",
+  },
   resolve: {
     alias: {
       buffer: "rollup-plugin-node-polyfills/polyfills/buffer-es6",
@@ -22,7 +25,7 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       define: {
-        global: "globalThis",
+        global: "window",
       },
       plugins: [
         NodeGlobalsPolyfillPlugin({
