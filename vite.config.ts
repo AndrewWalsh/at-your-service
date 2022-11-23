@@ -12,6 +12,7 @@ import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
+  // @ts-expect-error
   plugins: [peerDepsExternal(), react(), typescript({ tsconfig: "./tsconfig.json" })],
   define: {
     global: "window",
@@ -52,14 +53,6 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "at-your-service",
       fileName: (format) => `index.${format}.js`,
-    },
-  },
-  test: {
-    coverage: {
-      reporter: ["lcov"],
-      all: true,
-      exclude: ["**/index.ts", "**/test-utils/**"],
-      include: ["src"],
     },
   },
 });

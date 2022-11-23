@@ -1,7 +1,8 @@
 {
   "name": "at-your-service",
   "version": "0.0.24",
-  "description": "🔭 A frontend development tool that uses service workers to automatically create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages",
+  "description": "A frontend dev tool for network observability and schema/code generation. Uses service workers as a proxy to record requests/responses as they happen. Generates OpenAPI schemas and model code from these in 10+ languages",
+  "homepage": "https://andrewwalsh.github.io/at-your-service/",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -20,7 +21,7 @@
   "repository": "https://github.com/AndrewWalsh/at-your-service",
   "scripts": {
     "dev": "vite -c ./vite.config.ts",
-    "test": "vitest",
+    "test": "vitest -c ./vite.config.testenv.ts",
     "test:coverage": "vitest --coverage",
     "build": "vite build -c ./vite.config.ts && npm run build:cli && npm run build:sw",
     "format": "prettier ./src --write",
@@ -64,6 +65,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "@types/react-syntax-highlighter": "^15.5.5",
+    "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "@types/validator": "^13.7.10",
     "@types/yargs": "^17.0.13",
     "@vitejs/plugin-react": "^2.2.0",

@@ -21,24 +21,25 @@
 <br />
 
   <p align="center">
-    🔭 A frontend development tool that uses service workers to automatically create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages
+    A frontend dev tool for network observability and schema/code generation. Uses service workers as a proxy to record requests/responses as they happen. Generates OpenAPI schemas and model code from these in 10+ languages
+    
+    Create OpenAPI 3.1 specifications and generate code from network request/response bodies in 10+ languages
     <br />
     <br />
     👷 <code>alpha</code> / <code>POC</code> 👷
     <br />
     <br />
     <br />
+    <a href="https://andrewwalsh.github.io/at-your-service/"> Live Demo Playground</a>
+    ·
     <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
     ·
     <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
   </p>
 </div>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/ays-demo.png" alt="banner">
-</div>
-
 <br />
+<hr />
 <br />
 
 `at-your-service` is a dev tool for code and spec generation from network requests on the frontend.
@@ -47,9 +48,35 @@ It installs a service worker that acts as a proxy and sends requests and respons
 
 It can also generate code samples from request/response bodies.
 
-<!-- WHY? -->
 
-## Why?
+<!-- TABLE OF CONTENTS -->
+
+<details open align="center">
+  <summary style="display: none;">Table of Contents</summary>
+  <ol style="list-style-type: '\26AC'; margin: 0; padding: 0; text-align: left; position: relative; left: 8px;">
+    <li style="padding-left: 4px;">
+      <a href="#about-the-project-and-why">About The Project and Why</a>
+    </li>
+    <li style="padding-left: 4px;">
+      <a href="#features">Features</a>
+    </li>
+    <li style="padding-left: 4px;">
+      <a href="#getting-started">Getting Started</a>
+    </li>
+    <li style="padding-left: 4px;">
+      <a href="#how-it-works">How it Works</a>
+    </li>
+    <li style="padding-left: 4px;">
+      <a href="#license">License</a>
+    </li>
+  </ol>
+</details>
+
+<br />
+
+<!-- ABOUT THE PROJECT AND WHY -->
+
+## About the Project and Why
 
 This tool is designed to solve a particular problem, a kind of problem that occurs frequently in the real world.
 
@@ -94,8 +121,6 @@ It can also generate code such as TypeScript definitions for responses from back
 `at-your-service` features a CLI tool that places its service worker file into a directory. You likely wish to place this in `public` or `static`. See [more information here](https://mswjs.io/docs/getting-started/integrate/browser#where-is-my-public-directory) on common locations for static files.
 
 The service worker must be served from the root of your site. Once this is installed run the start script in your application code.
-
-### Installation
 
 1. Install the npm package
    ```sh
