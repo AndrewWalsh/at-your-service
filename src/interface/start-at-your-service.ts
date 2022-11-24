@@ -1,7 +1,6 @@
 import { StrictEventEmitter } from "strict-event-emitter";
 import { startUi } from "../ui";
 import {
-  MessageTypeToWorker,
   MessageTypeFromWorker,
   PayloadToWorker,
   FETCHFromWorker,

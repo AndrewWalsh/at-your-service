@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { setupWorker, rest } from "msw";
-import { Box } from "@chakra-ui/react";
+import { Box, keyframes } from "@chakra-ui/react";
 
 import Requester from "./Requester";
 
@@ -8,6 +8,15 @@ import Requester from "./Requester";
 import { startAtYourService } from "../../src";
 
 import logo from "./assets/logo.png";
+
+const grow = keyframes`
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+`;
 
 const LOCALHOST_API = "http://localhost:8080";
 const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`;
@@ -60,12 +69,13 @@ function App() {
 
   return (
     <Box
-      bg="tomato"
-      p={0}
       width="100%"
       height="100vh"
+      maxHeight="100vh"
       display="flex"
       flexFlow="column nowrap"
+      overflow="hidden"
+      position="relative"
     >
       <Box
         border="1px solid #001758"
@@ -82,11 +92,23 @@ function App() {
         alignItems="center"
         justifyContent="center"
         display="flex"
+        position="relative"
       >
         <Box maxHeight="80%" width="80%" marginBottom="64px">
           <Requester />
         </Box>
       </Box>
+      <Box
+        position="absolute"
+        border="1px solid #001758"
+        bg="#283F80"
+        borderRadius="50%"
+        height="512px"
+        width="512px"
+        left="-200px"
+        bottom="-400px"
+        animation={`${grow} 0.5s ease-in`}
+      ></Box>
     </Box>
   );
 }
