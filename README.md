@@ -21,15 +21,18 @@
   <br />
 
   <p align="center">
-    <pre>
+    <blockquote>
         A dev tool for generating OpenAPI 3.1 specifications and model code from any frontend application
+        <br />
         <br />
         Records the network layer under the hood while your application dispatches requests
         <br />
+        <br />
         Generated schemas and code samples account for all type information in observed requests and responses
         <br />
+        <br />
         Easy minimal fuss install thanks to service workers
-      </pre>
+      </blockquote>
       <br />
       <br />
       👷 <code>alpha</code> / <code>POC</code> 👷
