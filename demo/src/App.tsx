@@ -5,12 +5,10 @@ import { Box } from "@chakra-ui/react";
 // import { startAtYourService } from "at-your-service";
 import { startAtYourService } from "../../src";
 
-// @ts-expect-error
 import logo from "./assets/logo.png";
 
 const LOCALHOST_API = "http://localhost:8080";
-const SW_PATH = "/mockServiceWorker.js";
-// const SW_PATH = "/at-your-service/mockServiceWorker.js"
+const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`
 
 const run = async () => {
   const worker = setupWorker(
