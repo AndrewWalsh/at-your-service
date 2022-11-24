@@ -16,36 +16,37 @@
     <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.png" alt="Logo">
   </a>
 
-<br />
-<h3 align="center">at-your-service</h3>
-<br />
+  <br />
+  <h3 align="center">at-your-service</h3>
+  <br />
 
   <p align="center">
-    A frontend dev tool for network observability and schema/code generation. Uses service workers as a proxy to record requests/responses as they happen. Generates OpenAPI schemas and model code from these in 10+ languages
-    <br />
-    <br />
-    👷 <code>alpha</code> / <code>POC</code> 👷
-    <br />
-    <br />
-    <br />
-    <a href="https://andrewwalsh.github.io/at-your-service/"> Live Demo Playground</a>
-    ·
-    <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
-    ·
-    <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
+    <pre>
+        A dev tool for generating OpenAPI 3.1 specifications and model code from any frontend application
+        <br />
+        Records the network layer under the hood while your application dispatches requests
+        <br />
+        Generated schemas and code samples account for all type information in observed requests and responses
+        <br />
+        Easy minimal fuss install thanks to service workers
+      </pre>
+      <br />
+      <br />
+      👷 <code>alpha</code> / <code>POC</code> 👷
+      <br />
+      <br />
+      <br />
+      <a href="https://andrewwalsh.github.io/at-your-service/"> Live Demo Playground</a>
+      ·
+      <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
+      ·
+      <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
   </p>
 </div>
 
 <br />
 <hr />
 <br />
-
-`at-your-service` is a dev tool for code and spec generation from network requests on the frontend.
-
-It installs a service worker that acts as a proxy and sends requests and responses to a client. That client stores this information efficiently and provides the ability to create a complete OpenAPI specification from the network requests that have executed since the client began.
-
-It can also generate code samples from request/response bodies.
-
 
 <!-- TABLE OF CONTENTS -->
 
