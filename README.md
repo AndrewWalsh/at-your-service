@@ -22,7 +22,7 @@
 
   <p align="center">
     <blockquote>
-        A dev tool for generating OpenAPI 3.1 specifications and model code from any frontend application
+        A dev tool for generating OpenAPI 3.1 specifications and model code for any frontend application
         <br />
         <br />
         Records the network layer under the hood while your application dispatches requests
