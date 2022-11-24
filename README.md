@@ -25,13 +25,10 @@
         A dev tool for generating OpenAPI 3.1 specifications and model code for any frontend application
         <br />
         <br />
-        Records the network layer under the hood while your application dispatches requests
+        Records network requests as they happen and offers schema and code generation capabilities from observations
         <br />
         <br />
-        Generated schemas and code samples account for all type information in observed requests and responses
-        <br />
-        <br />
-        Easy minimal fuss install thanks to service workers
+        Easy minimal fuss install. No integration with API library code required thanks to service workers
       </blockquote>
       <br />
       <br />
