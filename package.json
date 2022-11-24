@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "A dev tool that generates OpenAPI specifications and model code from network observations in frontend applications",
   "homepage": "https://andrewwalsh.github.io/at-your-service/",
   "types": "dist/index.d.ts",

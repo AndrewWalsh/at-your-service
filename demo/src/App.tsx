@@ -6,8 +6,8 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import Requester from "./Requester";
 
-import { startAtYourService } from "at-your-service";
-// import { startAtYourService } from "../../src";
+// import { startAtYourService } from "at-your-service";
+import { startAtYourService } from "../../src";
 
 import logo from "./assets/logo.png";
 
@@ -73,17 +73,18 @@ function App() {
     <Box
       width="100%"
       height="100vh"
-      maxHeight="100vh"
       display="flex"
       flexFlow="column nowrap"
-      overflow="hidden"
       position="relative"
+      as="main"
+      paddingBottom="128px"
     >
       <Box
         border="1px solid #001758"
         bg="#283F80"
         width="100%"
         maxHeight="64px"
+        minHeight="64px"
         flex="1"
         display="flex"
         flexFlow="row nowrap"
@@ -91,6 +92,7 @@ function App() {
         justifyContent="center"
         padding="0 32px"
         color="white"
+        as="header"
       >
         <Box marginRight="auto">
           <Heading as="h1" size="md">at-your-service</Heading>
@@ -116,25 +118,27 @@ function App() {
         width="100%"
         maxHeight="calc(100vh - 64px)"
         flex="1"
-        alignItems="center"
+        alignItems="flex-start"
         justifyContent="center"
         display="flex"
         position="relative"
+        as="section"
       >
-        <Box maxHeight="80%" width="80%" marginBottom="64px">
+        <Box maxHeight="90%" width="80%" marginTop="2vh" marginBottom="20vh" >
           <Requester />
         </Box>
       </Box>
       <Box
-        position="absolute"
+        position="fixed"
         border="1px solid #001758"
         bg="#283F80"
-        borderRadius="50%"
         height="512px"
+        borderRadius="8px"
         width="512px"
-        left="-200px"
-        bottom="-400px"
+        left="-300px"
+        bottom="-432px"
         animation={`${grow} 0.5s ease-in`}
+        role="presentation"
       ></Box>
     </Box>
   );
