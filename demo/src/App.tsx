@@ -6,8 +6,8 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import Requester from "./Requester";
 
-// import { startAtYourService } from "at-your-service";
-import { startAtYourService } from "../../src";
+import { startAtYourService } from "at-your-service";
+// import { startAtYourService } from "../../src";
 
 import logo from "./assets/logo.png";
 

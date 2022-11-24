@@ -16,10 +16,10 @@
     "@chakra-ui/react": "^2.4.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "at-your-service": "file:..",
     "framer-motion": "^7.6.9",
     "msw": "^0.49.0",
     "react": "^18.2.0",
+    "react-ace": "^10.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0"
   },
