@@ -49,22 +49,22 @@ It can also generate code samples from request/response bodies.
 
 <!-- TABLE OF CONTENTS -->
 
-<details open align="center">
-  <summary style="display: none;">Table of Contents</summary>
-  <ol style="list-style-type: '\26AC'; margin: 0; padding: 0; text-align: left; position: relative; left: 8px;">
-    <li style="padding-left: 4px;">
+<details open>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
       <a href="#about-the-project-and-why">About The Project and Why</a>
     </li>
-    <li style="padding-left: 4px;">
+    <li>
       <a href="#features">Features</a>
     </li>
-    <li style="padding-left: 4px;">
+    <li>
       <a href="#getting-started">Getting Started</a>
     </li>
-    <li style="padding-left: 4px;">
+    <li>
       <a href="#how-it-works">How it Works</a>
     </li>
-    <li style="padding-left: 4px;">
+    <li>
       <a href="#license">License</a>
     </li>
   </ol>
