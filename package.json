@@ -1,7 +1,7 @@
 {
   "name": "at-your-service",
   "version": "0.0.24",
-  "description": "A frontend dev tool for network observability and schema/code generation. Uses service workers as a proxy to record requests/responses as they happen. Generates OpenAPI schemas and model code from these in 10+ languages",
+  "description": "A dev tool that generates OpenAPI specifications and model code from network observations in frontend applications",
   "homepage": "https://andrewwalsh.github.io/at-your-service/",
   "types": "dist/index.d.ts",
   "files": [
