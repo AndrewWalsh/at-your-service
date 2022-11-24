@@ -1,6 +1,6 @@
 {
   "name": "at-your-service-demo",
-  "description": "A test environment for at-your-service",
+  "description": "A live playground for at-your-service",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.4.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "at-your-service": "file:..",
+    "framer-motion": "^7.6.9",
     "msw": "^0.49.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

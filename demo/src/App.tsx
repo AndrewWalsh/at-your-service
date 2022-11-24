@@ -1,39 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { setupWorker, rest } from "msw";
+import { Box } from "@chakra-ui/react";
 
-import { startAtYourService } from "at-your-service";
-// import { startAtYourService } from "../../src";
+// import { startAtYourService } from "at-your-service";
+import { startAtYourService } from "../../src";
 
 // @ts-expect-error
 import logo from "./assets/logo.png";
-import "./App.css";
 
 const LOCALHOST_API = "http://localhost:8080";
+const SW_PATH = "/mockServiceWorker.js";
+// const SW_PATH = "/at-your-service/mockServiceWorker.js"
 
-const worker = setupWorker(
-  rest.get("http://localhost:8080/hello", (req, res, ctx) => {
-    return res(
-      ctx.delay(1500),
-      ctx.status(202, "Mocked status"),
-      ctx.json({
-        message: "Mocked response JSON body",
-      })
-    );
-  })
-);
+const run = async () => {
+  const worker = setupWorker(
+    rest.get("http://localhost:8080/hello", (req, res, ctx) => {
+      return res(
+        ctx.delay(1500),
+        ctx.status(202, "Mocked status"),
+        ctx.json({
+          message: "Mocked response JSON body",
+        })
+      );
+    })
+  );
 
-worker.start({ findWorker(scriptUrl) {
-  return scriptUrl.includes("mockServiceWorker.js");
-}, });
+  await window.navigator.serviceWorker.register(SW_PATH);
 
-if (window.navigator) {
-  window.navigator.serviceWorker.ready.then(() => {
-    startAtYourService({ registerWorker: false });
+  worker.start({
+    findWorker(scriptUrl) {
+      return scriptUrl.includes("mockServiceWorker.js");
+    },
   });
-}
+
+  if (window.navigator) {
+    window.navigator.serviceWorker.ready.then(() => {
+      startAtYourService({ registerWorker: false });
+    });
+  }
+};
 
 function App() {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    run();
+  }, []);
 
   const click = () => {
     fetch(`${LOCALHOST_API}/hello`);
@@ -47,24 +59,9 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div>
-        <a
-          href="https://github.com/AndrewWalsh/at-your-service"
-          target="_blank"
-        >
-          <img src={logo} className="logo react" alt="logo" />
-        </a>
-      </div>
-      <h1>At Your Service</h1>
-      <div className="card">
-        <button onClick={() => click()}>count is {count}</button>
-        <p>
-          A <code>live environment</code> and playground for the service worker
-        </p>
-      </div>
-      <p className="read-the-docs">at-your-service</p>
-    </div>
+    <Box bg="tomato" p={0} width="100%" height="100vh">
+      hi
+    </Box>
   );
 }
 

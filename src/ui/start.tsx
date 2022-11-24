@@ -18,12 +18,14 @@ export const startUi = (
   const id = "at-your-service-root";
   const rootEl = document.createElement("div");
   rootEl.id = id;
-  rootEl.style.position = "absolute";
+  rootEl.style.position = "fixed";
   rootEl.style.height = "100vh";
   rootEl.style.width = "100vw";
   rootEl.style.display = "flex";
   rootEl.style.alignItems = "end";
   rootEl.style.pointerEvents = "none";
+  rootEl.style.top = "0";
+  rootEl.style.zIndex = "999";
   document.getElementsByTagName("body")[0].appendChild(rootEl);
 
   ReactDOM.createRoot(rootEl, { identifierPrefix: id }).render(
