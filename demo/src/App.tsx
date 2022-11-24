@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { setupWorker, rest } from "msw";
-import { Box, keyframes } from "@chakra-ui/react";
+import { Box, keyframes, Link, Icon, Heading, Text } from "@chakra-ui/react";
+import { FaGithub } from "react-icons/fa";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import Requester from "./Requester";
 
@@ -83,7 +85,32 @@ function App() {
         width="100%"
         maxHeight="64px"
         flex="1"
-      ></Box>
+        display="flex"
+        flexFlow="row nowrap"
+        alignItems="center"
+        justifyContent="center"
+        padding="0 32px"
+        color="white"
+      >
+        <Box marginRight="auto">
+          <Heading as="h1" size="md">at-your-service</Heading>
+        </Box>
+        <Link
+          href="https://github.com/AndrewWalsh/at-your-service"
+          isExternal
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          gap={4}
+          color="white"
+        >
+          <Icon as={FaGithub} />
+          <Text>
+            {" GitHub "}
+            <ExternalLinkIcon mx={2} paddingBottom="4px" />
+          </Text>
+        </Link>
+      </Box>
 
       <Box
         width="100%"
