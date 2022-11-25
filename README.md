@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AndrewWalsh/at-your-service">
-    <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo.png" alt="Logo">
+    <img src="https://raw.githubusercontent.com/AndrewWalsh/at-your-service/main/resources/logo-floor.png" alt="Logo">
   </a>
 
   <br />
@@ -76,8 +76,6 @@
 <!-- ABOUT THE PROJECT AND WHY -->
 
 ## About the Project and Why
-
-This tool is designed to solve a particular problem, a kind of problem that occurs frequently in the real world.
 
 Frontend developers often work on legacy projects that rely on backend services that are undocumented. Since they are undocumented, dealing with requests and responses is an immense hassle. The ideal solution to this problem is to document the backend, but in practice this can be immensely challenging.
 

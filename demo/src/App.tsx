@@ -1,13 +1,26 @@
-import { useState, useEffect } from "react";
-import { setupWorker, rest } from "msw";
-import { Box, keyframes, Link, Icon, Heading, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import {
+  Box,
+  keyframes,
+  Link,
+  Icon,
+  Heading,
+  Text,
+  Image,
+  Code,
+  Kbd,
+  Tag,
+} from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import Requester from "./Requester";
-
-// import { startAtYourService } from "at-your-service";
-import { startAtYourService } from "../../src";
+import {
+  COLOR_PRIMARY_BORDER,
+  COLOR_WHITE,
+  COLOR_PRIMARY,
+  COLOR_SECONDARY,
+} from "./constants";
 
 import logo from "./assets/logo.png";
 
@@ -21,42 +34,9 @@ const grow = keyframes`
 `;
 
 const LOCALHOST_API = "http://localhost:8080";
-const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`;
-
-const run = async () => {
-  const worker = setupWorker(
-    rest.get("http://localhost:8080/hello", (req, res, ctx) => {
-      return res(
-        ctx.delay(1500),
-        ctx.status(202, "Mocked status"),
-        ctx.json({
-          message: "Mocked response JSON body",
-        })
-      );
-    })
-  );
-
-  await window.navigator.serviceWorker.register(SW_PATH);
-
-  worker.start({
-    findWorker(scriptUrl) {
-      return scriptUrl.includes("mockServiceWorker.js");
-    },
-  });
-
-  if (window.navigator) {
-    window.navigator.serviceWorker.ready.then(() => {
-      startAtYourService({ registerWorker: false });
-    });
-  }
-};
 
 function App() {
   const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    run();
-  }, []);
 
   const click = () => {
     fetch(`${LOCALHOST_API}/hello`);
@@ -76,12 +56,12 @@ function App() {
       display="flex"
       flexFlow="column nowrap"
       position="relative"
-      as="main"
-      paddingBottom="128px"
+      paddingBottom="400px"
     >
       <Box
-        border="1px solid #001758"
-        bg="#283F80"
+        border={`2px solid ${COLOR_PRIMARY_BORDER}`}
+        boxSizing="border-box"
+        bg={COLOR_PRIMARY}
         width="100%"
         maxHeight="64px"
         minHeight="64px"
@@ -94,16 +74,39 @@ function App() {
         color="white"
         as="header"
       >
-        <Box marginRight="auto">
-          <Heading as="h1" size="md">at-your-service</Heading>
+        <Box marginRight="auto" display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+          <Box
+            height="32px"
+            width="32px"
+            border={`1px solid ${COLOR_WHITE}`}
+            boxSizing="border-box"
+            borderRadius="50%"
+            bg="white"
+            marginRight="16px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Image src={logo} height="24px" alt="logo" />
+          </Box>
+          <Heading as="h2" size="md">
+            <Link
+              isExternal
+              href="https://andrewwalsh.github.io/at-your-service/"
+              aria-label="live demo playground of at-your-service"
+            >
+              Demo Playground
+            </Link>
+          </Heading>
         </Box>
         <Link
           href="https://github.com/AndrewWalsh/at-your-service"
+          aria-label="repository"
           isExternal
           display="flex"
           alignItems="center"
           justifyContent="center"
-          gap={4}
+          gap={2}
           color="white"
         >
           <Icon as={FaGithub} />
@@ -116,29 +119,117 @@ function App() {
 
       <Box
         width="100%"
-        maxHeight="calc(100vh - 64px)"
         flex="1"
-        alignItems="flex-start"
         justifyContent="center"
         display="flex"
         position="relative"
-        as="section"
+        as="main"
+        flexFlow="column nowrap"
+        alignItems="center"
+        marginTop="1em"
       >
-        <Box maxHeight="90%" width="80%" marginTop="2vh" marginBottom="20vh" >
+        <Box
+          as="article"
+          display="flex"
+          alignItems="flex-start"
+          width="80%"
+          flexFlow="column nowrap"
+        >
+          <Heading as="h1" margin="32px 0" maxWidth="850px">
+            <Heading
+              as="span"
+              bgGradient={`linear(to bottom, ${COLOR_PRIMARY}, ${COLOR_SECONDARY})`}
+              bgClip="text"
+            >
+              API Observability
+            </Heading>{" "}
+            on the Frontend
+            <br />
+            <br />
+            <Heading as="span" fontSize="24px">
+              Generate{" "}
+              <Link
+                href="https://www.openapis.org/"
+                isExternal
+                aria-label="openapi initiative"
+                color={COLOR_SECONDARY}
+              >
+                OpenAPI
+              </Link>{" "}
+              specifications and{" "}
+              <Link
+                href="https://quicktype.io/"
+                aria-label="the library that generates code from JSON Schema"
+                isExternal
+                color={COLOR_SECONDARY}
+              >
+                model code
+              </Link>{" "}
+              automatically from network requests using{" "}
+              <Link
+                href="https://web.dev/learn/pwa/service-workers/"
+                aria-label="learn more about service workers"
+                isExternal
+                color={COLOR_PRIMARY}
+              >
+                service workers
+              </Link>{" "}
+            </Heading>
+          </Heading>
+          <Text maxWidth="650px">
+            <Kbd>at-your-service</Kbd> is an open source{" "}
+            <Link
+              href="https://github.com/AndrewWalsh/at-your-service"
+              aria-label="learn more about the tool"
+              isExternal
+              color={COLOR_PRIMARY}
+            >
+              developer tool
+            </Link>{" "}
+            for frontend applications that records network requests as they
+            happen in the browser
+            <br />
+            <br />
+            It produces schemas, code, and documentation from the information it
+            has observed and helps to elucidate backend APIs
+            <br />
+            <br />
+            <Tag
+              size="lg"
+              bg={COLOR_SECONDARY}
+              color={COLOR_WHITE}
+              colorScheme="blue"
+            >
+              Try it out below
+            </Tag>
+            <br />
+            <br />
+          </Text>
+        </Box>
+        <Box
+          maxHeight="90%"
+          width="80%"
+          marginTop="2vh"
+          marginBottom="20vh"
+          as="section"
+          role="landmark"
+        >
           <Requester />
         </Box>
       </Box>
       <Box
         position="fixed"
-        border="1px solid #001758"
-        bg="#283F80"
+        border={`1px solid ${COLOR_PRIMARY_BORDER}`}
+        bg={COLOR_PRIMARY}
+        boxSizing="border-box"
         height="512px"
         borderRadius="8px"
         width="512px"
-        left="-300px"
-        bottom="-432px"
+        left="-308px"
+        bottom="-440px"
         animation={`${grow} 0.5s ease-in`}
         role="presentation"
+        zIndex="900"
       ></Box>
     </Box>
   );
