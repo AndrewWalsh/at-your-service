@@ -22,22 +22,23 @@
 
   <p align="center">
     <blockquote>
-        A dev tool for generating OpenAPI 3.1 specifications and model code for any frontend application
+        A frontend developer tool for API observability, OpenAPI schema creation, and code generation
         <br />
         <br />
-        Records network requests as they happen and offers schema and code generation capabilities from observations
+        Records network requests as they happen and offers schema and code generation capabilities
         <br />
         <br />
-        Easy minimal fuss install. No integration with API library code required thanks to service workers
+        Minimal fuss installation. No integration with API library code required. Proxies under the hood using service workers
       </blockquote>
       <br />
       <br />
-      👷 <code>alpha</code> / <code>POC</code> 👷
+      🚧 <code>alpha</code> 🚧
       <br />
       <br />
       <br />
-      <a href="https://andrewwalsh.github.io/at-your-service/"> Live Demo Playground</a>
-      ·
+      <a href="https://andrewwalsh.github.io/at-your-service/">See It in Action in the Demo Playground</a>
+      <br />
+      <br />
       <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
       ·
       <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
@@ -64,6 +65,9 @@
     </li>
     <li>
       <a href="#how-it-works">How it Works</a>
+    </li>
+    <li>
+      <a href="#limitations">Limitations</a>
     </li>
     <li>
       <a href="#license">License</a>
@@ -153,6 +157,16 @@ The main client captures these events and places them into an optimised data str
 The functionality of the application with regard to spec and code gen is nothing more than a conversion operation on the data structure above.
 
 This information is visible in the drawer that can be opened by clicking on the button that shows once the library has started.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LIMITATIONS -->
+
+## Limitations
+
+The library creates specifications that are only as accurate as the underlying observations. If your application relies on a response body that has not been observed, then type information for it will not be available.
+
+Overall the intent is to produce a "best guess" that reveals API behaviour. This will never be a replacement for proper documentation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

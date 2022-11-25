@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   keyframes,
@@ -33,22 +32,7 @@ const grow = keyframes`
   }
 `;
 
-const LOCALHOST_API = "http://localhost:8080";
-
 function App() {
-  const [count, setCount] = useState(0);
-
-  const click = () => {
-    fetch(`${LOCALHOST_API}/hello`);
-    // fetch(
-    //   `${LOCALHOST_API}/requires/996a27ec-cdfb-4ca6-a458-e6f7a4870325/info?hi=aa`
-    // );
-    // fetch(
-    //   `${LOCALHOST_API}/requires/996a27ec-cdfb-4ca6-a458-e6f7a4870325/info?hi=1`
-    // );
-    setCount(count + 1);
-  };
-
   return (
     <Box
       width="100%"
@@ -74,7 +58,13 @@ function App() {
         color="white"
         as="header"
       >
-        <Box marginRight="auto" display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+        <Box
+          marginRight="auto"
+          display="flex"
+          flexFlow="row nowrap"
+          alignItems="center"
+          justifyContent="center"
+        >
           <Box
             height="32px"
             width="32px"
@@ -97,9 +87,7 @@ function App() {
             >
               Demo
             </Link>
-            <Code marginLeft="8px">
-              Alpha
-            </Code>
+            <Code marginLeft="8px">Alpha</Code>
           </Heading>
         </Box>
         <Link
@@ -195,7 +183,7 @@ function App() {
             <br />
             <br />
             It uses this information to eludicate backend APIs, create schemas,
-            and generate model code/types 
+            and generate model code/types
             <br />
             <br />
             <Tag

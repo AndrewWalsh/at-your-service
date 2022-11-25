@@ -1,7 +1,7 @@
 {
   "name": "at-your-service",
-  "version": "0.0.27",
-  "description": "A dev tool that generates OpenAPI specifications and model code from network observations in frontend applications",
+  "version": "0.1.0",
+  "description": "A frontend developer tool for API observability, OpenAPI schema creation, and code generation",
   "homepage": "https://andrewwalsh.github.io/at-your-service/",
   "types": "dist/index.d.ts",
   "files": [
