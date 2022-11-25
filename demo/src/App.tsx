@@ -95,8 +95,11 @@ function App() {
               href="https://andrewwalsh.github.io/at-your-service/"
               aria-label="live demo playground of at-your-service"
             >
-              Demo Playground
+              Demo
             </Link>
+            <Code marginLeft="8px">
+              Alpha
+            </Code>
           </Heading>
         </Box>
         <Link
@@ -170,7 +173,7 @@ function App() {
                 href="https://web.dev/learn/pwa/service-workers/"
                 aria-label="learn more about service workers"
                 isExternal
-                color={COLOR_PRIMARY}
+                color={COLOR_SECONDARY}
               >
                 service workers
               </Link>{" "}
@@ -179,10 +182,11 @@ function App() {
           <Text maxWidth="650px">
             <Kbd>at-your-service</Kbd> is an open source{" "}
             <Link
-              href="https://github.com/AndrewWalsh/at-your-service"
+              href="https://www.npmjs.com/package/at-your-service"
               aria-label="learn more about the tool"
               isExternal
-              color={COLOR_PRIMARY}
+              color={COLOR_SECONDARY}
+              fontWeight="bold"
             >
               developer tool
             </Link>{" "}
@@ -190,8 +194,8 @@ function App() {
             happen in the browser
             <br />
             <br />
-            It produces schemas, code, and documentation from the information it
-            has observed and helps to elucidate backend APIs
+            It uses this information to eludicate backend APIs, create schemas,
+            and generate model code/types 
             <br />
             <br />
             <Tag
