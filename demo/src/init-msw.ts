@@ -13,7 +13,7 @@ const initialiseWorker = async (worker: SetupWorkerApi) => {
     findWorker(scriptUrl) {
       return scriptUrl.includes("mockServiceWorker.js");
     },
-    quiet: false,
+    quiet: true,
   });
 
   window.navigator.serviceWorker.ready.then(() => {
