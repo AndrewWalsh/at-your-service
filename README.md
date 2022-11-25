@@ -154,9 +154,7 @@ A *"service worker"* itself is just a file containing function calls and other b
 
 The main client captures these events and places them into an optimised data structure. Request and response bodies are parsed before storage. Each property is [zeroed](https://yourbasic.org/golang/default-zero-value/) as only the type itself is relevant for sake of spec and code gen. When a request or response body differs for the same path the sample is stored alongside existing samples. This means that code and spec generation accounts for the full spectrum of type information given the observations from the network requests that have occurred since the `at-your-service` tool began.
 
-The functionality of the application with regard to spec and code gen is nothing more than a conversion operation on the data structure above.
-
-This information is visible in the drawer that can be opened by clicking on the button that shows once the library has started.
+More information on the architecture of the tool [is available here](https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
