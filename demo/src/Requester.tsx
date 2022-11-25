@@ -1,5 +1,14 @@
 import { useState, useEffect, MouseEvent, useMemo } from "react";
-import { Box, Select, Input, Button, Heading, Text, Code, Kbd } from "@chakra-ui/react";
+import {
+  Box,
+  Select,
+  Input,
+  Button,
+  Heading,
+  Text,
+  Code,
+  Kbd,
+} from "@chakra-ui/react";
 import { setupWorker, rest, SetupWorkerApi } from "msw";
 import isJSON from "validator/es/lib/isJSON";
 import isValidHostName from "is-valid-hostname";
@@ -11,11 +20,26 @@ import "ace-builds/src-noconflict/mode-json";
 import { COLOR_SECONDARY } from "./constants";
 import initMSW from "./init-msw";
 
+const resEditorDefaultVal = {
+  text: "at-your-service stores requests and responses as samples",
+  textTwo: "when these differ, this is accounted",
+  textThree:
+    "submit this request, edit this response, and see the difference yourself",
+  number: 1,
+  null: null,
+  array: [1, 2, 3],
+  object: {
+    nested: {
+      hello: "world",
+    },
+  },
+};
+
 function Requester() {
   const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
   const [reqEditorVal, setReqEditorVal] = useState('{ "id": 22 }');
   const [resEditorVal, setResEditorVal] = useState(
-    '{ "message": "mock me then open the tool" }'
+    JSON.stringify(resEditorDefaultVal, null, 2)
   );
   const [host, setHost] = useState("https://example.com");
   const [pathname, setPathname] = useState("/api");
@@ -199,12 +223,19 @@ function Requester() {
             </Select>
           </Box>
 
-          <Box display="flex" alignItems="center" justifyContent="center" flex="1">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flex="1"
+          >
             <Text padding="1em">
-              Requests are real, see the <Code>Network</Code> tab in <Code>dev tools</Code> (<Kbd>CMD</Kbd> + <Kbd>i</Kbd>)
+              Requests are real, see the <Code>Network</Code> tab in{" "}
+              <Code>dev tools</Code> (<Kbd>CMD</Kbd> + <Kbd>i</Kbd>)
               <br />
               <br />
-              Open the <Kbd>at-your-service</Kbd> tool by clicking the button in the bottom left
+              Open the <Kbd>at-your-service</Kbd> tool by clicking the button in
+              the bottom left
               <br />
               <br />
               View schema and code samples from your mocked network request
