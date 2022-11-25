@@ -127,13 +127,15 @@ function App() {
           flexFlow="column nowrap"
         >
           <Heading as="h1" margin="32px 0" maxWidth="850px">
-            <Heading
-              as="span"
+            <Link
               bgGradient={`linear(to bottom, ${COLOR_PRIMARY}, ${COLOR_SECONDARY})`}
               bgClip="text"
+              href="https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/"
+              isExternal
+              aria-label="learn more about API discovery and observability"
             >
               API Observability
-            </Heading>{" "}
+            </Link>{" "}
             on the Frontend
             <br />
             <br />
