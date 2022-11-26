@@ -6,7 +6,13 @@ import { samplesToQuicktype } from "../lib";
 import { Meta, QuicktypeTargetLanguageNames } from "../types";
 import type { Sample } from "../data-types";
 
-const languages = Object.values(QuicktypeTargetLanguageNames).map((lang) => ({
+const validLanguages = Object.values(QuicktypeTargetLanguageNames).filter((n) => {
+  return n !== "JavaScript";
+});
+
+validLanguages.sort()
+
+const languages = validLanguages.map((lang) => ({
   label: lang,
   value: lang,
 }));

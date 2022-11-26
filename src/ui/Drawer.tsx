@@ -124,7 +124,7 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
         <Tree>{treeValue}</Tree>
       </GeistDrawer.Content>
 
-      <Modal {...bindings} width="500px" height="500px">
+      <Modal {...bindings} width="80vw" height="80vh">
         {content && (
           <>
             <Modal.Title>{`~${meanLatency(
