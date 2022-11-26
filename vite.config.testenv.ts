@@ -18,7 +18,7 @@ export default defineConfig({
     coverage: {
       reporter: ["lcov"],
       all: true,
-      exclude: ["**/index.ts", "**/test-utils/**"],
+      exclude: ["**/index.ts", "**/test-utils/**", "**/ui/**"],
       include: ["src"],
     },
   },

@@ -79,43 +79,58 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
 
   return (
     <GeistDrawer visible={visible} onClose={onClose} placement="left">
-      <GeistDrawer.Title>at-your-service</GeistDrawer.Title>
-      <GeistDrawer.Subtitle>recorded API calls</GeistDrawer.Subtitle>
+      {/* <GeistDrawer.Title>at-your-service</GeistDrawer.Title> */}
+      <GeistDrawer.Subtitle>Network requests</GeistDrawer.Subtitle>
       <GeistDrawer.Content>
         <Grid.Container direction="row" justify="space-around" gap={1}>
           <Grid>
-            <Button
-              auto
+            {/* <Button
+              width="100%"
               type="secondary"
               onClick={() => setTreeValue(createTree())}
             >
               Refresh
-            </Button>
+            </Button> */}
           </Grid>
-          <Grid>
+          {/* <Grid>
             <Button
               auto
+              type="error"
+              onClick={() => {
+                
+              }}
+            >
+              Reset
+            </Button>
+          </Grid> */}
+        </Grid.Container>
+
+        <Grid.Container gap={1}>
+          <Grid xs>
+            <Button
+              width="100%"
               type="success"
               onClick={async () => {
                 const res = await storeStructToOpenAPI(storeStruct);
                 navigator.clipboard.writeText(res.getJSON());
               }}
             >
-              Copy OAI 3.1
+              Copy OpenAPI Spec
             </Button>
           </Grid>
         </Grid.Container>
+
         <Spacer h={1} />
         <Tree>{treeValue}</Tree>
       </GeistDrawer.Content>
 
-      <Modal {...bindings} width="50vw">
+      <Modal {...bindings} width="500px" height="500px">
         {content && (
           <>
             <Modal.Title>{`~${meanLatency(
               content.storeRoute.meta
             )}ms`}</Modal.Title>
-            <Modal.Content>
+            <Modal.Content style={{ overflow: "scroll" }}>
               <Tabs initialValue="2">
                 <Tabs.Item label="request" value="1">
                   <TabView

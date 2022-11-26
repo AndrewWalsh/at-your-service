@@ -8,6 +8,7 @@ import {
   Text,
   Code,
   Kbd,
+  useToast,
 } from "@chakra-ui/react";
 import { setupWorker, rest, SetupWorkerApi } from "msw";
 import isJSON from "validator/es/lib/isJSON";
@@ -45,6 +46,7 @@ function Requester() {
   const [pathname, setPathname] = useState("/api");
   const [method, setMethod] = useState("GET");
   const [status, setStatus] = useState("200");
+  const toast = useToast({ position: "top" });
 
   // Start the worker with a dummy handler
   useEffect(() => {
@@ -70,6 +72,13 @@ function Requester() {
       })
     );
     fetch(`${host}${pathname}`);
+    toast({
+      title: 'API request mocked',
+      description: `${method} ${host}${pathname} -> ${status}`,
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
   };
 
   const formIsValid = useMemo(() => {
@@ -152,75 +161,74 @@ function Requester() {
         </Box>
       </Box>
 
-      <Box display="flex" flexFlow="column" as="form" gap={2}>
-        <Box display="flex" flexFlow="row wrap" gap={4}>
+      <Box display="flex" flexFlow="column" as="form" gap={4} marginTop="8px">
+        <Box display="flex" flexFlow="row wrap">
           <Box
             display="flex"
             alignItems="flex-start"
             justifyContent="space-between"
             flexFlow="column nowrap"
-            gap={4}
-            margin="8px 0"
+            gap={6}
           >
-            <Text as="label" htmlFor="id_method">
-              Method
-            </Text>
-            <Text as="label" htmlFor="id_host">
-              Host
-            </Text>
-            <Text as="label" htmlFor="id_pathname">
-              Pathname
-            </Text>
-            <Text as="label" htmlFor="id_status">
+            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+                Method
+              </Text>
+              <Select
+                id="id_method"
+                width="auto"
+                value={method}
+                onChange={(e) => setMethod(e.target.value)}
+              >
+                <option value="GET">GET</option>
+                {/* <option value="PUT">PUT</option> */}
+                {/* <option value="POST">POST</option> */}
+                {/* <option value="DELETE">DELETE</option> */}
+                {/* <option value="PATCH">PATCH</option> */}
+              </Select>
+            </Box>
+
+            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+                Host
+              </Text>
+              <Input
+                id="id_host"
+                value={host}
+                onChange={(e) => setHost(e.target.value)}
+                size="md"
+                width="auto"
+              />
+            </Box>
+
+            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+                Pathname
+              </Text>
+              <Input
+                id="id_pathname"
+                value={pathname}
+                onChange={(e) => setPathname(e.target.value)}
+                size="md"
+                width="auto"
+              />
+            </Box>
+            
+            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
+              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
               Status
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="flex-start"
-            justifyContent="space-between"
-            flexFlow="column nowrap"
-            gap={4}
-            margin="8px 0"
-          >
-            <Select
-              id="id_method"
-              width="auto"
-              value={method}
-              onChange={(e) => setMethod(e.target.value)}
-            >
-              <option value="GET">GET</option>
-              {/* <option value="PUT">PUT</option> */}
-              {/* <option value="POST">POST</option> */}
-              {/* <option value="DELETE">DELETE</option> */}
-              {/* <option value="PATCH">PATCH</option> */}
-            </Select>
+              </Text>
+              <Select
+                id="id_status"
+                width="auto"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="200">200</option>
+                <option value="400">400</option>
+              </Select>
+            </Box>
 
-            <Input
-              id="id_host"
-              value={host}
-              onChange={(e) => setHost(e.target.value)}
-              size="md"
-              width="auto"
-            />
-
-            <Input
-              id="id_pathname"
-              value={pathname}
-              onChange={(e) => setPathname(e.target.value)}
-              size="md"
-              width="auto"
-            />
-
-            <Select
-              id="id_status"
-              width="auto"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="200">200</option>
-              <option value="400">400</option>
-            </Select>
           </Box>
 
           <Box
@@ -229,16 +237,14 @@ function Requester() {
             justifyContent="center"
             flex="1"
           >
-            <Text padding="1em">
-              Requests are real, see the <Code>Network</Code> tab in{" "}
-              <Code>dev tools</Code> (<Kbd>CMD</Kbd> + <Kbd>i</Kbd>)
+            <Text padding="1em" textAlign="center">
+              Simulate an API request on the browser
               <br />
               <br />
-              Open the <Kbd>at-your-service</Kbd> tool by clicking the button in
-              the bottom left
+              Requests are visible in the <Code>Network</Code> section of your browser's developer tools
               <br />
               <br />
-              View schema and code samples from your mocked network request
+              Open <Kbd>at-your-service</Kbd> by clicking <Code>Open</Code> in the bottom left corner of the screen
             </Text>
           </Box>
         </Box>

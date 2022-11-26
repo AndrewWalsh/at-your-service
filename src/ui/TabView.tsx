@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AutoComplete, Grid } from "@geist-ui/core";
+import { AutoComplete, Grid, Text } from "@geist-ui/core";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
 import { samplesToQuicktype } from "../lib";
@@ -30,9 +30,19 @@ export default function TabView({ samples, meta }: Props) {
     return <p>No results</p>;
   }
 
+  if (!code) {
+    return <Grid.Container justify="center" gap={1} alignItems="center" height="250px">
+      <Grid>
+        <Text>
+          No data to show
+        </Text>
+      </Grid>
+    </Grid.Container>
+  }
+
   return (
     <Grid.Container>
-      <Grid.Container justify="flex-end">
+      <Grid.Container justify="flex-start" gap={1}>
         <Grid>
           <AutoComplete
             type="success"
@@ -46,7 +56,7 @@ export default function TabView({ samples, meta }: Props) {
       </Grid.Container>
 
       {code && (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginTop: "10px" }}>
           <SyntaxHighlighter language={language}>{code}</SyntaxHighlighter>
         </div>
       )}

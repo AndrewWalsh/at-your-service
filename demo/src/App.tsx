@@ -184,8 +184,8 @@ function App() {
             happen in the browser
             <br />
             <br />
-            It uses this information to eludicate backend APIs, create schemas,
-            and generate model code/types
+            Generate schemas and code on the fly as your application makes API
+            requests
             <br />
             <br />
             <Tag

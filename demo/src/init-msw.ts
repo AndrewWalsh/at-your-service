@@ -6,6 +6,12 @@ import { startAtYourService } from "at-your-service";
 const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`;
 // window.navigator.serviceWorker.register(SW_PATH);
 
+if (import.meta.env.BASE_URL === "/at-your-service") {
+  console.log = () => {};
+  console.error = () => {};
+  console.warn = () => {};
+}
+
 const initialiseWorker = async (worker: SetupWorkerApi) => {
   await window.navigator.serviceWorker.register(SW_PATH);
 
