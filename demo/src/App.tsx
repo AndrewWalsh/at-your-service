@@ -10,7 +10,7 @@ import {
   Kbd,
   Tag,
 } from "@chakra-ui/react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaArrowAltCircleDown } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import Requester from "./Requester";
@@ -130,13 +130,27 @@ function App() {
             <Link
               bgGradient={`linear(to bottom, ${COLOR_PRIMARY}, ${COLOR_SECONDARY})`}
               bgClip="text"
+              _hover={{ textDecoration: "underline", color: COLOR_SECONDARY }}
               href="https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/"
               isExternal
               aria-label="learn more about API discovery and observability"
+              position="relative"
             >
               API Observability
+              <ExternalLinkIcon
+                mx={2}
+                paddingBottom="4px"
+                color={COLOR_SECONDARY}
+                position="absolute"
+                top="0"
+                height="20px"
+                width="20px"
+                right="-26px"
+              />
             </Link>{" "}
+            <Text as="span" marginLeft="10px">
             on the Frontend
+            </Text>
             <br />
             <br />
             <Heading as="span" fontSize="24px">
@@ -180,12 +194,11 @@ function App() {
             >
               developer tool
             </Link>{" "}
-            for frontend applications that records network requests as they
-            happen in the browser
+            for frontend applications that records network requests on the
+            browser
             <br />
             <br />
-            Generate schemas and code on the fly as your application makes API
-            requests
+            Generate schemas and code on the fly as you use your app
             <br />
             <br />
             <Tag
@@ -195,6 +208,7 @@ function App() {
               colorScheme="blue"
             >
               Try it out below
+              <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
             </Tag>
             <br />
             <br />

@@ -36,11 +36,13 @@ const resEditorDefaultVal = {
   },
 };
 
+const prettyPrintJSON = (json: {}) => JSON.stringify(json, null, 2);
+
 function Requester() {
   const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
   const [reqEditorVal, setReqEditorVal] = useState('{ "id": 22 }');
   const [resEditorVal, setResEditorVal] = useState(
-    JSON.stringify(resEditorDefaultVal, null, 2)
+    prettyPrintJSON(resEditorDefaultVal)
   );
   const [host, setHost] = useState("https://example.com");
   const [pathname, setPathname] = useState("/api");
@@ -59,8 +61,9 @@ function Requester() {
       return;
     }
     worker.resetHandlers();
+    const handler = rest[method.toLowerCase()] as typeof rest.get
     worker.use(
-      rest.get(host + pathname, (req, res, ctx) => {
+      handler(host + pathname, (req, res, ctx) => {
         return res(
           ctx.delay(50),
           ctx.status(Number(status), "OK"),
@@ -71,36 +74,48 @@ function Requester() {
         return res(ctx.delay(50), ctx.status(200, "OK"), ctx.json({}));
       })
     );
-    fetch(`${host}${pathname}`);
+    fetch(`${host}${pathname}`, { method });
     toast({
-      title: 'API request mocked',
+      title: "API request mocked",
       description: `${method} ${host}${pathname} -> ${status}`,
-      status: 'success',
+      status: "success",
       duration: 2000,
       isClosable: true,
     });
   };
 
-  const formIsValid = useMemo(() => {
+  const resEditorIsValid = useMemo(() => {
     try {
-      const url = new URL(host + pathname);
       if (!isJSON(resEditorVal)) {
-        return false;
-      }
-      if (url.protocol !== "https:" && url.protocol !== "http:") {
-        return false;
-      }
-      if (!isValidHostName(url.host)) {
-        return false;
-      }
-      if (url.pathname !== pathname) {
         return false;
       }
       return true;
     } catch {
       return false;
     }
-  }, [resEditorVal, host, pathname]);
+  }, [resEditorVal]);
+
+  const hostIsValid = useMemo(() => {
+    try {
+      const url = new URL(host + pathname);
+      if (url.protocol !== "https:" && url.protocol !== "http:") {
+        return false;
+      }
+      const valid = isValidHostName(url.host);
+      return valid;
+    } catch {
+      return false;
+    }
+  }, [host, pathname]);
+
+  const pathnameIsValid = useMemo(() => {
+    try {
+      const url = new URL(host + pathname);
+      return url.pathname === pathname;
+    } catch {
+      return false;
+    }
+  }, [pathname]);
 
   return (
     <Box
@@ -144,8 +159,13 @@ function Requester() {
           minHeight="384px"
         >
           <Box height="32px" display="flex" alignItems="center">
-            <Heading as="h6" size="md" id="dialog2Title">
-              Response
+            <Heading
+              as="label"
+              size="md"
+              id="dialog2Title"
+              htmlFor="ace-editor-res-bdy"
+            >
+              Response Body
             </Heading>
           </Box>
           <AceEditor
@@ -153,10 +173,26 @@ function Requester() {
             theme="monokai"
             width="100%"
             height="calc(100% - 32px)"
-            name="UNIQUE_ID_OF_DIV_2"
+            name="ace-editor-res-bdy"
+            style={
+              resEditorIsValid
+                ? undefined
+                : {
+                    outline: "2px solid #e53e3e",
+                    boxShadow: "0 0 0 1px #e53e3e",
+                    borderRadius: "0.375rem",
+                  }
+            }
             editorProps={{ $blockScrolling: true }}
             value={resEditorVal}
             onChange={setResEditorVal}
+            aria-invalid={!resEditorIsValid}
+            onBlur={() => {
+              try {
+                const val = prettyPrintJSON(JSON.parse(resEditorVal));
+                setResEditorVal(val);
+              } catch {}
+            }}
           />
         </Box>
       </Box>
@@ -170,8 +206,19 @@ function Requester() {
             flexFlow="column nowrap"
             gap={6}
           >
-            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
-              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+            <Box
+              display="flex"
+              flexFlow="row nowrap"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text
+                as="label"
+                htmlFor="id_method"
+                fontWeight="bold"
+                paddingRight="16px"
+                width="100px"
+              >
                 Method
               </Text>
               <Select
@@ -181,15 +228,26 @@ function Requester() {
                 onChange={(e) => setMethod(e.target.value)}
               >
                 <option value="GET">GET</option>
-                {/* <option value="PUT">PUT</option> */}
-                {/* <option value="POST">POST</option> */}
-                {/* <option value="DELETE">DELETE</option> */}
-                {/* <option value="PATCH">PATCH</option> */}
+                <option value="PUT">PUT</option>
+                <option value="POST">POST</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
               </Select>
             </Box>
 
-            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
-              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+            <Box
+              display="flex"
+              flexFlow="row nowrap"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text
+                as="label"
+                htmlFor="id_method"
+                fontWeight="bold"
+                paddingRight="16px"
+                width="100px"
+              >
                 Host
               </Text>
               <Input
@@ -198,11 +256,24 @@ function Requester() {
                 onChange={(e) => setHost(e.target.value)}
                 size="md"
                 width="auto"
+                isInvalid={!hostIsValid}
+                placeholder="E.g. http://example.com"
               />
             </Box>
 
-            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
-              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
+            <Box
+              display="flex"
+              flexFlow="row nowrap"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text
+                as="label"
+                htmlFor="id_method"
+                fontWeight="bold"
+                paddingRight="16px"
+                width="100px"
+              >
                 Pathname
               </Text>
               <Input
@@ -211,12 +282,26 @@ function Requester() {
                 onChange={(e) => setPathname(e.target.value)}
                 size="md"
                 width="auto"
+                isInvalid={!pathnameIsValid}
+                isDisabled={!hostIsValid}
+                placeholder="E.g. /api/v1/users"
               />
             </Box>
-            
-            <Box display="flex" flexFlow="row nowrap" alignItems="center" justifyContent="center">
-              <Text as="label" htmlFor="id_method" fontWeight="bold" paddingRight="16px" width="100px">
-              Status
+
+            <Box
+              display="flex"
+              flexFlow="row nowrap"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text
+                as="label"
+                htmlFor="id_method"
+                fontWeight="bold"
+                paddingRight="16px"
+                width="100px"
+              >
+                Status
               </Text>
               <Select
                 id="id_status"
@@ -228,7 +313,6 @@ function Requester() {
                 <option value="400">400</option>
               </Select>
             </Box>
-
           </Box>
 
           <Box
@@ -241,10 +325,12 @@ function Requester() {
               Simulate an API request on the browser
               <br />
               <br />
-              Requests are visible in the <Code>Network</Code> section of your browser's developer tools
+              Requests are visible in the <Code>Network</Code> section of your
+              browser's developer tools
               <br />
               <br />
-              Open <Kbd>at-your-service</Kbd> by clicking <Code>Open</Code> in the bottom left corner of the screen
+              Open <Kbd>at-your-service</Kbd> by clicking <Code>Open</Code> in
+              the bottom left corner of the screen
             </Text>
           </Box>
         </Box>
@@ -252,7 +338,7 @@ function Requester() {
           bg={COLOR_SECONDARY}
           colorScheme="blue"
           onClick={onClickMockRequest}
-          disabled={!formIsValid}
+          disabled={!resEditorIsValid || !hostIsValid || !pathnameIsValid}
           type="submit"
         >
           Mock Network Request
