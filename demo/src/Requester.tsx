@@ -28,10 +28,7 @@ import initMSW from "./init-msw";
 import useSWIsReady from "./useSWIsReady";
 
 const resEditorDefaultVal = {
-  text: "at-your-service stores requests and responses as samples",
-  textTwo: "when these differ, this is accounted",
-  textThree:
-    "submit this request, edit this response, and see the difference yourself",
+  text: "simulate some requests and check out the tool",
   number: 1,
   null: null,
   array: [1, 2, 3],
