@@ -14,12 +14,18 @@ import { setupWorker, rest, SetupWorkerApi } from "msw";
 import isJSON from "validator/es/lib/isJSON";
 import isValidHostName from "is-valid-hostname";
 
+import ace from 'ace-builds/src-noconflict/ace';
+ace.config.set(
+  "basePath", 
+  "https://cdn.jsdelivr.net/npm/ace-builds@1.4.3/src-noconflict/"
+)
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/mode-json";
 
 import { COLOR_SECONDARY } from "./constants";
 import initMSW from "./init-msw";
+import useSWIsReady from "./useSWIsReady";
 
 const resEditorDefaultVal = {
   text: "at-your-service stores requests and responses as samples",
@@ -39,6 +45,7 @@ const resEditorDefaultVal = {
 const prettyPrintJSON = (json: {}) => JSON.stringify(json, null, 2);
 
 function Requester() {
+  const swIsRead = useSWIsReady();
   const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
   const [reqEditorVal, setReqEditorVal] = useState('{ "id": 22 }');
   const [resEditorVal, setResEditorVal] = useState(
@@ -338,7 +345,7 @@ function Requester() {
           bg={COLOR_SECONDARY}
           colorScheme="blue"
           onClick={onClickMockRequest}
-          disabled={!resEditorIsValid || !hostIsValid || !pathnameIsValid}
+          disabled={!resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead}
           type="submit"
         >
           Mock Network Request

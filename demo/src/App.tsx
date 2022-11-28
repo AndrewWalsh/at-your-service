@@ -13,6 +13,7 @@ import {
 import { FaGithub, FaArrowAltCircleDown } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
+import BoxOnSWLoad from "./BoxOnSWLoad"
 import Requester from "./Requester";
 import {
   COLOR_PRIMARY_BORDER,
@@ -225,20 +226,7 @@ function App() {
           <Requester />
         </Box>
       </Box>
-      <Box
-        position="fixed"
-        border={`1px solid ${COLOR_PRIMARY_BORDER}`}
-        bg={COLOR_PRIMARY}
-        boxSizing="border-box"
-        height="512px"
-        borderRadius="8px"
-        width="512px"
-        left="-308px"
-        bottom="-440px"
-        animation={`${grow} 0.5s ease-in`}
-        role="presentation"
-        zIndex="900"
-      ></Box>
+      <BoxOnSWLoad />
     </Box>
   );
 }
