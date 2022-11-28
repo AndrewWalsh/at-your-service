@@ -206,8 +206,7 @@ function App() {
             <br />
           </Text>
 
-          <SkipNavLink display="flex" position="relative">
-
+          <SkipNavLink display="flex" position="relative" height="100%" width="100%">
               <Tag
                 size="lg"
                 bg={COLOR_SECONDARY}
