@@ -22,13 +22,10 @@
 
   <p align="center">
     <blockquote>
-        A frontend developer tool for API observability, OpenAPI schema creation, and code generation
+        A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code for any app via a service worker proxy
         <br />
         <br />
-        Records network requests as they happen and offers schema and code generation capabilities
-        <br />
-        <br />
-        Minimal fuss installation. No integration with API library code required. Proxies under the hood using service workers
+        Designed for ease of use. Zero config & no requirement to integrate with existing code
       </blockquote>
       <br />
       <br />
