@@ -23,7 +23,7 @@ function HowItWorks() {
       padding="20vh 10vh"
       color={COLOR_WHITE}
     >
-      <Heading as="h2" marginBottom="10vh">
+      <Heading as="h2" marginBottom="10vh" borderBottom="4px dashed white">
         How It Works
       </Heading>
 

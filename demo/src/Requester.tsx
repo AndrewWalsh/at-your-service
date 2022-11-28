@@ -9,16 +9,18 @@ import {
   Code,
   Kbd,
   useToast,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { setupWorker, rest, SetupWorkerApi } from "msw";
 import isJSON from "validator/es/lib/isJSON";
 import isValidHostName from "is-valid-hostname";
 
-import ace from 'ace-builds/src-noconflict/ace';
+import ace from "ace-builds/src-noconflict/ace";
 ace.config.set(
-  "basePath", 
+  "basePath",
   "https://cdn.jsdelivr.net/npm/ace-builds@1.4.3/src-noconflict/"
-)
+);
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/mode-json";
@@ -65,7 +67,7 @@ function Requester() {
       return;
     }
     worker.resetHandlers();
-    const handler = rest[method.toLowerCase()] as typeof rest.get
+    const handler = rest[method.toLowerCase()] as typeof rest.get;
     worker.use(
       handler(host + pathname, (req, res, ctx) => {
         return res(
@@ -210,25 +212,12 @@ function Requester() {
             flexFlow="column nowrap"
             gap={6}
           >
-            <Box
-              display="flex"
-              flexFlow="row nowrap"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text
-                as="label"
-                htmlFor="id_method"
-                fontWeight="bold"
-                paddingRight="16px"
-                width="100px"
-              >
-                Method
-              </Text>
+            <InputGroup>
+              <InputLeftAddon children="Method" width="100px" />
               <Select
-                id="id_method"
                 width="auto"
                 value={method}
+                minWidth="211px"
                 onChange={(e) => setMethod(e.target.value)}
               >
                 <option value="GET">GET</option>
@@ -237,86 +226,43 @@ function Requester() {
                 <option value="DELETE">DELETE</option>
                 <option value="PATCH">PATCH</option>
               </Select>
-            </Box>
+            </InputGroup>
 
-            <Box
-              display="flex"
-              flexFlow="row nowrap"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text
-                as="label"
-                htmlFor="id_method"
-                fontWeight="bold"
-                paddingRight="16px"
-                width="100px"
-              >
-                Host
-              </Text>
+            <InputGroup>
+              <InputLeftAddon children="Host" width="100px" />
               <Input
-                id="id_host"
                 value={host}
                 onChange={(e) => setHost(e.target.value)}
-                size="md"
                 width="auto"
                 isInvalid={!hostIsValid}
                 placeholder="E.g. http://example.com"
               />
-            </Box>
+            </InputGroup>
 
-            <Box
-              display="flex"
-              flexFlow="row nowrap"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text
-                as="label"
-                htmlFor="id_method"
-                fontWeight="bold"
-                paddingRight="16px"
-                width="100px"
-              >
-                Pathname
-              </Text>
+            <InputGroup>
+              <InputLeftAddon children="Pathname" width="100px" />
               <Input
-                id="id_pathname"
                 value={pathname}
                 onChange={(e) => setPathname(e.target.value)}
-                size="md"
                 width="auto"
                 isInvalid={!pathnameIsValid}
                 isDisabled={!hostIsValid}
                 placeholder="E.g. /api/v1/users"
               />
-            </Box>
+            </InputGroup>
 
-            <Box
-              display="flex"
-              flexFlow="row nowrap"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text
-                as="label"
-                htmlFor="id_method"
-                fontWeight="bold"
-                paddingRight="16px"
-                width="100px"
-              >
-                Status
-              </Text>
+            <InputGroup>
+              <InputLeftAddon children="Status" width="100px" />
               <Select
-                id="id_status"
                 width="auto"
+                minWidth="211px"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="200">200</option>
                 <option value="400">400</option>
               </Select>
-            </Box>
+            </InputGroup>
           </Box>
 
           <Box
@@ -342,7 +288,9 @@ function Requester() {
           bg={COLOR_SECONDARY}
           colorScheme="blue"
           onClick={onClickMockRequest}
-          disabled={!resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead}
+          disabled={
+            !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
+          }
           type="submit"
         >
           Mock Network Request
