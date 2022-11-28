@@ -10,10 +10,13 @@ import {
   Kbd,
   Tag,
 } from "@chakra-ui/react";
+import { SkipNavLink, SkipNavContent } from "@chakra-ui/skip-nav";
 import { FaGithub, FaArrowAltCircleDown } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
-import BoxOnSWLoad from "./BoxOnSWLoad"
+import Footer from "./Footer";
+import HowItWorks from "./HowItWorks";
+import BoxOnSWLoad from "./BoxOnSWLoad";
 import Requester from "./Requester";
 import {
   COLOR_PRIMARY_BORDER,
@@ -41,7 +44,6 @@ function App() {
       display="flex"
       flexFlow="column nowrap"
       position="relative"
-      paddingBottom="400px"
     >
       <Box
         border={`2px solid ${COLOR_PRIMARY_BORDER}`}
@@ -150,7 +152,7 @@ function App() {
               />
             </Link>{" "}
             <Text as="span" marginLeft="10px">
-            on the Frontend
+              on the Frontend
             </Text>
             <br />
             <br />
@@ -202,18 +204,21 @@ function App() {
             Generate schemas and code on the fly as you use your app
             <br />
             <br />
-            <Tag
-              size="lg"
-              bg={COLOR_SECONDARY}
-              color={COLOR_WHITE}
-              colorScheme="blue"
-            >
-              Try it out below
-              <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
-            </Tag>
-            <br />
-            <br />
           </Text>
+
+          <SkipNavLink display="flex" position="relative">
+
+              <Tag
+                size="lg"
+                bg={COLOR_SECONDARY}
+                color={COLOR_WHITE}
+                colorScheme="blue"
+                height="100%"
+              >
+                Try it out below
+                <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
+              </Tag>
+          </SkipNavLink>
         </Box>
         <Box
           maxHeight="90%"
@@ -223,10 +228,13 @@ function App() {
           as="section"
           role="landmark"
         >
-          <Requester />
+          <SkipNavContent />
+            <Requester />
         </Box>
       </Box>
       <BoxOnSWLoad />
+      <HowItWorks />
+      <Footer />
     </Box>
   );
 }
