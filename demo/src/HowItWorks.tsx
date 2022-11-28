@@ -92,8 +92,8 @@ function HowItWorks() {
             width="128px"
           />
           <Heading as="h3" marginLeft="32px">
-            Observe APIs, copy specifications, and generate code from observed
-            network traffic
+            Observe APIs, copy specifications, and generate code from network
+            traffic
           </Heading>
         </ListItem>
       </List>
