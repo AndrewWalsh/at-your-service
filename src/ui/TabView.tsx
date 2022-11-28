@@ -6,11 +6,13 @@ import { samplesToQuicktype } from "../lib";
 import { Meta, QuicktypeTargetLanguageNames } from "../types";
 import type { Sample } from "../data-types";
 
-const validLanguages = Object.values(QuicktypeTargetLanguageNames).filter((n) => {
-  return n !== "JavaScript";
-});
+const validLanguages = Object.values(QuicktypeTargetLanguageNames).filter(
+  (n) => {
+    return n !== "JavaScript";
+  }
+);
 
-validLanguages.sort()
+validLanguages.sort();
 
 const languages = validLanguages.map((lang) => ({
   label: lang,
@@ -37,13 +39,18 @@ export default function TabView({ samples, meta }: Props) {
   }
 
   if (!code) {
-    return <Grid.Container justify="center" gap={1} alignItems="center" height="250px">
-      <Grid>
-        <Text>
-          No data to show
-        </Text>
-      </Grid>
-    </Grid.Container>
+    return (
+      <Grid.Container
+        justify="center"
+        gap={1}
+        alignItems="center"
+        height="250px"
+      >
+        <Grid>
+          <Text>No data to show</Text>
+        </Grid>
+      </Grid.Container>
+    );
   }
 
   return (

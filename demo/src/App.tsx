@@ -205,6 +205,7 @@ function App() {
           </Text>
 
           <SkipNavLink
+            id="demo"
             display="flex"
             position="relative"
             height="100%"
@@ -230,7 +231,7 @@ function App() {
           as="section"
           role="landmark"
         >
-          <SkipNavContent />
+          <SkipNavContent id="demo" />
           <Requester />
         </Box>
       </Box>
