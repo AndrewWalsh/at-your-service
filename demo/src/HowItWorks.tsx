@@ -68,7 +68,7 @@ function HowItWorks() {
             width="128px"
           />
           <Heading as="h3" marginLeft="32px">
-            The service worker proxy continually sends information to the browser tool
+            The service worker proxy continually sends information to the client on the browser
           </Heading>
         </ListItem>
 
@@ -80,7 +80,7 @@ function HowItWorks() {
             width="128px"
           />
           <Heading as="h3" marginLeft="32px">
-            Over time, the tool learns what the backend API looks like
+            The tool learns about the structure of backend APIs as it collects information over time
           </Heading>
         </ListItem>
 
