@@ -3,11 +3,11 @@
 <a name="readme-top"></a>
 
 [![MIT License][license-shield]][license-url]
+<a href="https://www.npmjs.com/package/at-your-service"><img alt="npm" src="https://img.shields.io/npm/v/at-your-service?style=for-the-badge"></a>
+<a href="https://andrewwalsh.github.io/at-your-service/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-blueviolet?style=for-the-badge"></a>
 
-<a href="https://codeclimate.com/github/AndrewWalsh/at-your-service/test_coverage"><img src="https://api.codeclimate.com/v1/badges/56fa1f99da7509735cee/test_coverage" /></a>
 <a href="https://github.com/AndrewWalsh/at-your-service/actions"><img alt="npm" src="https://github.com/AndrewWalsh/at-your-service/actions/workflows/node.js.yml/badge.svg"></a>
-<a href="https://www.npmjs.com/package/at-your-service"><img alt="npm" src="https://img.shields.io/npm/v/at-your-service"></a>
-
+<a href="https://codeclimate.com/github/AndrewWalsh/at-your-service/test_coverage"><img src="https://api.codeclimate.com/v1/badges/56fa1f99da7509735cee/test_coverage" /></a>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -17,7 +17,7 @@
   </a>
 
   <br />
-  <h3 align="center">at-your-service</h3>
+  <h2 align="center">at-your-service</h2>
   <br />
 
   <p align="center">
@@ -77,6 +77,8 @@
 <!-- ABOUT THE PROJECT AND WHY -->
 
 ## About the Project and Why
+
+<a href="https://andrewwalsh.github.io/at-your-service/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-blueviolet"></a>
 
 Frontend developers often work on legacy projects that rely on backend services that are undocumented. Since they are undocumented, dealing with requests and responses is an immense hassle. The ideal solution to this problem is to document the backend, but in practice this can be immensely challenging.
 
