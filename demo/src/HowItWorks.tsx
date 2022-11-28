@@ -56,7 +56,7 @@ function HowItWorks() {
             width="128px"
           />
           <Heading as="h3" marginLeft="32px">
-            Use your application and let it dispatch requests to backend APIs
+            Use your application and trigger requests to backend APIs
           </Heading>
         </ListItem>
 
@@ -68,7 +68,7 @@ function HowItWorks() {
             width="128px"
           />
           <Heading as="h3" marginLeft="32px">
-            Requests are proxied under the hood without any changes to your code
+            The service worker proxy continually sends information to the browser tool
           </Heading>
         </ListItem>
 
