@@ -32,7 +32,7 @@
       </blockquote>
       <br />
       <br />
-      🚧 <code>alpha</code> 🚧
+      🚧 <code>Alpha</code> 🚧
       <br />
       <br />
       <br />

@@ -6,7 +6,6 @@ import {
   Heading,
   Text,
   Image,
-  Code,
   Kbd,
   Tag,
 } from "@chakra-ui/react";
@@ -88,9 +87,8 @@ function App() {
               href="https://andrewwalsh.github.io/at-your-service/"
               aria-label="live demo playground of at-your-service"
             >
-              Demo
+              AYS Demo
             </Link>
-            <Code marginLeft="8px">Alpha</Code>
           </Heading>
         </Box>
         <Link
@@ -206,17 +204,22 @@ function App() {
             <br />
           </Text>
 
-          <SkipNavLink display="flex" position="relative" height="100%" width="100%">
-              <Tag
-                size="lg"
-                bg={COLOR_SECONDARY}
-                color={COLOR_WHITE}
-                colorScheme="blue"
-                height="100%"
-              >
-                Try it out below
-                <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
-              </Tag>
+          <SkipNavLink
+            display="flex"
+            position="relative"
+            height="100%"
+            width="100%"
+          >
+            <Tag
+              size="lg"
+              bg={COLOR_SECONDARY}
+              color={COLOR_WHITE}
+              colorScheme="blue"
+              height="100%"
+            >
+              Try it out below
+              <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
+            </Tag>
           </SkipNavLink>
         </Box>
         <Box
@@ -228,7 +231,7 @@ function App() {
           role="landmark"
         >
           <SkipNavContent />
-            <Requester />
+          <Requester />
         </Box>
       </Box>
       <BoxOnSWLoad />
