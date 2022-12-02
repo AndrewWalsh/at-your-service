@@ -40,9 +40,10 @@ const isStoreRoute = (
 
 export default function Drawer({ visible, onClose, storeStruct }: Props) {
   const { setVisible, bindings } = useModal();
-  const [content, setContent] = useState<{ storeRoute: StoreRoute, fullPath: string } | null>(
-    null
-  );
+  const [content, setContent] = useState<{
+    storeRoute: StoreRoute;
+    fullPath: string;
+  } | null>(null);
 
   const createTree = useCallback(() => {
     function recurseTree(ssorsr: StoreStructure | StoreRoute, path = "") {
@@ -52,7 +53,10 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
           const withoutPrefix = key.slice(1);
           const onClick = () => {
             const pathToStoreRoute = path + key;
-            setContent({ storeRoute: structOrRoute, fullPath: pathToStoreRoute });
+            setContent({
+              storeRoute: structOrRoute,
+              fullPath: pathToStoreRoute,
+            });
             setVisible(true);
           };
           return (
@@ -135,7 +139,10 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
             <Modal.Content style={{ overflow: "scroll" }}>
               <Tabs initialValue="1">
                 <Tabs.Item label="Open API" value="1">
-                  <TabViewOpenAPI storeRoute={content.storeRoute} fullPath={content.fullPath} />
+                  <TabViewOpenAPI
+                    storeRoute={content.storeRoute}
+                    fullPath={content.fullPath}
+                  />
                 </Tabs.Item>
                 <Tabs.Item label="request" value="2">
                   <TabView

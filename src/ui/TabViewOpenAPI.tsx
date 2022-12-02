@@ -11,7 +11,10 @@ type Props = {
   fullPath: string;
 };
 
-const storeRouteToStoreStruct = (storeRoute: StoreRoute, fullPath: string): StoreStructure => {
+const storeRouteToStoreStruct = (
+  storeRoute: StoreRoute,
+  fullPath: string
+): StoreStructure => {
   const [host, path, method, status] = getPathToStoreRoute(fullPath);
   const storeStructure: StoreStructure = {
     [host]: {
@@ -29,8 +32,8 @@ export default function TabViewCode({ storeRoute, fullPath }: Props) {
   const [code, setCode] = useState<string | null>(null);
 
   useEffect(() => {
-    storeStructToOpenAPI(storeRouteToStoreStruct(storeRoute, fullPath)).then((s) =>
-      setCode(s.getJSON())
+    storeStructToOpenAPI(storeRouteToStoreStruct(storeRoute, fullPath)).then(
+      (s) => setCode(s.getJSON())
     );
   }, [storeRoute]);
 
