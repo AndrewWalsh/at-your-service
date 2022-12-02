@@ -134,13 +134,13 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
               <Tabs initialValue="2">
                 <Tabs.Item label="request" value="1">
                   <TabView
-                    samples={content.storeRoute.reqSamples}
+                    samples={content.storeRoute.reqBodySamples}
                     meta={content.storeRoute.meta}
                   />
                 </Tabs.Item>
                 <Tabs.Item label="response" value="2">
                   <TabView
-                    samples={content.storeRoute.resSamples}
+                    samples={content.storeRoute.resBodySamples}
                     meta={content.storeRoute.meta}
                   />
                 </Tabs.Item>

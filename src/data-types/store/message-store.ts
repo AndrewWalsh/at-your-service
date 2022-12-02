@@ -12,9 +12,9 @@ export const STORE_STORAGE_NAMESPACE = "at-your-service-sw-store";
  * The type of the serialised version of the store in store2
  */
 interface StoreRouteSerialised
-  extends Omit<StoreRoute, "reqSamples" | "resSamples"> {
-  reqSamples: Array<string>;
-  resSamples: Array<string>;
+  extends Omit<StoreRoute, "reqBodySamples" | "resBodySamples"> {
+  reqBodySamples: Array<string>;
+  resBodySamples: Array<string>;
 }
 
 type PathToStoreRoute = [
@@ -61,10 +61,10 @@ class Store {
         const status = splitPath[splitPath.length - 1];
         const pathToStoreRoute = [host, fullPath, method, status];
 
-        const reqSamples = route.reqSamples.map(Sample.create);
-        const resSamples = route.resSamples.map(Sample.create);
+        const reqBodySamples = route.reqBodySamples.map(Sample.create);
+        const resBodySamples = route.resBodySamples.map(Sample.create);
 
-        set(out, pathToStoreRoute, { ...route, resSamples, reqSamples });
+        set(out, pathToStoreRoute, { ...route, resBodySamples, reqBodySamples });
       }
 
       return out;
@@ -113,8 +113,10 @@ class Store {
       pathToStoreRoute: PathToStoreRoute;
       url: URL;
       pathName: string;
-      responseSample: Sample;
-      requestSample: Sample;
+      requestBodySample: Sample;
+      requestHeadersSample: Sample;
+      responseBodySample: Sample;
+      responseHeadersSample: Sample;
     } & MessageData
   ) {
     const initialData: StoreRoute = {
@@ -127,8 +129,10 @@ class Store {
           latencyMs: withData.latencyMs,
         },
       ],
-      reqSamples: [withData.requestSample],
-      resSamples: [withData.responseSample],
+      reqBodySamples: [withData.requestBodySample],
+      reqHeadersSamples: [withData.requestHeadersSample],
+      resBodySamples: [withData.responseBodySample],
+      resHeadersSamples: [withData.responseHeadersSample],
     };
 
     set(this.store, withData.pathToStoreRoute, initialData);
@@ -175,11 +179,15 @@ class Store {
       status,
     });
 
-    const requestJSON = JSON.stringify(data.request.body);
-    const responseJSON = JSON.stringify(data.response.body);
+    const requestBodyJSON = JSON.stringify(data.request.body);
+    const requestHeadersJSON = JSON.stringify(data.request.headers);
+    const responseBodyJSON = JSON.stringify(data.response.body);
+    const responseHeadersJSON = JSON.stringify(data.response.headers);
 
-    const requestSample = new Sample(requestJSON);
-    const responseSample = new Sample(responseJSON);
+    const requestBodySample = new Sample(requestBodyJSON);
+    const requestHeadersSample = new Sample(requestHeadersJSON);
+    const responseBodySample = new Sample(responseBodyJSON);
+    const responseHeadersSample = new Sample(responseHeadersJSON);
 
     const storeRoute: undefined | StoreRoute = get(
       this.store,
@@ -193,22 +201,24 @@ class Store {
         pathToStoreRoute,
         url,
         pathName,
-        requestSample,
-        responseSample,
+        requestBodySample,
+        requestHeadersSample,
+        responseBodySample,
+        responseHeadersSample,
       });
     }
     // Update
     else {
       // Add new sample if it doesn't exist
       // That is to say, we need to know of it in order to construct an accurate representation
-      if (requestSample && !storeRoute.reqSamples.some(requestSample.isEqual)) {
-        storeRoute.reqSamples.push(requestSample);
+      if (requestBodySample && !storeRoute.reqBodySamples.some(requestBodySample.isEqual)) {
+        storeRoute.reqBodySamples.push(requestBodySample);
       }
       if (
-        responseSample &&
-        !storeRoute.resSamples.some(responseSample.isEqual)
+        responseBodySample &&
+        !storeRoute.resBodySamples.some(responseBodySample.isEqual)
       ) {
-        storeRoute.resSamples.push(responseSample);
+        storeRoute.resBodySamples.push(responseBodySample);
       }
       storeRoute.meta.push({
         beforeRequestTime: data.beforeRequestTime,

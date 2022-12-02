@@ -89,7 +89,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
         }
         for (let status in store[host][pathname][method]) {
           // Remove the prefix character from the status code
-          const { reqSamples, resSamples } =
+          const { reqBodySamples: reqBodySamples, resBodySamples } =
             store[host][pathname][method][status];
           status = status.slice(1);
 
@@ -97,7 +97,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * RESPONSE OBJECT CREATION
            */
           const resMediaType: MediaTypeObject = {
-            schema: convert(resSamples),
+            schema: convert(resBodySamples),
           };
           const resContent: ContentObject = {
             "application/json": resMediaType,
@@ -115,7 +115,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * REQUEST OBJECT CREATION
            */
           const reqMediaType: MediaTypeObject = {
-            schema: convert(reqSamples),
+            schema: convert(reqBodySamples),
           };
           const reqContent: ContentObject = {
             "application/json": reqMediaType,

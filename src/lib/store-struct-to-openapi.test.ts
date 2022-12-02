@@ -58,8 +58,10 @@ describe("specific behaviour tests", () => {
     const sampleTwo = new Sample(JSONNum);
 
     const defaults = {
-      reqSamples: [sampleOne, sampleTwo],
-      resSamples: [sampleOne, sampleTwo],
+      reqBodySamples: [sampleOne, sampleTwo],
+      reqHeadersSamples: [sampleOne, sampleTwo],
+      resBodySamples: [sampleOne, sampleTwo],
+      resHeadersSamples: [sampleOne, sampleTwo],
       pathname,
       method,
     };

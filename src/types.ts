@@ -71,10 +71,14 @@ export interface StoreRoute {
   pathName: string;
   /** Meta information about this request */
   meta: Array<Meta>;
-  /** Request JSON sample data */
-  reqSamples: Array<Sample>;
-  /** Response JSON sample data */
-  resSamples: Array<Sample>;
+  /** Request JSON body */
+  reqBodySamples: Array<Sample>;
+  /** Request JSON headers */
+  reqHeadersSamples: Array<Sample>;
+  /** Response JSON body */
+  resBodySamples: Array<Sample>;
+  /** Response JSON headers */
+  resHeadersSamples: Array<Sample>;
 }
 
 export type StoreStructure = {

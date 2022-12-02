@@ -16,8 +16,10 @@ type CreateExpected = (values: {
   pathname: string;
   method: string;
   status: string;
-  reqSamples: Sample[];
-  resSamples: Sample[];
+  reqBodySamples: Sample[];
+  reqHeadersSamples: Sample[];
+  resBodySamples: Sample[];
+  resHeadersSamples: Sample[];
   data: Meta;
 }) => Readonly<StoreStructure>;
 const createExpected: CreateExpected = ({
@@ -25,8 +27,10 @@ const createExpected: CreateExpected = ({
   pathname,
   method,
   status,
-  reqSamples,
-  resSamples,
+  reqBodySamples,
+  reqHeadersSamples,
+  resBodySamples,
+  resHeadersSamples,
   data,
 }) => {
   const expected: Readonly<StoreStructure> = {
@@ -35,8 +39,10 @@ const createExpected: CreateExpected = ({
         [method]: {
           // s here is due to the status being a number & being interpreted as an array index integer
           [status]: {
-            reqSamples,
-            resSamples,
+            reqBodySamples,
+            reqHeadersSamples,
+            resBodySamples,
+            resHeadersSamples,
             meta: [
               {
                 beforeRequestTime: data.beforeRequestTime,
@@ -80,11 +86,18 @@ const createStoreStructureAndExpectedForSingleMessage = async (
   const storeStructure = await store.get();
   const storeRoute = storeStructure[host][pathname][method][statusPrepended];
 
-  const reqSamples = storeRoute.reqSamples.length
-    ? [...storeRoute.reqSamples]
+  const reqBodySamples = storeRoute.reqBodySamples.length
+    ? [...storeRoute.reqBodySamples]
     : [];
-  const resSamples = storeRoute.resSamples.length
-    ? [...storeRoute.resSamples]
+  const reqHeadersSamples = storeRoute.reqHeadersSamples.length
+    ? [...storeRoute.reqHeadersSamples]
+    : [];
+
+  const resBodySamples = storeRoute.resBodySamples.length
+    ? [...storeRoute.resBodySamples]
+    : [];
+  const resHeadersSamples = storeRoute.resHeadersSamples.length
+    ? [...storeRoute.resHeadersSamples]
     : [];
 
   const expected = createExpected({
@@ -92,8 +105,10 @@ const createStoreStructureAndExpectedForSingleMessage = async (
     pathname,
     method,
     status: statusPrepended,
-    reqSamples,
-    resSamples,
+    reqBodySamples,
+    reqHeadersSamples,
+    resBodySamples,
+    resHeadersSamples,
     data,
   });
 
@@ -198,26 +213,65 @@ describe("persistence to and hydration from client storage", () => {
 });
 
 describe("updates with multiple request/response types", () => {
-  test("stores new request samples if those samples are different to existing request samples", async () => {
-    const url = new URL("https://example.com/api");
-    const values = {
-      url: url.href,
-      status: 200,
-      requestBody: "test",
-      responseBody: null,
-      method: "GET" as const,
-    };
+  const sampleTests: Array<
+    [
+      string,
+      URL,
+      {
+        url: string;
+        status: number;
+        requestBody: string | null;
+        responseBody: string | null;
+        method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+      },
+      (
+        | "reqBodySamples"
+        | "reqHeadersSamples"
+        | "resBodySamples"
+        | "resHeadersSamples"
+      ),
+      "requestBody" | "responseBody"
+    ]
+  > = [
+    [
+      "stores new request body samples if those samples are different to existing response samples",
+      new URL("https://example.com/api"),
+      {
+        url: new URL("https://example.com/api").href,
+        status: 200,
+        requestBody: "test",
+        responseBody: null,
+        method: "GET" as const,
+      },
+      "reqBodySamples",
+      "requestBody",
+    ],
+    [
+      "stores new response body samples if those samples are different to existing response samples",
+      new URL("https://example.com/api"),
+      {
+        url: new URL("https://example.com/api").href,
+        status: 200,
+        requestBody: null,
+        responseBody: "test",
+        method: "GET" as const,
+      },
+      "resBodySamples",
+      "responseBody",
+    ],
+  ];
 
+  test.each(sampleTests)("%s", async (_, url, values, method, messageType) => {
     const messages = [
       createMessage(values),
-      createMessage({ ...values, requestBody: 1 }),
-      createMessage({ ...values, requestBody: null }),
-      createMessage({ ...values, requestBody: false }),
+      createMessage({ ...values, [messageType]: 1 }),
+      createMessage({ ...values, [messageType]: null }),
+      createMessage({ ...values, [messageType]: false }),
       // Along with duplicates, we still expect flat values
       createMessage(values),
-      createMessage({ ...values, requestBody: 1 }),
-      createMessage({ ...values, requestBody: null }),
-      createMessage({ ...values, requestBody: false }),
+      createMessage({ ...values, [messageType]: 1 }),
+      createMessage({ ...values, [messageType]: null }),
+      createMessage({ ...values, [messageType]: false }),
     ];
 
     for (const message of messages) {
@@ -234,49 +288,6 @@ describe("updates with multiple request/response types", () => {
 
     const expectSamples = ['""', 0, null, true];
 
-    expect(storeRoute.reqSamples.map((s) => s.getSample())).toEqual(
-      expectSamples
-    );
-  });
-
-  test("stores new response samples if those samples are different to existing response samples", async () => {
-    const url = new URL("https://example.com/api");
-    const values = {
-      url: url.href,
-      status: 200,
-      requestBody: null,
-      responseBody: "test",
-      method: "GET" as const,
-    };
-
-    const messages = [
-      createMessage(values),
-      createMessage({ ...values, responseBody: 1 }),
-      createMessage({ ...values, responseBody: null }),
-      createMessage({ ...values, responseBody: false }),
-      // Along with duplicates, we still expect flat values
-      createMessage(values),
-      createMessage({ ...values, responseBody: 1 }),
-      createMessage({ ...values, responseBody: null }),
-      createMessage({ ...values, responseBody: false }),
-    ];
-
-    for (const message of messages) {
-      await store.update(message);
-    }
-    const storeStructure = await store.get();
-    // @ts-expect-error
-    const { pathToStoreRoute } = Store.getPathToStoreRoute({
-      url,
-      method: values.method,
-      status: `s${values.status}`,
-    });
-    const storeRoute = get(storeStructure, pathToStoreRoute);
-
-    const expectSamples = ['""', 0, null, true];
-
-    expect(storeRoute.resSamples.map((s) => s.getSample())).toEqual(
-      expectSamples
-    );
+    expect(storeRoute[method].map((s) => s.getSample())).toEqual(expectSamples);
   });
 });
