@@ -51,7 +51,7 @@ const createExpected: CreateExpected = ({
               },
             ],
             parameters: {},
-            pathName: "/",
+            pathname: "/",
           },
         },
       },

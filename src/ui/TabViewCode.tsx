@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { AutoComplete, Grid, Text } from "@geist-ui/core";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import { AutoComplete, Grid } from "@geist-ui/core";
 
 import { samplesToQuicktype } from "../lib";
 import { Meta, QuicktypeTargetLanguageNames } from "../types";
 import type { Sample } from "../data-types";
+import Code from "./Code";
 
 const validLanguages = Object.values(QuicktypeTargetLanguageNames).filter(
   (n) => {
@@ -34,23 +34,8 @@ export default function TabViewCode({ samples, meta }: Props) {
     samplesToQuicktype(samples, language).then((s) => setCode(s));
   }, [language, samples]);
 
-  if (!code) {
-    return (
-      <Grid.Container
-        justify="center"
-        gap={1}
-        alignItems="center"
-        height="250px"
-      >
-        <Grid>
-          <Text>No data to show</Text>
-        </Grid>
-      </Grid.Container>
-    );
-  }
-
   return (
-    <Grid.Container>
+    <Grid.Container style={{ overflowX: "scroll" }}>
       <Grid.Container justify="flex-start" gap={1}>
         <Grid>
           <AutoComplete
@@ -64,11 +49,7 @@ export default function TabViewCode({ samples, meta }: Props) {
         </Grid>
       </Grid.Container>
 
-      {code && (
-        <div style={{ width: "100%", marginTop: "10px" }}>
-          <SyntaxHighlighter language={language}>{code}</SyntaxHighlighter>
-        </div>
-      )}
+      <Code code={code} />
     </Grid.Container>
   );
 }

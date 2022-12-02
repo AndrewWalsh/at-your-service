@@ -132,8 +132,8 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           const hasRequestBody = !new Set(["get", "delete", "head"]).has(
             method.toLowerCase()
           );
-          const pathNames = uniq(extractPathNames(pathname));
-          const parameters: ParameterObject[] = pathNames.map((name) => ({
+          const pathnames = uniq(extractPathNames(pathname));
+          const parameters: ParameterObject[] = pathnames.map((name) => ({
             name,
             in: "path",
             required: true,
@@ -166,7 +166,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
 
   return {
     getSpec: () => spec.getSpec(),
-    getJSON: () => spec.getSpecAsJson(),
+    getJSON: () => JSON.stringify(spec.getSpec(), null, 2),
     getYAML: () => spec.getSpecAsYaml(),
   };
 };

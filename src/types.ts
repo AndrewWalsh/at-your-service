@@ -67,8 +67,8 @@ export type Meta = {
 export interface StoreRoute {
   /** Stores information about query parameters */
   parameters: QueryParamStore;
-  /** The full path name for this endpoint */
-  pathName: string;
+  /** The pathname for this endpoint */
+  pathname: string;
   /** Meta information about this request */
   meta: Array<Meta>;
   /** Request JSON body */

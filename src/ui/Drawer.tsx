@@ -10,6 +10,7 @@ import {
   Tabs,
 } from "@geist-ui/core";
 
+import TabViewOpenAPI from "./TabViewOpenAPI";
 import { StoreStructure, StoreRoute, Meta } from "../types";
 import { storeStructToOpenAPI } from "../lib";
 import TabView from "./TabView";
@@ -35,22 +36,23 @@ type StoreStructureDeep =
 // This type guard makes it easy to form a base case for recursion
 const isStoreRoute = (
   route: StoreRoute | StoreStructureDeep
-): route is StoreRoute => !!route.pathName;
+): route is StoreRoute => !!route.pathname;
 
 export default function Drawer({ visible, onClose, storeStruct }: Props) {
   const { setVisible, bindings } = useModal();
-  const [content, setContent] = useState<{ storeRoute: StoreRoute } | null>(
+  const [content, setContent] = useState<{ storeRoute: StoreRoute, fullPath: string } | null>(
     null
   );
 
   const createTree = useCallback(() => {
-    function recurseTree(ssorsr: StoreStructure | StoreRoute) {
+    function recurseTree(ssorsr: StoreStructure | StoreRoute, path = "") {
       return Object.entries(ssorsr).map(([key, structOrRoute]) => {
         if (isStoreRoute(structOrRoute)) {
           // TODO: get rid of this 's200' etc business
           const withoutPrefix = key.slice(1);
           const onClick = () => {
-            setContent({ storeRoute: structOrRoute });
+            const pathToStoreRoute = path + key;
+            setContent({ storeRoute: structOrRoute, fullPath: pathToStoreRoute });
             setVisible(true);
           };
           return (
@@ -63,7 +65,7 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
         }
         return (
           <Tree.Folder key={key} name={key}>
-            {recurseTree(structOrRoute)}
+            {recurseTree(structOrRoute, path + key + "/")}
           </Tree.Folder>
         );
       });
@@ -131,16 +133,21 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
               content.storeRoute.meta
             )}ms`}</Modal.Title>
             <Modal.Content style={{ overflow: "scroll" }}>
-              <Tabs initialValue="2">
-                <Tabs.Item label="request" value="1">
+              <Tabs initialValue="1">
+                <Tabs.Item label="Open API" value="1">
+                  <TabViewOpenAPI storeRoute={content.storeRoute} fullPath={content.fullPath} />
+                </Tabs.Item>
+                <Tabs.Item label="request" value="2">
                   <TabView
-                    samples={content.storeRoute.reqBodySamples}
+                    bodySamples={content.storeRoute.reqBodySamples}
+                    headersSamples={content.storeRoute.reqHeadersSamples}
                     meta={content.storeRoute.meta}
                   />
                 </Tabs.Item>
-                <Tabs.Item label="response" value="2">
+                <Tabs.Item label="response" value="3">
                   <TabView
-                    samples={content.storeRoute.resBodySamples}
+                    bodySamples={content.storeRoute.resBodySamples}
+                    headersSamples={content.storeRoute.resHeadersSamples}
                     meta={content.storeRoute.meta}
                   />
                 </Tabs.Item>

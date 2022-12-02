@@ -11,11 +11,11 @@ import createDynamicPartName from "./create-dynamic-part-name";
  * This is a very simple approach towards that based on heuristics
  * So far, that we use the previous part in the pathname
  *
- * @param pathName A pathname like /api/user/ec6b0caa-ee57-41b9-9810-c996c34f260a/post/new
+ * @param pathname A pathname like /api/user/ec6b0caa-ee57-41b9-9810-c996c34f260a/post/new
  * @returns A pathname like /api/user/{userId}/post/new
  */
-export default function withNamedPathParts(pathName: string): string {
-  const split = pathName.split("/");
+export default function withNamedPathParts(pathname: string): string {
+  const split = pathname.split("/");
   const existingPartReplacements = new Set<string>();
   let lastPart = "";
   const parsed = split.map((part) => {

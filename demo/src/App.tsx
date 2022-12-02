@@ -1,6 +1,5 @@
 import {
   Box,
-  keyframes,
   Link,
   Icon,
   Heading,

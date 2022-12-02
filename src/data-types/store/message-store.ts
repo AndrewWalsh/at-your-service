@@ -5,6 +5,7 @@ import type { MessageData, StoreRoute, StoreStructure } from "../../types";
 import parseQueryParameters from "./parse-query-parameters";
 import { Sample, Message } from "../../data-types";
 import withNamedPathParts from "./with-named-path-parts";
+import { getPathToStoreRoute } from "../../lib";
 
 export const STORE_STORAGE_NAMESPACE = "at-your-service-sw-store";
 
@@ -27,7 +28,7 @@ interface StoreRouteSerialised
 
 type PathToStoreRoute = [
   host: string,
-  pathName: string,
+  pathname: string,
   method: string,
   status: string
 ];
@@ -59,15 +60,7 @@ class Store {
       const out: StoreStructure = Object.create(null);
 
       for (const [path, route] of Object.entries(all)) {
-        const splitPath = path.split("/");
-        // This magic is based on how the pathToStoreRoute is saved to storage
-        // Keys look something like localhost:8080/requires/{requiresId}/info/GET/200
-        // {host}/{path}/{method}/{statusCode}
-        const host = splitPath[0];
-        const fullPath = splitPath.slice(1, -2).join("/");
-        const method = splitPath[splitPath.length - 2];
-        const status = splitPath[splitPath.length - 1];
-        const pathToStoreRoute = [host, fullPath, method, status];
+        const pathToStoreRoute = getPathToStoreRoute(path);
 
         const initialValues: Partial<StoreRoute> = {
           ...route,
@@ -125,7 +118,7 @@ class Store {
     withData: {
       pathToStoreRoute: PathToStoreRoute;
       url: URL;
-      pathName: string;
+      pathname: string;
       requestBodySample: Sample;
       requestHeadersSample: Sample;
       responseBodySample: Sample;
@@ -134,7 +127,7 @@ class Store {
   ) {
     const initialData: StoreRoute = {
       parameters: parseQueryParameters(withData.url.searchParams),
-      pathName: withData.pathName,
+      pathname: withData.pathname,
       meta: [
         {
           beforeRequestTime: withData.beforeRequestTime,
@@ -162,17 +155,17 @@ class Store {
   }): {
     pathToStoreRoute: PathToStoreRoute;
     host: string;
-    pathName: string;
+    pathname: string;
     method: string;
     status: string;
   } {
     const { url, method, status } = input;
     const { host } = url;
-    const pathName = withNamedPathParts(url.pathname);
+    const pathname = withNamedPathParts(url.pathname);
     return {
-      pathToStoreRoute: [host, pathName, method, status],
+      pathToStoreRoute: [host, pathname, method, status],
       host,
-      pathName,
+      pathname,
       method,
       status,
     };
@@ -186,7 +179,7 @@ class Store {
     const data = message.get();
     const status = `s${data.response.status}`;
     const url = new URL(data.request.url);
-    const { pathToStoreRoute, pathName } = Store.getPathToStoreRoute({
+    const { pathToStoreRoute, pathname } = Store.getPathToStoreRoute({
       url,
       method: data.request.method,
       status,
@@ -213,7 +206,7 @@ class Store {
         ...data,
         pathToStoreRoute,
         url,
-        pathName,
+        pathname,
         requestBodySample,
         requestHeadersSample,
         responseBodySample,

@@ -1,7 +1,7 @@
 import { SetupWorkerApi } from "msw";
 
-// import { startAtYourService } from "at-your-service";
-import { startAtYourService } from "../../src";
+import { startAtYourService } from "at-your-service";
+// import { startAtYourService } from "../../src";
 
 const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`;
 // window.navigator.serviceWorker.register(SW_PATH);

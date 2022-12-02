@@ -38,7 +38,7 @@ export const createStoreStructure = (opts = defaults()) => {
             resHeadersSamples: opts.resHeadersSamples,
             parameters: {},
             meta: [],
-            pathName: opts.pathname,
+            pathname: opts.pathname,
           },
         },
       },
