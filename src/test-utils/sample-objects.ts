@@ -7,7 +7,9 @@ const createPayloadFromWorkerDefaults = () => ({
   url: faker.internet.url(),
   status: faker.internet.httpStatusCode(),
   requestBody: { data: { test: "message" } } as any,
+  requestHeaders: { data: { test: "message" } } as any,
   responseBody: { data: { test: "message" } } as any,
+  responseHeaders: { data: { test: "message" } } as any,
   method: faker.internet.httpMethod(),
 });
 type CreatePayloadFromWorker = (
@@ -21,14 +23,14 @@ export const createPayloadFromWorker: CreatePayloadFromWorker = (
     afterRequestTime: faker.datatype.number({ min: Date.now() }),
     request: {
       body: values.requestBody,
-      headers: { "content-type": "application/json" },
+      headers: values.requestHeaders,
       method: values.method,
       url: values.url,
       referrer: null,
     },
     response: {
       body: values.responseBody,
-      headers: { "content-type": "application/json" },
+      headers: values.responseHeaders,
       status: values.status,
       referrer: null,
       url: values.url,

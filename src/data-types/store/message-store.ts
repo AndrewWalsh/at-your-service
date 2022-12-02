@@ -64,7 +64,11 @@ class Store {
         const reqBodySamples = route.reqBodySamples.map(Sample.create);
         const resBodySamples = route.resBodySamples.map(Sample.create);
 
-        set(out, pathToStoreRoute, { ...route, resBodySamples, reqBodySamples });
+        set(out, pathToStoreRoute, {
+          ...route,
+          resBodySamples,
+          reqBodySamples,
+        });
       }
 
       return out;
@@ -211,14 +215,29 @@ class Store {
     else {
       // Add new sample if it doesn't exist
       // That is to say, we need to know of it in order to construct an accurate representation
-      if (requestBodySample && !storeRoute.reqBodySamples.some(requestBodySample.isEqual)) {
+      if (
+        requestBodySample &&
+        !storeRoute.reqBodySamples.some(requestBodySample.isEqual)
+      ) {
         storeRoute.reqBodySamples.push(requestBodySample);
+      }
+      if (
+        requestHeadersSample &&
+        !storeRoute.reqHeadersSamples.some(requestHeadersSample.isEqual)
+      ) {
+        storeRoute.reqHeadersSamples.push(requestHeadersSample);
       }
       if (
         responseBodySample &&
         !storeRoute.resBodySamples.some(responseBodySample.isEqual)
       ) {
         storeRoute.resBodySamples.push(responseBodySample);
+      }
+      if (
+        responseHeadersSample &&
+        !storeRoute.resHeadersSamples.some(responseHeadersSample.isEqual)
+      ) {
+        storeRoute.resHeadersSamples.push(responseHeadersSample);
       }
       storeRoute.meta.push({
         beforeRequestTime: data.beforeRequestTime,

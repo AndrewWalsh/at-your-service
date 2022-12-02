@@ -221,7 +221,9 @@ describe("updates with multiple request/response types", () => {
         url: string;
         status: number;
         requestBody: string | null;
+        requestHeaders: string | null;
         responseBody: string | null;
+        responseHeaders: string | null;
         method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
       },
       (
@@ -230,34 +232,68 @@ describe("updates with multiple request/response types", () => {
         | "resBodySamples"
         | "resHeadersSamples"
       ),
-      "requestBody" | "responseBody"
+      "requestBody" | "requestHeaders" | "responseBody" | "responseHeaders"
     ]
   > = [
     [
-      "stores new request body samples if those samples are different to existing response samples",
+      "stores new request body samples when different",
       new URL("https://example.com/api"),
       {
         url: new URL("https://example.com/api").href,
         status: 200,
         requestBody: "test",
+        requestHeaders: null,
         responseBody: null,
+        responseHeaders: null,
         method: "GET" as const,
       },
       "reqBodySamples",
       "requestBody",
     ],
     [
-      "stores new response body samples if those samples are different to existing response samples",
+      "stores new request headers samples when different",
       new URL("https://example.com/api"),
       {
         url: new URL("https://example.com/api").href,
         status: 200,
         requestBody: null,
+        requestHeaders: "test",
+        responseBody: null,
+        responseHeaders: null,
+        method: "GET" as const,
+      },
+      "reqHeadersSamples",
+      "requestHeaders",
+    ],
+    [
+      "stores new response body samples when different",
+      new URL("https://example.com/api"),
+      {
+        url: new URL("https://example.com/api").href,
+        status: 200,
+        requestBody: null,
+        requestHeaders: null,
         responseBody: "test",
+        responseHeaders: null,
         method: "GET" as const,
       },
       "resBodySamples",
       "responseBody",
+    ],
+    [
+      "stores new response headers samples when different",
+      new URL("https://example.com/api"),
+      {
+        url: new URL("https://example.com/api").href,
+        status: 200,
+        requestBody: null,
+        requestHeaders: null,
+        responseBody: null,
+        responseHeaders: "test",
+        method: "GET" as const,
+      },
+      "resHeadersSamples",
+      "responseHeaders",
     ],
   ];
 
