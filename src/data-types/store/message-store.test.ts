@@ -192,11 +192,9 @@ describe("persistence to and hydration from client storage", () => {
     const newStore = new Store();
     const newStoreStructure = await newStore.get();
 
-    // using this approach here due to issues using isEqual with the underlying Sample instances
-    // @ts-expect-error
-    const diff = difference(newStoreStructure, storeStructure);
-
-    expect(diff).toHaveLength(0);
+    expect(JSON.stringify(newStoreStructure)).toEqual(
+      JSON.stringify(storeStructure)
+    );
   });
 
   test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {

@@ -12,9 +12,17 @@ export const STORE_STORAGE_NAMESPACE = "at-your-service-sw-store";
  * The type of the serialised version of the store in store2
  */
 interface StoreRouteSerialised
-  extends Omit<StoreRoute, "reqBodySamples" | "resBodySamples"> {
+  extends Omit<
+    StoreRoute,
+    | "reqBodySamples"
+    | "reqHeadersSamples"
+    | "resBodySamples"
+    | "resHeadersSamples"
+  > {
   reqBodySamples: Array<string>;
+  reqHeadersSamples: Array<string>;
   resBodySamples: Array<string>;
+  resHeadersSamples: Array<string>;
 }
 
 type PathToStoreRoute = [
@@ -61,21 +69,22 @@ class Store {
         const status = splitPath[splitPath.length - 1];
         const pathToStoreRoute = [host, fullPath, method, status];
 
-        const reqBodySamples = route.reqBodySamples.map(Sample.create);
-        const resBodySamples = route.resBodySamples.map(Sample.create);
-
-        set(out, pathToStoreRoute, {
+        const initialValues: Partial<StoreRoute> = {
           ...route,
-          resBodySamples,
-          reqBodySamples,
-        });
+          reqBodySamples: route.reqBodySamples.map(Sample.create),
+          reqHeadersSamples: route.reqHeadersSamples.map(Sample.create),
+          resBodySamples: route.resBodySamples.map(Sample.create),
+          resHeadersSamples: route.reqHeadersSamples.map(Sample.create),
+        };
+
+        set(out, pathToStoreRoute, initialValues);
       }
 
       return out;
     } catch (e) {
       this.localStorage.clearAll();
       // Localstorage could be blocked for various reasons
-      return {};
+      return Object.create(null);
     }
   }
 

@@ -16,8 +16,7 @@ export default class Message {
         status: String(payload.response.status),
       },
     };
-    const data: MessageData = Object.create(null);
-    Object.assign(data, payload, additionalFields);
+    const data: MessageData = { ...payload, ...additionalFields };
     this.data = data;
   }
 

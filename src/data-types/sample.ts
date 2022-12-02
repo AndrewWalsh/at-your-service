@@ -1,7 +1,9 @@
 import { isEqual, uniqWith } from "lodash";
 
+type Primitives = string | number | boolean | null;
+
 // Returns the JSON string equivalent of a zero value for the given primitive
-const setPrimitiveToEmpty = (value: string | number | boolean | null) => {
+const setPrimitiveToEmpty = (value: Primitives) => {
   if (typeof value === "string") {
     return '""';
   } else if (typeof value === "number") {
@@ -16,7 +18,7 @@ const setPrimitiveToEmpty = (value: string | number | boolean | null) => {
 // Valid data types for JSON are
 // string number object boolean array null
 // We can ignore null as that is always just null
-const setObjOrArrPropertiesToEmpty = (obj: {} | {}[]) => {
+const setObjOrArrPropertiesToEmpty = (obj: any) => {
   for (const key in obj) {
     // Array is an object, so test it first
     if (Array.isArray(obj[key])) {
@@ -47,7 +49,7 @@ export default class Sample {
     } catch (e) {
       console.warn(new Error(`Failed to parse JSON in Sample: ${JSON}`));
       console.error(e);
-      this.sample = Object.create(null);
+      this.sample = {};
     }
   }
 
