@@ -26,15 +26,6 @@ import {
 
 import logo from "./assets/logo.png";
 
-const grow = keyframes`
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
-`;
-
 function App() {
   return (
     <Box

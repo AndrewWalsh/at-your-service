@@ -26,17 +26,13 @@ type Props = {
   meta: Array<Meta>;
 };
 
-export default function TabView({ samples, meta }: Props) {
+export default function TabViewCode({ samples, meta }: Props) {
   const [language, setLanguage] = useState(DEFAULT_LANGUAGE);
   const [code, setCode] = useState<string | null>(null);
 
   useEffect(() => {
     samplesToQuicktype(samples, language).then((s) => setCode(s));
   }, [language, samples]);
-
-  if (samples.length === 0 || meta.length === 0) {
-    return <p>No results</p>;
-  }
 
   if (!code) {
     return (
