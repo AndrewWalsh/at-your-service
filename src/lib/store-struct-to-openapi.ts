@@ -10,6 +10,7 @@ import {
   MediaTypeObject,
   RequestBodyObject,
   ParameterObject,
+  HeaderObject,
 } from "openapi3-ts";
 import { uniq } from "lodash";
 
@@ -89,28 +90,10 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
         }
         for (let status in store[host][pathname][method]) {
           // Remove the prefix character from the status code
-          const { reqBodySamples, reqHeadersSamples, resBodySamples } =
+          const { reqBodySamples, reqHeadersSamples, resBodySamples, resHeadersSamples } =
             store[host][pathname][method][status];
           status = status.slice(1);
 
-          /**
-           * RESPONSE OBJECT CREATION
-           */
-          const resMediaType: MediaTypeObject = {
-            schema: convert(resBodySamples),
-          };
-          const resContent: ContentObject = {
-            "application/json": resMediaType,
-          };
-          // A concrete response definition
-          const response: ResponseObject = {
-            content: resContent,
-            description: `Response for ${pathname} ${method} ${status}`,
-          };
-          // All the different responses we can get from 200, 400, 204, etc
-          const responses: ResponsesObject = {
-            [status]: response,
-          };
           /**
            * REQUEST OBJECT CREATION
            */
@@ -125,6 +108,40 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             content: reqContent,
             description: `Request for ${pathname} ${method} ${status}`,
           };
+
+          /**
+           * RESPONSE OBJECT CREATION
+           */
+          const resMediaType: MediaTypeObject = {
+            schema: convert(resBodySamples),
+          };
+          const resContent: ContentObject = {
+            "application/json": resMediaType,
+          };
+          const resHeaders: Record<string, HeaderObject> = {};
+
+          const { properties: propResHeaders } = convert(resHeadersSamples);
+          if (propResHeaders) {
+            Object.entries(propResHeaders).forEach(([name, schema]) => {
+              const headerObj: HeaderObject = {
+                required: true,
+                schema,
+              }
+              resHeaders[name] = headerObj;
+            });
+          }
+
+          // A concrete response definition
+          const response: ResponseObject = {
+            content: resContent,
+            description: `Response for ${pathname} ${method} ${status}`,
+            headers: resHeaders,
+          };
+          // All the different responses we can get from 200, 400, 204, etc
+          const responses: ResponsesObject = {
+            [status]: response,
+          };
+
           /**
            * WRAP UP INTO OPERATION, PATH ITEM, AND PUT INTO PATH
            */
@@ -142,16 +159,16 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             },
           }));
 
-          const { properties } = convert(reqHeadersSamples);
-          if (properties) {
-            Object.entries(properties!).forEach(([name, schema]) => {
+          const { properties: propReqHeaders } = convert(reqHeadersSamples);
+          if (propReqHeaders) {
+            Object.entries(propReqHeaders).forEach(([name, schema]) => {
               parameters.push({
                 name,
                 in: "header",
                 required: true,
-                schema: schema as any,
+                schema,
               });
-            })
+            });
           }
 
           // The req/res associated with a HTTP [VERB] request

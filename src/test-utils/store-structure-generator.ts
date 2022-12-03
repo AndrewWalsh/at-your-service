@@ -8,6 +8,7 @@ const generateFakeSample = (): Sample => new Sample(faker.datatype.json());
 type Options = {
   pathname: string;
   method: string;
+  status: string;
   reqBodySamples: Array<Sample>;
   reqHeadersSamples: Array<Sample>;
   resBodySamples: Array<Sample>;
@@ -17,6 +18,7 @@ type Options = {
 const defaults: () => Options = () => ({
   pathname: `/${faker.lorem.word()}`,
   method: faker.internet.httpMethod(),
+  status: "s" + faker.internet.httpStatusCode(),
   reqBodySamples: [generateFakeSample()],
   reqHeadersSamples: [generateFakeSample()],
   resBodySamples: [generateFakeSample()],
@@ -25,13 +27,12 @@ const defaults: () => Options = () => ({
 
 export const createStoreStructure = (opts = defaults()) => {
   const host = faker.internet.url();
-  const status = "s" + faker.internet.httpStatusCode();
 
   const storeStructure: StoreStructure = {
     [host]: {
       [opts.pathname]: {
         [opts.method]: {
-          [status]: {
+          [opts.status]: {
             reqBodySamples: opts.reqBodySamples,
             reqHeadersSamples: opts.reqHeadersSamples,
             resBodySamples: opts.resBodySamples,
@@ -50,6 +51,6 @@ export const createStoreStructure = (opts = defaults()) => {
     host,
     pathname: opts.pathname,
     method: opts.method,
-    status,
+    status: opts.status,
   };
 };

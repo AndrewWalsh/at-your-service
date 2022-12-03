@@ -50,6 +50,7 @@ describe("specific behaviour tests", () => {
   test("the extracted path name does not duplicate when a path has multiple samples", async () => {
     const path = "test";
     const pathname = `/{${path}}`;
+    const status = "s200";
     const method = "get";
     const JSONStr = '"some_text"';
     const JSONNum = "1";
@@ -64,6 +65,7 @@ describe("specific behaviour tests", () => {
       resHeadersSamples: [sampleOne, sampleTwo],
       pathname,
       method,
+      status,
     };
     const { storeStructure } = createStoreStructure(defaults);
     const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
@@ -77,9 +79,10 @@ describe("specific behaviour tests", () => {
   test("includes request headers", async () => {
     const path = "test";
     const pathname = `/{${path}}`;
+    const status = "s200";
     const method = "get";
     const JSONStr = '"some_text"';
-    const headers = JSON.stringify({ "content-type": "application/json" });
+    const headers = JSON.stringify({ "content-type": "application/json", "other": "header" });
 
     const sample = new Sample(JSONStr);
     const sampleHeaders = new Sample(headers);
@@ -91,6 +94,7 @@ describe("specific behaviour tests", () => {
       resHeadersSamples: [sample],
       pathname,
       method,
+      status,
     };
     const { storeStructure } = createStoreStructure(defaults);
     const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
@@ -99,7 +103,60 @@ describe("specific behaviour tests", () => {
       in: "header",
       required: true,
       schema: {
-        type: "string"
+        type: "string",
+      },
+    });
+
+    expect(result.paths[pathname][method].parameters).toContainEqual({
+      name: "other",
+      in: "header",
+      required: true,
+      schema: {
+        type: "string",
+      },
+    });
+
+    const validator = new Validator();
+    const res = await validator.validate(result);
+    expect(res.errors).toBeUndefined();
+  });
+
+  test("includes response headers", async () => {
+    const path = "test";
+    const pathname = `/{${path}}`;
+    const status = "s200";
+    const method = "get";
+    const JSONStr = '"some_text"';
+    const headers = JSON.stringify({ "content-type": "application/json", "other": "header" });
+
+    const sample = new Sample(JSONStr);
+    const sampleHeaders = new Sample(headers);
+
+    const defaults = {
+      reqBodySamples: [sample],
+      reqHeadersSamples: [sample],
+      resBodySamples: [sample],
+      resHeadersSamples: [sampleHeaders],
+      pathname,
+      method,
+      status,
+    };
+    const { storeStructure } = createStoreStructure(defaults);
+    const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
+    const resHeaders =
+      result.paths[pathname][method].responses[status.slice(1)].headers;
+    expect(resHeaders).toEqual({
+      "content-type": {
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+      other: {
+        required: true,
+        schema: {
+          type: "string",
+        },
       },
     });
 
