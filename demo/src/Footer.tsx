@@ -1,21 +1,5 @@
-import {
-  Box,
-  Heading,
-  List,
-  ListItem,
-  ListIcon,
-  Link,
-  Icon,
-} from "@chakra-ui/react";
-import { FcCommandLine, FcIdea, FcParallelTasks } from "react-icons/fc";
+import { Box, Link, Icon } from "@chakra-ui/react";
 import { DiGithubFull, DiNpm } from "react-icons/di";
-
-import {
-  COLOR_PRIMARY_BORDER,
-  COLOR_PRIMARY,
-  COLOR_WHITE,
-  COLOR_TERTIARY,
-} from "./constants";
 
 function Footer() {
   return (

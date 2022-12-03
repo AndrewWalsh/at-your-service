@@ -82,7 +82,10 @@ describe("specific behaviour tests", () => {
     const status = "s200";
     const method = "get";
     const JSONStr = '"some_text"';
-    const headers = JSON.stringify({ "content-type": "application/json", "other": "header" });
+    const headers = JSON.stringify({
+      "content-type": "application/json",
+      other: "header",
+    });
 
     const sample = new Sample(JSONStr);
     const sampleHeaders = new Sample(headers);
@@ -127,7 +130,10 @@ describe("specific behaviour tests", () => {
     const status = "s200";
     const method = "get";
     const JSONStr = '"some_text"';
-    const headers = JSON.stringify({ "content-type": "application/json", "other": "header" });
+    const headers = JSON.stringify({
+      "content-type": "application/json",
+      other: "header",
+    });
 
     const sample = new Sample(JSONStr);
     const sampleHeaders = new Sample(headers);

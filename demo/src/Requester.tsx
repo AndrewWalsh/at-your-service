@@ -28,6 +28,7 @@ import "ace-builds/src-noconflict/mode-json";
 import { COLOR_SECONDARY } from "./constants";
 import initMSW from "./init-msw";
 import useSWIsReady from "./useSWIsReady";
+import KeyValue, { KV } from "./KeyValue";
 
 const resEditorDefaultVal = {
   text: "simulate some requests and check out the tool",
@@ -56,6 +57,9 @@ function Requester() {
   const [status, setStatus] = useState("200");
   const toast = useToast({ position: "top" });
 
+  const [requestHeaders, setRequestHeaders] = useState<KV>([]);
+  const [responseHeaders, setResponseHeaders] = useState<KV>([]);
+
   // Start the worker with a dummy handler
   useEffect(() => {
     initMSW(worker);
@@ -73,14 +77,15 @@ function Requester() {
         return res(
           ctx.delay(50),
           ctx.status(Number(status), "OK"),
-          ctx.json(JSON.parse(resEditorVal))
+          ctx.json(JSON.parse(resEditorVal)),
+          ctx.set(Object.fromEntries(responseHeaders)),
         );
       }),
       rest.get("https://example.com/api", (req, res, ctx) => {
         return res(ctx.delay(50), ctx.status(200, "OK"), ctx.json({}));
       })
     );
-    fetch(`${host}${pathname}`, { method });
+    fetch(`${host}${pathname}`, { method, headers: requestHeaders });
     toast({
       title: "API request mocked",
       description: `${method} ${host}${pathname} -> ${status}`,
@@ -204,13 +209,26 @@ function Requester() {
       </Box>
 
       <Box display="flex" flexFlow="column" as="form" gap={4} marginTop="8px">
-        <Box display="flex" flexFlow="row wrap">
+        <Button
+          bg={COLOR_SECONDARY}
+          colorScheme="blue"
+          onClick={onClickMockRequest}
+          disabled={
+            !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
+          }
+          type="submit"
+        >
+          Mock Network Request
+        </Button>
+
+        <Box display="flex" flexFlow="row wrap" justifyContent="space-around">
           <Box
+            paddingTop="32px"
             display="flex"
             alignItems="flex-start"
-            justifyContent="space-between"
             flexFlow="column nowrap"
-            gap={6}
+            gap={4}
+            maxHeight="250px"
           >
             <InputGroup>
               <InputLeftAddon children="Method" width="100px" />
@@ -265,36 +283,33 @@ function Requester() {
             </InputGroup>
           </Box>
 
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flex="1"
-          >
-            <Text padding="1em" textAlign="center">
-              Simulate an API request on the browser
-              <br />
-              <br />
-              Requests are visible in the <Code>Network</Code> section of your
-              browser's developer tools
-              <br />
-              <br />
-              Open <Kbd>at-your-service</Kbd> by clicking <Code>Open</Code> in
-              the bottom left corner of the screen
-            </Text>
+          <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px" >
+            <KeyValue title="Request headers" onChange={setRequestHeaders} />
+          </Box>
+
+          <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px">
+            <KeyValue title="Response headers" onChange={setResponseHeaders} />
           </Box>
         </Box>
-        <Button
-          bg={COLOR_SECONDARY}
-          colorScheme="blue"
-          onClick={onClickMockRequest}
-          disabled={
-            !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
-          }
-          type="submit"
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flex="1"
         >
-          Mock Network Request
-        </Button>
+          <Text padding="1em" textAlign="center">
+            Simulate an API request on the browser
+            <br />
+            <br />
+            Requests are visible in the <Code>Network</Code> section of your
+            browser's developer tools
+            <br />
+            <br />
+            Open <Kbd>at-your-service</Kbd> by clicking <Code>Open</Code> in the
+            bottom left corner of the screen
+          </Text>
+        </Box>
       </Box>
     </Box>
   );

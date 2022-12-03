@@ -90,8 +90,12 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
         }
         for (let status in store[host][pathname][method]) {
           // Remove the prefix character from the status code
-          const { reqBodySamples, reqHeadersSamples, resBodySamples, resHeadersSamples } =
-            store[host][pathname][method][status];
+          const {
+            reqBodySamples,
+            reqHeadersSamples,
+            resBodySamples,
+            resHeadersSamples,
+          } = store[host][pathname][method][status];
           status = status.slice(1);
 
           /**
@@ -126,7 +130,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
               const headerObj: HeaderObject = {
                 required: true,
                 schema,
-              }
+              };
               resHeaders[name] = headerObj;
             });
           }
