@@ -10,7 +10,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   // Uncomment to build docs that will work with GitHub Pages
-  base: "/at-your-service",
+  // base: "/at-your-service",
   // define: {
   //   global: "window",
   // },

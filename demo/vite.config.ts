@@ -10,7 +10,6 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/at-your-service/",
   plugins: [
     react(),
     typescript({ tsconfig: "./tsconfig.json" }),
