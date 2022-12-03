@@ -73,4 +73,38 @@ describe("specific behaviour tests", () => {
     const res = await validator.validate(result);
     expect(res.errors).toBeUndefined();
   });
+
+  test("includes request headers", async () => {
+    const path = "test";
+    const pathname = `/{${path}}`;
+    const method = "get";
+    const JSONStr = '"some_text"';
+    const headers = JSON.stringify({ "content-type": "application/json" });
+
+    const sample = new Sample(JSONStr);
+    const sampleHeaders = new Sample(headers);
+
+    const defaults = {
+      reqBodySamples: [sample],
+      reqHeadersSamples: [sampleHeaders],
+      resBodySamples: [sample],
+      resHeadersSamples: [sample],
+      pathname,
+      method,
+    };
+    const { storeStructure } = createStoreStructure(defaults);
+    const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
+    expect(result.paths[pathname][method].parameters).toContainEqual({
+      name: "content-type",
+      in: "header",
+      required: true,
+      schema: {
+        type: "string"
+      },
+    });
+
+    const validator = new Validator();
+    const res = await validator.validate(result);
+    expect(res.errors).toBeUndefined();
+  });
 });
