@@ -2,6 +2,8 @@ import { Box, Heading, List, ListItem, ListIcon, Link } from "@chakra-ui/react";
 import { FcCommandLine, FcIdea, FcAcceptDatabase } from "react-icons/fc";
 import { GiJumpingDog, GiCrystalBall } from "react-icons/gi";
 
+import useWindowSize from "./useWindowSize";
+
 import {
   COLOR_PRIMARY_BORDER,
   COLOR_PRIMARY,
@@ -10,6 +12,10 @@ import {
 } from "./constants";
 
 function HowItWorks() {
+  const { width } = useWindowSize();
+
+  const flexFlow = width && width > 600 ? "row nowrap" : "column nowrap";
+
   return (
     <Box
       display="flex"
@@ -28,7 +34,7 @@ function HowItWorks() {
       </Heading>
 
       <List spacing={36} maxWidth="800px">
-        <ListItem display="flex" flexFlow="row nowrap" alignItems="center">
+        <ListItem display="flex" flexFlow={flexFlow} alignItems="center">
           <ListIcon
             as={FcCommandLine}
             color={COLOR_WHITE}
@@ -48,7 +54,7 @@ function HowItWorks() {
           </Heading>
         </ListItem>
 
-        <ListItem display="flex" flexFlow="row nowrap" alignItems="center">
+        <ListItem display="flex" flexFlow={flexFlow} alignItems="center">
           <ListIcon
             as={GiJumpingDog}
             color={COLOR_WHITE}
@@ -60,7 +66,7 @@ function HowItWorks() {
           </Heading>
         </ListItem>
 
-        <ListItem display="flex" flexFlow="row nowrap" alignItems="center">
+        <ListItem display="flex" flexFlow={flexFlow} alignItems="center">
           <ListIcon
             as={FcAcceptDatabase}
             color={COLOR_WHITE}
@@ -73,7 +79,7 @@ function HowItWorks() {
           </Heading>
         </ListItem>
 
-        <ListItem display="flex" flexFlow="row nowrap" alignItems="center">
+        <ListItem display="flex" flexFlow={flexFlow} alignItems="center">
           <ListIcon
             as={GiCrystalBall}
             color={COLOR_WHITE}
@@ -86,7 +92,7 @@ function HowItWorks() {
           </Heading>
         </ListItem>
 
-        <ListItem display="flex" flexFlow="row nowrap" alignItems="center">
+        <ListItem display="flex" flexFlow={flexFlow} alignItems="center">
           <ListIcon
             as={FcIdea}
             color={COLOR_TERTIARY}

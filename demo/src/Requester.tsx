@@ -284,11 +284,11 @@ function Requester() {
           </Box>
 
           <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px" >
-            <KeyValue title="Request headers" onChange={setRequestHeaders} />
+            <KeyValue title="Request header" onChange={setRequestHeaders} />
           </Box>
 
           <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px">
-            <KeyValue title="Response headers" onChange={setResponseHeaders} />
+            <KeyValue title="Response header" onChange={setResponseHeaders} />
           </Box>
         </Box>
 
@@ -297,6 +297,7 @@ function Requester() {
           alignItems="center"
           justifyContent="center"
           flex="1"
+          marginTop="5vh"
         >
           <Text padding="1em" textAlign="center">
             Simulate an API request on the browser
