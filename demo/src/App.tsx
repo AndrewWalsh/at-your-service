@@ -74,7 +74,7 @@ function App() {
           <Heading as="h2" size="md">
             <Link
               isExternal
-              href="https://andrewwalsh.github.io/at-your-service/"
+              href="https://atyourservice.awalsh.io/"
               aria-label="live demo playground of at-your-service"
             >
               AYS Demo
