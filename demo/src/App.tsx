@@ -16,6 +16,7 @@ import Footer from "./Footer";
 import HowItWorks from "./HowItWorks";
 import BoxOnSWLoad from "./BoxOnSWLoad";
 import Requester from "./Requester";
+import Title from "./Title";
 import {
   COLOR_PRIMARY_BORDER,
   COLOR_WHITE,
@@ -117,63 +118,7 @@ function App() {
           width="80%"
           flexFlow="column nowrap"
         >
-          <Heading as="h1" margin="32px 0" maxWidth="850px">
-            <Link
-              bgGradient={`linear(to bottom, ${COLOR_PRIMARY}, ${COLOR_SECONDARY})`}
-              bgClip="text"
-              _hover={{ textDecoration: "underline", color: COLOR_SECONDARY }}
-              href="https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/"
-              isExternal
-              aria-label="learn more about API discovery and observability"
-              position="relative"
-            >
-              API Observability
-              <ExternalLinkIcon
-                mx={2}
-                paddingBottom="4px"
-                color={COLOR_SECONDARY}
-                position="absolute"
-                top="0"
-                height="20px"
-                width="20px"
-                right="-26px"
-              />
-            </Link>{" "}
-            <Text as="span" marginLeft="10px">
-              on the Frontend
-            </Text>
-            <br />
-            <br />
-            <Heading as="span" fontSize="24px">
-              Generate{" "}
-              <Link
-                href="https://www.openapis.org/"
-                isExternal
-                aria-label="openapi initiative"
-                color={COLOR_SECONDARY}
-              >
-                OpenAPI
-              </Link>{" "}
-              specifications and{" "}
-              <Link
-                href="https://quicktype.io/"
-                aria-label="the library that generates code from JSON Schema"
-                isExternal
-                color={COLOR_SECONDARY}
-              >
-                model code
-              </Link>{" "}
-              automatically from network requests using{" "}
-              <Link
-                href="https://web.dev/learn/pwa/service-workers/"
-                aria-label="learn more about service workers"
-                isExternal
-                color={COLOR_SECONDARY}
-              >
-                service workers
-              </Link>{" "}
-            </Heading>
-          </Heading>
+          <Title />
           <Text maxWidth="650px">
             <Kbd>at-your-service</Kbd> is an open source{" "}
             <Link
