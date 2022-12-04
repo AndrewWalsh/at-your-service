@@ -61,7 +61,7 @@
       <a href="#getting-started">Getting Started</a>
     </li>
     <li>
-      <a href="#how-it-works">How it Works</a>
+      <a href="#how-it-works">How It Works</a>
     </li>
     <li>
       <a href="#limitations">Limitations</a>
