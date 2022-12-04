@@ -118,7 +118,7 @@ function Requester() {
     } catch {
       return false;
     }
-  }, [resEditorVal]);
+  }, [reqEditorVal]);
 
   const resEditorIsValid = useMemo(() => {
     try {
