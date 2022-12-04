@@ -4,7 +4,7 @@
 
 [![MIT License][license-shield]][license-url]
 <a href="https://www.npmjs.com/package/at-your-service"><img alt="npm" src="https://img.shields.io/npm/v/at-your-service?style=for-the-badge"></a>
-<a href="https://atyourservice.awalsh.io/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-blueviolet?style=for-the-badge"></a>
+<a href="https://atyourservice.awalsh.io/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-422662?style=for-the-badge"></a>
 
 <a href="https://github.com/AndrewWalsh/at-your-service/actions"><img alt="npm" src="https://github.com/AndrewWalsh/at-your-service/actions/workflows/node.js.yml/badge.svg"></a>
 <a href="https://codeclimate.com/github/AndrewWalsh/at-your-service/test_coverage"><img src="https://api.codeclimate.com/v1/badges/56fa1f99da7509735cee/test_coverage" /></a>
@@ -22,7 +22,7 @@
 
   <p align="center">
     <blockquote>
-        A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code for any app via a service worker proxy
+        A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code from network traffic via a service worker proxy
         <br />
         <br />
         Designed for ease of use. Zero config & no requirement to integrate with existing code
@@ -78,7 +78,7 @@
 
 ## About the Project and Why
 
-<a href="https://atyourservice.awalsh.io/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-blueviolet"></a>
+<a href="https://atyourservice.awalsh.io/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-422662"></a>
 
 
 This tool is designed to help tackle problems that arise from a lack of awareness on API behaviour.
@@ -91,10 +91,10 @@ It records network requests as they happen locally on the browser and offers sch
 
 ## Features
 
-- **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications automatically
-- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema via [quicktype](https://github.com/quicktype/quicktype)
+- **Spec gen**: autogenerate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications from network traffic
+- **Code gen**: [convert](https://github.com/quicktype/quicktype) network response bodies into code for 10+ languages including TypeScript, Python, JSON Schema, and more 
 - **API Observability**: explore the network layer with enhanced tooling
-- **Easy installation**: designed to plug in and go
+- **Easy installation**: designed to plug in and go with an existing application
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
