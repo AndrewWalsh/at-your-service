@@ -17,6 +17,7 @@ import HowItWorks from "./HowItWorks";
 import BoxOnSWLoad from "./BoxOnSWLoad";
 import Requester from "./Requester";
 import Title from "./Title";
+import AnimationEffect from "./AnimationEffect";
 import {
   COLOR_PRIMARY_BORDER,
   COLOR_WHITE,
@@ -112,10 +113,30 @@ function App() {
         marginTop="1em"
       >
         <Box
+          position="absolute"
+          height="100%"
+          width="10vw"
+          top="0"
+          left="0"
+          overflow="hidden"
+        >
+          <AnimationEffect />
+        </Box>
+        <Box
+          position="absolute"
+          height="100%"
+          width="10vw"
+          top="0"
+          right="0"
+          overflow="hidden"
+        >
+          <AnimationEffect />
+        </Box>
+        <Box
           as="article"
           display="flex"
           alignItems="flex-start"
-          width="80%"
+          width="80vw"
           flexFlow="column nowrap"
         >
           <Title />

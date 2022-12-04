@@ -29,7 +29,7 @@
       </blockquote>
       <br />
       <br />
-      🚧 <code>Alpha</code> 🚧
+      🚧 <code>Alpha</code> pre-release 🚧
       <br />
       <br />
       <br />
@@ -80,9 +80,10 @@
 
 <a href="https://atyourservice.awalsh.io/"><img alt="npm" src="https://img.shields.io/badge/View%20-Live%20Demo-blueviolet"></a>
 
-Frontend developers often work on legacy projects that rely on backend services that are undocumented. Since they are undocumented, dealing with requests and responses is an immense hassle. The ideal solution to this problem is to document the backend, but in practice this can be immensely challenging.
 
-This tool is designed to help with tackle problems that arise from a lack of awareness on API behaviour.
+This tool is designed to help tackle problems that arise from a lack of awareness on API behaviour.
+
+It records network requests as they happen locally on the browser and offers schema and code generation capabilities.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -90,11 +91,10 @@ This tool is designed to help with tackle problems that arise from a lack of awa
 
 ## Features
 
-- **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications with valid [JSON Schema 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) request/response bodies
-- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema thanks to integration with [quicktype](https://github.com/quicktype/quicktype)
-- **Observability**: view all requests that have transpired since starting the dev tool in a tree view
-- **Easy install**: minimal fuss setup that "just works". Thanks to service workers no integration with your code is required
-- **Experimental**: it is a proof of concept at this stage
+- **Spec gen**: generate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications automatically
+- **Code gen**: convert network response bodies into code models for 10+ languages including TypeScript, Python, JSON Schema via [quicktype](https://github.com/quicktype/quicktype)
+- **API Observability**: explore the network layer with enhanced tooling
+- **Easy installation**: designed to plug in and go
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
