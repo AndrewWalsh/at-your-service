@@ -4,12 +4,56 @@ import { uniqueId, random } from "lodash";
 
 import { COLOR_PRIMARY, COLOR_SECONDARY } from "./constants";
 
+type RenderBoxProps = {
+  id: string;
+  height: string;
+  width: string;
+  top: string;
+  horizontal: string;
+};
+const RenderBox = (props: RenderBoxProps) => {
+  return (
+    <Box
+      key={props.id}
+      borderColor={
+        [COLOR_PRIMARY, COLOR_PRIMARY, COLOR_PRIMARY, COLOR_SECONDARY][
+          random(0, 3)
+        ]
+      }
+      borderStyle={
+        ["dashed", "dotted", "double", "solid", "ridge", "groove"][random(0, 4)]
+      }
+      bg={
+        random(0, 10) > 8
+          ? random(0, 3) > 2
+            ? COLOR_SECONDARY
+            : COLOR_PRIMARY
+          : "transparent"
+      }
+      borderWidth={random(0, 10) > 9 ? props.height : "1px"}
+      height={props.height}
+      width={props.width}
+      top={props.top}
+      left={props.horizontal}
+      position="relative"
+      opacity="0.5"
+      borderRadius="10px"
+      marginBottom="10px"
+      animation={`${fadeInOut} ${Math.max(
+        Math.floor(DURATION / 2),
+        Math.ceil(DURATION * Math.random())
+      )}s linear forwards`}
+    ></Box>
+  );
+};
+
 const fadeInOut = keyframes`
 0%,100% { opacity: 0 }
 50% { opacity: 0.8 }
-0% { scale: 0.2 }
-30% { scale: 0.7 }
-100% { scale: 1 }
+0% { scale: 0.2; translate(0, 0) }
+30% { scale: 0.7;  translate(0, 7px) }
+80% { translate(2px, 7px) }
+100% { scale: 1; transform: translate(10px, 10px) }
 `;
 
 type Item = {
@@ -21,7 +65,7 @@ type Item = {
 };
 
 // In seconds
-const DURATION = 5;
+const DURATION = 4;
 const QUANTITY_TO_GEN = 20;
 
 type Props = {
@@ -29,7 +73,7 @@ type Props = {
 };
 
 function AnimationEffect({ position }: Props) {
-  const [items, setItems] = useState<Array<Item>>([]);
+  const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
   const calculateItems = useCallback(() => {
     const howMany = Math.floor(Math.random() * QUANTITY_TO_GEN) + 1;
@@ -52,50 +96,35 @@ function AnimationEffect({ position }: Props) {
         top: `${topItems[-1] + 1}%`,
         horizontal: `calc(${
           Math.floor(Math.random() * 100) + 1
-        }% ${offset} ${Math.ceil(height)}px)`,
+        }% ${offset} ${Math.ceil(height * 2)}px)`,
       });
     }
-    setItems(newItems);
-  }, [items]);
+    return newItems;
+  }, [itemsFirst]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      calculateItems();
+    const timeoutOne = setTimeout(() => {
+      setItemsFirst(calculateItems());
     }, DURATION * 1000);
-    return () => clearTimeout(timeout);
-  }, [items]);
+    return () => {
+      clearTimeout(timeoutOne);
+    };
+  }, [itemsFirst]);
 
   useEffect(() => {
-    calculateItems();
+    setItemsFirst(calculateItems());
   }, []);
   return (
     <Box height="100%" width="100%" position="absolute">
-      {items.map((item) => (
-        <Box
+      {itemsFirst.map((item) => (
+        <RenderBox
           key={item.id}
-          borderColor={
-            [COLOR_PRIMARY, COLOR_PRIMARY, COLOR_PRIMARY, COLOR_SECONDARY][
-              random(0, 3)
-            ]
-          }
-          borderStyle={
-            ["dashed", "dotted", "double", "solid", "ridge", "groove"][
-              random(0, 4)
-            ]
-          }
-          borderWidth="1px"
+          id={item.id}
           height={item.height}
           width={item.width}
           top={item.top}
-          left={item.horizontal}
-          position="relative"
-          opacity="0.5"
-          borderRadius="10px"
-          animation={`${fadeInOut} ${Math.max(
-            Math.floor(DURATION / 2),
-            Math.ceil(DURATION * Math.random())
-          )}s linear forwards`}
-        ></Box>
+          horizontal={item.horizontal}
+        />
       ))}
     </Box>
   );
