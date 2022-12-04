@@ -66,7 +66,7 @@ type Item = {
 
 // In seconds
 const DURATION = 4;
-const QUANTITY_TO_GEN = 20;
+const QUANTITY_TO_GEN = 40;
 
 type Props = {
   position: "left" | "right";
@@ -87,16 +87,14 @@ function AnimationEffect({ position }: Props) {
       }
       topItems.sort();
       const heightPx = `${Math.ceil(height)}px`;
-      const offset = position === "left" ? `-` : `+`;
       newItems.push({
         id: uniqueId(),
         height: heightPx,
         width: heightPx,
-        // Bias towards the top
         top: `${topItems[-1] + 1}%`,
         horizontal: `calc(${
           Math.floor(Math.random() * 100) + 1
-        }% ${offset} ${Math.ceil(height * 2)}px)`,
+        }% - ${Math.ceil(height * 2)}px)`,
       });
     }
     return newItems;
