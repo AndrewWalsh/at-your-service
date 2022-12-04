@@ -262,7 +262,7 @@ function Requester() {
           colorScheme="blue"
           onClick={onClickMockRequest}
           disabled={
-            !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
+            !reqEditorIsValid || !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
           }
           type="submit"
         >
