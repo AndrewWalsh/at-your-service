@@ -26,7 +26,7 @@ function HowItWorks() {
       bg={COLOR_PRIMARY}
       borderTop={`2px solid ${COLOR_PRIMARY_BORDER}`}
       borderBottom={`2px solid ${COLOR_PRIMARY_BORDER}`}
-      padding="20vh 10vh"
+      padding="20vh 10vw"
       color={COLOR_WHITE}
     >
       <Heading as="h2" marginBottom="10vh" borderBottom="4px dashed white">
