@@ -1,4 +1,4 @@
-import { Box, Heading, List, ListItem, ListIcon, Link } from "@chakra-ui/react";
+import { Box, Heading, List, ListItem, ListIcon, Link, keyframes } from "@chakra-ui/react";
 import { FcCommandLine, FcIdea, FcAcceptDatabase } from "react-icons/fc";
 import { GiJumpingDog, GiCrystalBall } from "react-icons/gi";
 
@@ -9,7 +9,20 @@ import {
   COLOR_PRIMARY,
   COLOR_WHITE,
   COLOR_TERTIARY,
+  COLOR_SECONDARY,
 } from "./constants";
+
+const animatedBg = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
 
 function HowItWorks() {
   const { width } = useWindowSize();
@@ -23,7 +36,10 @@ function HowItWorks() {
       alignItems="center"
       as="section"
       width="100%"
-      bg={COLOR_PRIMARY}
+      // bg={COLOR_PRIMARY}
+      bgGradient={`linear-gradient(-45deg, ${COLOR_SECONDARY}, ${COLOR_PRIMARY}, ${COLOR_PRIMARY_BORDER}, ${COLOR_SECONDARY})`}
+      bgSize="400% 400%"
+      animation={`${animatedBg} 15s ease infinite`}
       borderTop={`2px solid ${COLOR_PRIMARY_BORDER}`}
       borderBottom={`2px solid ${COLOR_PRIMARY_BORDER}`}
       padding="20vh 10vw"
