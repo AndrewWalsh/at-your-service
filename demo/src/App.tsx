@@ -120,7 +120,7 @@ function App() {
           left="0"
           overflow="hidden"
         >
-          <AnimationEffect />
+          <AnimationEffect position="left" />
         </Box>
         <Box
           position="absolute"
@@ -130,7 +130,7 @@ function App() {
           right="0"
           overflow="hidden"
         >
-          <AnimationEffect />
+          <AnimationEffect position="right" />
         </Box>
         <Box
           as="article"
