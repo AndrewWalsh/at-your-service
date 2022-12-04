@@ -33,7 +33,7 @@
       <br />
       <br />
       <br />
-      <a href="https://atyourservice.awalsh.io/">See It in Action in the Demo Playground</a>
+      <a href="https://atyourservice.awalsh.io/">View the Live Demo</a>
       <br />
       <br />
       <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
@@ -82,23 +82,7 @@
 
 Frontend developers often work on legacy projects that rely on backend services that are undocumented. Since they are undocumented, dealing with requests and responses is an immense hassle. The ideal solution to this problem is to document the backend, but in practice this can be immensely challenging.
 
-There are several ways of programatically generating an OpenAPI specification for an existing backend service. Examples include schema generation [from code](https://www.blazemeter.com/blog/openapi-spec-from-code), [intercepted requests/responses via a proxy](https://apievangelist.com/2017/07/20/charles-proxy-generated-har-to-openapi-using-api-transformer/), and recently [commercial offerings that derive a specification from network observations](https://www.akitasoftware.com/). These solutions may or may not work for you.
-
-**Generating specifications and documentation is hard**
-
-Generating a schema from code only works if the backend deserialises all data into defined structures. Without this schema generation tools such as [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/) cannot generate an accurate specification as the underlying data models are not known.
-
-Using a proxy lets you [generate an OpenAPI specification from HTTP traffic](https://apisyouwonthate.com/blog/creating-openapi-from-http-traffic). This can be achieved locally with a proxy such as [Charles](https://www.charlesproxy.com/) that intercepts network requests and emits a [HAR](https://en.wikipedia.org/wiki/HAR_(file_format)) file. Tools such as [har-to-openapi](https://github.com/jonluca/har-to-openapi) can then convert this file into a specification. This is an effective approach as it uses real network observations and doesn't rely on assumptions in code.
-
-**Addressing network observability on the frontend itself**
-
-So if using a proxy for the purpose of gaining insight into what backend services are doing is an effective solution, why isn't it more commonplace? Because it's extremely cumbersome in practice. The config involved is non-trivial and without a considerable time investment in automation it is a very manually involved process.
-
-`at-your-service` sidesteps this hassle entirely by installing a proxy on the frontend directly. There is nothing to configure or setup. The frontend is where all network requests converge and all underlying services it calls out to are accounted for.
-
-When the tool is installed it records API requests and responses independently without affecting your application. It can produce an OpenAPI specification from these. This specification is a best-effort guess based on observations.
-
-It can also generate code such as TypeScript definitions for responses from backend APIs. For example, if you have a response that returns variously both `{ dog: "collie" }` and `{ dog: null }` then the tool can produce model code for serialization into many languages thanks to [quicktype](https://github.com/quicktype/quicktype) under the hood. This translates into a data structure where `dog` is of [JSON type](https://cswr.github.io/JsonSchema/spec/basic_types/) `string` or `null`. All type information that can be derived from observations is accounted.
+This tool is designed to help with tackle problems that arise from a lack of awareness on API behaviour.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -147,13 +131,7 @@ The service worker must be served from the root of your site. Once this is insta
 
 ## How It Works
 
-[Service workers](https://www.freecodecamp.org/news/service-workers-the-little-heroes-behind-progressive-web-apps-431cc22d0f16/) are a special form of web worker that underpin advanced functionalities in [PWAs](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps). Once installed they have a variety of applications. The application that this library makes use of is their potential to act as a [proxy](https://www.freecodecamp.org/news/what-is-a-proxy-server-in-english-please/).
-
-A *"service worker"* itself is just a file containing function calls and other behaviour specific to the context of a service worker. Libraries such as Google's [Workbox](https://developer.chrome.com/docs/workbox/) exist to ease development of service workers specifically. This library features a custom service worker script that performs a very specific role. It captures *request* / *response* pairs and emits these as events.
-
-The main client captures these events and places them into an optimised data structure. Request and response bodies are parsed before storage. Each property is [zeroed](https://yourbasic.org/golang/default-zero-value/) as only the type itself is relevant for sake of spec and code gen. When a request or response body differs for the same path the sample is stored alongside existing samples. This means that code and spec generation accounts for the full spectrum of type information given the observations from the network requests that have occurred since the `at-your-service` tool began.
-
-More information on the architecture of the tool [is available here](https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/).
+More information on the rationale, functionality, and architecture of the tool [can be found here](https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -161,9 +139,9 @@ More information on the architecture of the tool [is available here](https://awa
 
 ## Limitations
 
-The library creates specifications that are only as accurate as the underlying observations. If your application relies on a response body that has not been observed, then type information for it will not be available.
+The library creates specifications that are only as accurate as the underlying observations. If your application relies on a response body that has not been observed, then type information for it will not be available. In addition, the underlying sampling algorithm is fairly basic.
 
-Overall the intent is to produce a "best guess" that reveals API behaviour. This will never be a replacement for proper documentation.
+Overall the intent is to produce a *best guess* that reveals API behaviour. This will never be a replacement for proper documentation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
