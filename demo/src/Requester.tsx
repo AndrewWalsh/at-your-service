@@ -161,7 +161,7 @@ function Requester() {
       boxSizing="border-box"
       gap={2}
     >
-      <Box display="flex" flexFlow="row wrap" flex="1" height="100%" gap={6}>
+      <Box display="flex" flexFlow="row wrap" flex="1" height="100%" gap={4}>
         {showReqEditor && (
           <Box
             flex="1"

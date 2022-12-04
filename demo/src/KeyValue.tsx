@@ -31,7 +31,7 @@ const keyChars = (s: string) => {
 
 const valueChars = (s: string) => {
   const validChars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789- ";
   const validCharsSet = new Set(validChars.split(""));
   let out = "";
   for (const c of s) {

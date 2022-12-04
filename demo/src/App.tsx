@@ -189,7 +189,7 @@ function App() {
             browser
             <br />
             <br />
-            Generate schemas and code on the fly as you use your app
+            Observe API traffic, create schemas, and generate code on the fly
             <br />
             <br />
           </Text>

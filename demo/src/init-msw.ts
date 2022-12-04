@@ -1,17 +1,41 @@
 import { SetupWorkerApi } from "msw";
 
-import { startAtYourService } from "at-your-service";
-// import { startAtYourService } from "../../src";
+// import { startAtYourService } from "at-your-service";
+import { startAtYourService } from "../../src";
 
-const SW_PATH = `${import.meta.env.BASE_URL}mockServiceWorker.js`;
-// window.navigator.serviceWorker.register(SW_PATH);
+import registerServiceWorker from "./registerServiceWorker";
 
 const initialiseWorker = async (worker: SetupWorkerApi) => {
-  await window.navigator.serviceWorker.register(SW_PATH);
+  const serviceWorker = await registerServiceWorker('mockServiceWorker')
+  // if (navigator.serviceWorker.controller) {
+  //   await navigator.serviceWorker
+  //     .getRegistration("./mockServiceWorker.js")
+  //     .then(function (sw) {
+  //       if (sw) {
+  //         return sw
+  //           .unregister()
+  //           .then(() =>
+  //             navigator.serviceWorker.register("./mockServiceWorker.js", {
+  //               scope: "./",
+  //             })
+  //           );
+  //       }
+  //     });
+  // }
+  
+  // navigator.serviceWorker.getRegistration().then(function(reg) {
+  //   // There's an active SW, but no controller for this tab.
+  //   if (reg?.active && !navigator.serviceWorker.controller) {
+  //     // Perform a soft reload to load everything from the SW and get
+  //     // a consistent set of resources.
+  //     window.location.reload();
+  //   }
+  // });
 
   worker.start({
     quiet: true,
     onUnhandledRequest: "bypass",
+    serviceWorker,
   });
 
   window.navigator.serviceWorker.ready.then(() => {
