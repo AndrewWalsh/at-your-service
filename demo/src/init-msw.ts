@@ -10,9 +10,6 @@ const initialiseWorker = async (worker: SetupWorkerApi) => {
   await window.navigator.serviceWorker.register(SW_PATH);
 
   worker.start({
-    findWorker(scriptUrl) {
-      return scriptUrl.includes("mockServiceWorker.js");
-    },
     quiet: true,
     onUnhandledRequest: "bypass",
   });

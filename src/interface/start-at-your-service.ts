@@ -64,7 +64,7 @@ export default async function startAtYourService(
 ) {
   try {
     if (config.registerWorker) {
-      await navigator.serviceWorker.register("./at-your-service-sw.js");
+      await navigator.serviceWorker.register("./at-your-service-sw.js", { scope: './' });
     }
 
     // Sometimes, things go wrong relating to dev servers

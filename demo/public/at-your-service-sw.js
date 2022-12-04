@@ -84,13 +84,13 @@
 class FetchPayload {
   /**
    * Used as the message payload to the client
-   * @param {Request} request - a request object from a fetch event
+   * @param {Event} event - a fetch event
    * @param {Response} response - a response object from a fetch event
    * @param {number} beforeRequestTime - a timestamp from before the request was made
    * @param {number} afterRequestTime - a timestamp from when a response was received
+   * @param {string} requestBody - the request body serialized as a JSON string
    */
-  constructor(request, response, beforeRequestTime, afterRequestTime) {
-    const clonedReq = request.clone();
+  constructor(event, response, beforeRequestTime, afterRequestTime, requestBody) {
     // HACK: to work with the demo
     const clonedRes = { ...response, headers: Object.entries(response.headers) }
 
@@ -103,10 +103,11 @@ class FetchPayload {
     });
 
     this._createPayload(
-      clonedReq,
+      event,
       clonedRes,
       beforeRequestTime,
-      afterRequestTime
+      afterRequestTime,
+      requestBody,
     );
   }
 
@@ -116,12 +117,14 @@ class FetchPayload {
 
   /**
    * Creates a payload asynchronously
-   * @param {Request} request
+   * @param {Event} event
    * @param {Response} response
    * @param {number} beforeRequestTime
    * @param {number} afterRequestTime
+   * @param {string} requestBody
    */
-  async _createPayload(request, response, beforeRequestTime, afterRequestTime) {
+  async _createPayload(event, response, beforeRequestTime, afterRequestTime, requestBody) {
+    const request = event.request
     const requestHeaders = {};
     for (const [key, value] of request.headers) {
       requestHeaders[key] = value;
@@ -145,7 +148,7 @@ class FetchPayload {
       beforeRequestTime,
       afterRequestTime,
       request: {
-        body: request.body || null,
+        body: requestBody ? JSON.parse(requestBody) : null,
         referrer: request.referrer || null,
         url: request.url,
         headers: requestHeaders,
@@ -154,7 +157,7 @@ class FetchPayload {
       response: {
         body: responseBody,
         referrer: response.referrer || null,
-        url: request.url,
+        url: response.url || request.url,
         headers: responseHeaders,
         status: response.status,
         statusText: response.statusText,

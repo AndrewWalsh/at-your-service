@@ -232,6 +232,8 @@ async function getResponse(event, client, requestId) {
     return passthrough()
   }
 
+  const requestBody = await request.text()
+
   // Notify the client that a request has been intercepted.
   const clientMessage = await sendToClient(client, {
     type: 'REQUEST',
@@ -248,7 +250,7 @@ async function getResponse(event, client, requestId) {
       redirect: request.redirect,
       referrer: request.referrer,
       referrerPolicy: request.referrerPolicy,
-      body: await request.text(),
+      body: requestBody,
       bodyUsed: request.bodyUsed,
       keepalive: request.keepalive,
     },
@@ -258,10 +260,11 @@ async function getResponse(event, client, requestId) {
     case 'MOCK_RESPONSE': {
       // const response = await getResponse(event, client, requestId)
       const payload = await new FetchPayload(
-        event.request,
+        event,
         clientMessage.data,
         beforeRequestTime,
         Date.now(),
+        requestBody,
       ).getPayload();
       await sendToClient(client, { payload, type: "FETCH" });
       return respondWithMock(clientMessage.data)

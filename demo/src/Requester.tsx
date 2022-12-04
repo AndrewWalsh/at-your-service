@@ -30,6 +30,10 @@ import initMSW from "./init-msw";
 import useSWIsReady from "./useSWIsReady";
 import KeyValue, { KV } from "./KeyValue";
 
+const reqEditorDefaultVal = {
+  id: 42,
+};
+
 const resEditorDefaultVal = {
   text: "simulate some requests and check out the tool",
   number: 1,
@@ -47,13 +51,15 @@ const prettyPrintJSON = (json: {}) => JSON.stringify(json, null, 2);
 function Requester() {
   const swIsRead = useSWIsReady();
   const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
-  const [reqEditorVal, setReqEditorVal] = useState('{ "id": 22 }');
+  const [reqEditorVal, setReqEditorVal] = useState(
+    prettyPrintJSON(reqEditorDefaultVal)
+  );
   const [resEditorVal, setResEditorVal] = useState(
     prettyPrintJSON(resEditorDefaultVal)
   );
   const [host, setHost] = useState("https://example.com");
   const [pathname, setPathname] = useState("/api");
-  const [method, setMethod] = useState("GET");
+  const [method, setMethod] = useState("POST");
   const [status, setStatus] = useState("200");
   const toast = useToast({ position: "top" });
 
@@ -78,14 +84,17 @@ function Requester() {
           ctx.delay(50),
           ctx.status(Number(status), "OK"),
           ctx.json(JSON.parse(resEditorVal)),
-          ctx.set(Object.fromEntries(responseHeaders)),
+          ctx.set(Object.fromEntries(responseHeaders))
         );
       }),
       rest.get("https://example.com/api", (req, res, ctx) => {
         return res(ctx.delay(50), ctx.status(200, "OK"), ctx.json({}));
       })
     );
-    fetch(`${host}${pathname}`, { method, headers: requestHeaders });
+    const params = showReqEditor
+      ? { method, headers: requestHeaders, body: reqEditorVal }
+      : { method, headers: requestHeaders };
+    fetch(`${host}${pathname}`, params);
     toast({
       title: "API request mocked",
       description: `${method} ${host}${pathname} -> ${status}`,
@@ -94,6 +103,22 @@ function Requester() {
       isClosable: true,
     });
   };
+
+  const showReqEditor = method !== "GET" && method !== "DELETE";
+
+  const reqEditorIsValid = useMemo(() => {
+    if (!showReqEditor) {
+      return true;
+    }
+    try {
+      if (!isJSON(reqEditorVal)) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }, [resEditorVal]);
 
   const resEditorIsValid = useMemo(() => {
     try {
@@ -137,30 +162,53 @@ function Requester() {
       gap={2}
     >
       <Box display="flex" flexFlow="row wrap" flex="1" height="100%" gap={6}>
-        {/* <Box
-          flex="1"
-          minWidth="300px"
-          boxSizing="border-box"
-          role="dialog"
-          aria-labelledby="dialog1Title"
-          minHeight="384px"
-        >
-          <Box height="32px" display="flex" alignItems="center">
-            <Heading as="h6" size="md" id="dialog1Title">
-              Request
-            </Heading>
+        {showReqEditor && (
+          <Box
+            flex="1"
+            minWidth="300px"
+            boxSizing="border-box"
+            role="dialog"
+            aria-labelledby="dialog1Title"
+            minHeight="384px"
+          >
+            <Box height="32px" display="flex" alignItems="center">
+              <Heading
+                as="label"
+                size="md"
+                id="dialog1Title"
+                htmlFor="ace-editor-req-bdy"
+              >
+                Request Body
+              </Heading>
+            </Box>
+            <AceEditor
+              mode="json"
+              theme="monokai"
+              width="100%"
+              height="calc(100% - 32px)"
+              name="ace-editor-req-bdy"
+              style={
+                reqEditorIsValid
+                  ? undefined
+                  : {
+                      outline: "2px solid #e53e3e",
+                      boxShadow: "0 0 0 1px #e53e3e",
+                      borderRadius: "0.375rem",
+                    }
+              }
+              editorProps={{ $blockScrolling: true }}
+              value={reqEditorVal}
+              onChange={setReqEditorVal}
+              aria-invalid={!reqEditorIsValid}
+              onBlur={() => {
+                try {
+                  const val = prettyPrintJSON(JSON.parse(reqEditorVal));
+                  setReqEditorVal(val);
+                } catch {}
+              }}
+            />
           </Box>
-          <AceEditor
-            mode="json"
-            theme="monokai"
-            width="100%"
-            height="calc(100% - 32px)"
-            name="UNIQUE_ID_OF_DIV_1"
-            editorProps={{ $blockScrolling: true }}
-            value={reqEditorVal}
-            onChange={setReqEditorVal}
-          />
-        </Box> */}
+        )}
         <Box
           flex="1"
           minWidth="300px"
@@ -283,11 +331,21 @@ function Requester() {
             </InputGroup>
           </Box>
 
-          <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px" >
+          <Box
+            maxHeight="250px"
+            overflow="scroll"
+            width="300px"
+            paddingTop="32px"
+          >
             <KeyValue title="Request header" onChange={setRequestHeaders} />
           </Box>
 
-          <Box maxHeight="250px" overflow="scroll" width="300px" paddingTop="32px">
+          <Box
+            maxHeight="250px"
+            overflow="scroll"
+            width="300px"
+            paddingTop="32px"
+          >
             <KeyValue title="Response header" onChange={setResponseHeaders} />
           </Box>
         </Box>
