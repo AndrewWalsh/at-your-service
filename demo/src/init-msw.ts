@@ -22,12 +22,12 @@ const initialiseWorker = async (worker: SetupWorkerApi) => {
 };
 
 let worker: SetupWorkerApi;
-let didCall = false
+let didCall = false;
 export default async (setupWorker: SetupWorkerApi) => {
   if (didCall) {
-    return worker
+    return worker;
   }
-  didCall = true
-  worker = await initialiseWorker(setupWorker)
-  return worker
-}
+  didCall = true;
+  worker = await initialiseWorker(setupWorker);
+  return worker;
+};

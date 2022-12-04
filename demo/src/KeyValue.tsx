@@ -14,16 +14,33 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { FcCommandLine, FcIdea, FcParallelTasks } from "react-icons/fc";
-import { DiGithubFull, DiNpm } from "react-icons/di";
 
-import {
-  COLOR_PRIMARY_BORDER,
-  COLOR_PRIMARY,
-  COLOR_WHITE,
-  COLOR_TERTIARY,
-  COLOR_SECONDARY,
-} from "./constants";
+import { COLOR_WHITE, COLOR_SECONDARY } from "./constants";
+
+const keyChars = (s: string) => {
+  const validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-";
+  const validCharsSet = new Set(validChars.split(""));
+  let out = "";
+  for (const c of s) {
+    if (validCharsSet.has(c)) {
+      out += c;
+    }
+  }
+  return out;
+};
+
+const valueChars = (s: string) => {
+  const validChars =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
+  const validCharsSet = new Set(validChars.split(""));
+  let out = "";
+  for (const c of s) {
+    if (validCharsSet.has(c)) {
+      out += c;
+    }
+  }
+  return out;
+};
 
 export type KV = Array<[key: string, value: string]>;
 
@@ -100,7 +117,7 @@ function KeyValue({ onChange, title }: Props) {
               <Input
                 variant="flushed"
                 placeholder="Key"
-                onChange={(e) => setKey(e.target.value)}
+                onChange={(e) => setKey(keyChars(e.target.value))}
                 value={key}
               />
             </Th>
@@ -108,7 +125,7 @@ function KeyValue({ onChange, title }: Props) {
               <Input
                 variant="flushed"
                 placeholder="Value"
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => setValue(valueChars(e.target.value))}
                 value={value}
               />
             </Th>
