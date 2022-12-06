@@ -37,6 +37,7 @@ const RenderBox = (props: RenderBoxProps) => {
       left={props.horizontal}
       position="relative"
       opacity="0.5"
+      boxShadow={`inset -2px -2px ${Number(props.height.slice(0, 2)) / DURATION}px gray`}
       borderRadius="10px"
       marginBottom="10px"
       animation={`${random(1, 5) > 4 ? fadeInOutFaster : fadeInOut} ${Math.max(
