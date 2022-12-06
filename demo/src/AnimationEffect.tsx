@@ -39,7 +39,7 @@ const RenderBox = (props: RenderBoxProps) => {
       opacity="0.5"
       borderRadius="10px"
       marginBottom="10px"
-      animation={`${fadeInOut} ${Math.max(
+      animation={`${random(1, 5) > 4 ? fadeInOutFaster : fadeInOut} ${Math.max(
         Math.floor(DURATION / 2),
         Math.ceil(DURATION * Math.random())
       )}s linear forwards`}
@@ -56,6 +56,13 @@ const fadeInOut = keyframes`
 100% { scale: 1; transform: translate(10px, 10px) }
 `;
 
+const fadeInOutFaster = keyframes`
+0%,100% { opacity: 0 }
+50% { opacity: 0.8 }
+0% { scale: 0.5; translate(0, 0) }
+100% { scale: 0.6; transform: translate(50px, 50px) }
+`;
+
 type Item = {
   id: string;
   height: string;
@@ -65,14 +72,10 @@ type Item = {
 };
 
 // In seconds
-const DURATION = 4;
+const DURATION = 6;
 const QUANTITY_TO_GEN = 40;
 
-type Props = {
-  position: "left" | "right";
-};
-
-function AnimationEffect({ position }: Props) {
+function AnimationEffect() {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
   const calculateItems = useCallback(() => {
