@@ -43,7 +43,7 @@ const RenderBox = (props: RenderBoxProps) => {
       borderRadius="10px"
       marginBottom="10px"
       animation={`${random(1, 5) > 4 ? fadeInOutFaster : fadeInOut} ${Math.max(
-        Math.floor(DURATION / 2),
+        Math.floor(DURATION / 1.3),
         Math.ceil(DURATION * Math.random())
       )}s linear forwards`}
     ></Box>
@@ -52,7 +52,7 @@ const RenderBox = (props: RenderBoxProps) => {
 
 const fadeInOut = keyframes`
 0%,100% { opacity: 0 }
-50% { opacity: 0.8 }
+80% { opacity: 1 }
 0% { scale: 0.2; translate(0, 0) }
 30% { scale: 0.7;  translate(0, 7px) }
 80% { translate(2px, 7px) }
@@ -63,7 +63,7 @@ const fadeInOutFaster = keyframes`
 0%,100% { opacity: 0 }
 50% { opacity: 0.8 }
 0% { scale: 0.5; translate(0, 0) }
-100% { scale: 0.6; transform: translate(50px, 50px) }
+100% { scale: 0.6; transform: translate(70px, 70px) }
 `;
 
 type Item = {
