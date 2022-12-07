@@ -155,7 +155,7 @@ function App() {
             browser
             <br />
             <br />
-            Observe API traffic, create schemas, and generate code on the fly
+            Observe API behavior, create schemas, and generate code on the fly
             <br />
             <br />
           </Text>
