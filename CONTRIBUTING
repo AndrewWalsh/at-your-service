@@ -1,0 +1,13 @@
+# Introduction
+
+Thank you for considering contributing to at-your-service.
+
+# Getting started
+
+The `demo` directory contains a development environment to play with the tool.
+
+Source code for the at-your-service tool itself is in `src`.
+
+# How to report a bug
+
+Please [raise the issue](https://github.com/AndrewWalsh/at-your-service/issues) and include as much information as possible.

@@ -64,6 +64,9 @@
       <a href="#how-it-works">How It Works</a>
     </li>
     <li>
+      <a href="#contributing">Contributing</a>
+    </li>
+    <li>
       <a href="#limitations">Limitations</a>
     </li>
     <li>
@@ -132,6 +135,16 @@ The service worker must be served from the root of your site. Once this is insta
 ## How It Works
 
 More information on the rationale, functionality, and architecture of the tool [can be found here](https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+A development environment exists in `demo`, which when built is the landing page for the library.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
