@@ -262,7 +262,11 @@ function Requester() {
           colorScheme="blue"
           onClick={onClickMockRequest}
           disabled={
-            !reqEditorIsValid || !resEditorIsValid || !hostIsValid || !pathnameIsValid || !swIsRead
+            !reqEditorIsValid ||
+            !resEditorIsValid ||
+            !hostIsValid ||
+            !pathnameIsValid ||
+            !swIsRead
           }
           type="submit"
         >
@@ -281,9 +285,9 @@ function Requester() {
             <InputGroup>
               <InputLeftAddon children="Method" width="100px" />
               <Select
-                width="auto"
                 value={method}
                 minWidth="211px"
+                maxWidth="211px"
                 onChange={(e) => setMethod(e.target.value)}
               >
                 <option value="GET">GET</option>
@@ -298,8 +302,9 @@ function Requester() {
               <InputLeftAddon children="Host" width="100px" />
               <Input
                 value={host}
+                minWidth="211px"
+                maxWidth="211px"
                 onChange={(e) => setHost(e.target.value)}
-                width="auto"
                 isInvalid={!hostIsValid}
                 placeholder="E.g. http://example.com"
               />
@@ -310,7 +315,8 @@ function Requester() {
               <Input
                 value={pathname}
                 onChange={(e) => setPathname(e.target.value)}
-                width="auto"
+                minWidth="211px"
+                maxWidth="211px"
                 isInvalid={!pathnameIsValid}
                 isDisabled={!hostIsValid}
                 placeholder="E.g. /api/v1/users"
@@ -320,8 +326,8 @@ function Requester() {
             <InputGroup>
               <InputLeftAddon children="Status" width="100px" />
               <Select
-                width="auto"
                 minWidth="211px"
+                maxWidth="211px"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
