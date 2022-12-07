@@ -34,7 +34,6 @@ export const createPayloadFromWorker: CreatePayloadFromWorker = (
       status: values.status,
       referrer: null,
       url: values.url,
-      statusText: "OK",
       redirected: false,
       type: "basic",
     },

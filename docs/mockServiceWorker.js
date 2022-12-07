@@ -154,7 +154,6 @@ async function handleRequest(event, requestId) {
           type: clonedResponse.type,
           ok: clonedResponse.ok,
           status: clonedResponse.status,
-          statusText: clonedResponse.statusText,
           body:
             clonedResponse.body === null ? null : await clonedResponse.text(),
           headers: Object.fromEntries(clonedResponse.headers.entries()),

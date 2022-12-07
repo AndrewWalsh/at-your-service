@@ -26,7 +26,6 @@ export const messagePayloadSchema = object({
     referrer: string().nullable(),
     url: string().required(),
     status: number().required().positive().integer(),
-    statusText: string().required(),
     redirected: boolean().required(),
     type: string().required(),
   }),

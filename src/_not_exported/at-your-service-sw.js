@@ -157,7 +157,6 @@ class FetchPayload {
         url: response.url,
         headers: responseHeaders,
         status: response.status,
-        statusText: response.statusText,
         redirected: response.redirected,
         type: response.type.toLowerCase(),
       },
