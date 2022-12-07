@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FcCommandLine, FcIdea, FcAcceptDatabase } from "react-icons/fc";
 import { GiJumpingDog, GiCrystalBall } from "react-icons/gi";
+import { SpaceProps, TypographyProps } from "@chakra-ui/system";
 
 import useWindowSize from "./useWindowSize";
 
@@ -35,8 +36,16 @@ const animatedBg = keyframes`
 function HowItWorks() {
   const { width } = useWindowSize();
 
-  const flexFlow = width && width > 600 ? "row nowrap" : "column nowrap";
+  const isLargeScreen = width && width > 600;
+  const flexFlow = isLargeScreen ? "row nowrap" : "column nowrap";
 
+  const headerStyles: {
+    marginLeft: SpaceProps["marginLeft"],
+    textAlign: TypographyProps["textAlign"],
+  } = {
+    marginLeft: isLargeScreen ? "32px" : 0,
+    textAlign: isLargeScreen ? undefined : "center",
+  }
   return (
     <Box
       display="flex"
@@ -64,7 +73,7 @@ function HowItWorks() {
             height="128px"
             width="128px"
           />
-          <Heading as="h3" marginLeft="32px">
+          <Heading as="h3" {...headerStyles}>
             Read the{" "}
             <Link
               color={COLOR_TERTIARY}
@@ -84,7 +93,7 @@ function HowItWorks() {
             height="128px"
             width="128px"
           />
-          <Heading as="h3" marginLeft="32px">
+          <Heading as="h3" {...headerStyles}>
             Use your application and trigger requests to backend APIs
           </Heading>
         </ListItem>
@@ -96,7 +105,7 @@ function HowItWorks() {
             height="128px"
             width="128px"
           />
-          <Heading as="h3" marginLeft="32px">
+          <Heading as="h3" {...headerStyles}>
             A service worker proxy continually sends information to the client
             on the browser
           </Heading>
@@ -109,7 +118,7 @@ function HowItWorks() {
             height="128px"
             width="128px"
           />
-          <Heading as="h3" marginLeft="32px">
+          <Heading as="h3" {...headerStyles}>
             The tool learns about the structure of backend APIs as it collects
             information over time
           </Heading>
@@ -122,7 +131,7 @@ function HowItWorks() {
             height="128px"
             width="128px"
           />
-          <Heading as="h3" marginLeft="32px">
+          <Heading as="h3" {...headerStyles}>
             Prototype applications and discover API behaviour from network
             traffic
           </Heading>
