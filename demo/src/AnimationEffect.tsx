@@ -2,7 +2,7 @@ import { Box, keyframes } from "@chakra-ui/react";
 import { useState, useEffect, useCallback } from "react";
 import { uniqueId, random } from "lodash";
 
-import { COLOR_PRIMARY, COLOR_SECONDARY } from "./constants";
+import { COLOR_PRIMARY, COLOR_PRIMARY_BORDER, COLOR_SECONDARY } from "./constants";
 
 type RenderBoxProps = {
   id: string;
@@ -12,6 +12,14 @@ type RenderBoxProps = {
   horizontal: string;
 };
 const RenderBox = (props: RenderBoxProps) => {
+  const bg = random(0, 10) > 7
+      ? random(0, 3) > 2
+        ? COLOR_SECONDARY
+        : COLOR_PRIMARY
+      : "transparent"
+  
+  const boxShadowColor = bg === "transparent" ? "gray" : bg === COLOR_PRIMARY ? COLOR_PRIMARY_BORDER : COLOR_PRIMARY;
+
   return (
     <Box
       key={props.id}
@@ -23,13 +31,7 @@ const RenderBox = (props: RenderBoxProps) => {
       borderStyle={
         ["dashed", "dotted", "double", "solid", "ridge", "groove"][random(0, 4)]
       }
-      bg={
-        random(0, 10) > 8
-          ? random(0, 3) > 2
-            ? COLOR_SECONDARY
-            : COLOR_PRIMARY
-          : "transparent"
-      }
+      bg={bg}
       borderWidth={random(0, 10) > 9 ? props.height : "1px"}
       height={props.height}
       width={props.width}
@@ -37,7 +39,7 @@ const RenderBox = (props: RenderBoxProps) => {
       left={props.horizontal}
       position="relative"
       opacity="0.5"
-      boxShadow={`inset -2px -2px ${Number(props.height.slice(0, 2)) / DURATION}px gray`}
+      boxShadow={`inset -2px -2px ${Number(props.height.slice(0, 2)) / DURATION}px ${boxShadowColor}`}
       borderRadius="10px"
       marginBottom="10px"
       animation={`${random(1, 5) > 4 ? fadeInOutFaster : fadeInOut} ${Math.max(
@@ -54,7 +56,7 @@ const fadeInOut = keyframes`
 0% { scale: 0.2; translate(0, 0) }
 30% { scale: 0.7;  translate(0, 7px) }
 80% { translate(2px, 7px) }
-100% { scale: 1; transform: translate(10px, 10px) }
+100% { scale: 1; transform: translate(30px, 30px) }
 `;
 
 const fadeInOutFaster = keyframes`
@@ -73,14 +75,14 @@ type Item = {
 };
 
 // In seconds
-const DURATION = 6;
+const DURATION = 8;
 const QUANTITY_TO_GEN = 40;
 
 function AnimationEffect() {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
   const calculateItems = useCallback(() => {
-    const howMany = Math.floor(Math.random() * QUANTITY_TO_GEN) + 1;
+    const howMany = Math.max(Math.floor(Math.random() * QUANTITY_TO_GEN), 19) + 1;
     const newItems: Array<Item> = [];
     for (let i = 0; i < howMany; i++) {
       const height = Math.floor(Math.random() * 40) + 1;
