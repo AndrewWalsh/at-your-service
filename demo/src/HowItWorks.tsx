@@ -1,12 +1,4 @@
-import {
-  Box,
-  Heading,
-  List,
-  ListItem,
-  ListIcon,
-  Link,
-  keyframes,
-} from "@chakra-ui/react";
+import { Box, Heading, List, ListItem, ListIcon, Link } from "@chakra-ui/react";
 import { FcCommandLine, FcIdea, FcAcceptDatabase } from "react-icons/fc";
 import { GiJumpingDog, GiCrystalBall } from "react-icons/gi";
 import { SpaceProps, TypographyProps } from "@chakra-ui/system";
@@ -18,20 +10,7 @@ import {
   COLOR_PRIMARY,
   COLOR_WHITE,
   COLOR_TERTIARY,
-  COLOR_SECONDARY,
 } from "./constants";
-
-const animatedBg = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
 
 function HowItWorks() {
   const { width } = useWindowSize();
@@ -40,12 +19,12 @@ function HowItWorks() {
   const flexFlow = isLargeScreen ? "row nowrap" : "column nowrap";
 
   const headerStyles: {
-    marginLeft: SpaceProps["marginLeft"],
-    textAlign: TypographyProps["textAlign"],
+    marginLeft: SpaceProps["marginLeft"];
+    textAlign: TypographyProps["textAlign"];
   } = {
     marginLeft: isLargeScreen ? "32px" : 0,
     textAlign: isLargeScreen ? undefined : "center",
-  }
+  };
   return (
     <Box
       display="flex"
@@ -53,9 +32,7 @@ function HowItWorks() {
       alignItems="center"
       as="section"
       width="100%"
-      bgGradient={`linear-gradient(-45deg, ${COLOR_SECONDARY}, ${COLOR_PRIMARY}, ${COLOR_PRIMARY_BORDER}, ${COLOR_SECONDARY})`}
-      bgSize="400% 400%"
-      animation={`${animatedBg} 18s ease infinite`}
+      bg={COLOR_PRIMARY}
       borderTop={`2px solid ${COLOR_PRIMARY_BORDER}`}
       borderBottom={`2px solid ${COLOR_PRIMARY_BORDER}`}
       padding="20vh 10vw"

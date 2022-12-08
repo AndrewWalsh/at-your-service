@@ -11,7 +11,6 @@ import {
 import { SkipNavLink, SkipNavContent } from "@chakra-ui/skip-nav";
 import { FaGithub, FaArrowAltCircleDown } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
 import Footer from "./Footer";
 import HowItWorks from "./HowItWorks";
@@ -189,7 +188,8 @@ function App() {
               browser
               <br />
               <br />
-              Observe API behaviour, create schemas, and generate code on the fly
+              Observe API behaviour, create schemas, and generate code on the
+              fly
               <br />
               <br />
             </Text>
@@ -215,7 +215,13 @@ function App() {
           </Box>
 
           {Boolean(width) && width! > 1100 && (
-            <Box display="flex" height="100%" alignItems="center" justifyContent="center" flexGrow="1">
+            <Box
+              display="flex"
+              height="100%"
+              alignItems="center"
+              justifyContent="center"
+              flexGrow="1"
+            >
               <SkeletonLanding />
             </Box>
           )}

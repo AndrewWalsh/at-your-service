@@ -1,18 +1,7 @@
-import { useState, useEffect } from "react";
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
-import {
-  Box,
-  Link,
-  Icon,
-  Heading,
-  Text,
-  Image,
-  Kbd,
-  Tag,
-  Stack,
-  Button,
-} from "@chakra-ui/react";
-import { COLOR_PRIMARY, COLOR_PRIMARY_BORDER } from "./constants";
+import { useState } from "react";
+import { Skeleton } from "@chakra-ui/react";
+import { Box, Text, Stack, Button } from "@chakra-ui/react";
+import { COLOR_PRIMARY } from "./constants";
 
 export default function SkeletonLanding() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -46,7 +35,9 @@ export default function SkeletonLanding() {
       </Skeleton>
 
       <Box>
-        <Button onClick={() => setIsLoaded((v) => !v)}>Collecting samples ...</Button>
+        <Button onClick={() => setIsLoaded((v) => !v)}>
+          Collecting samples ...
+        </Button>
       </Box>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { Box, keyframes, propNames } from "@chakra-ui/react";
+import { Box, keyframes } from "@chakra-ui/react";
 import { useState, useEffect, useCallback } from "react";
 import { uniqueId, random } from "lodash";
 
@@ -81,10 +81,7 @@ const RenderBox = (props: Item) => {
 
   const bg = bgs[random(0, bgs.length - 1)];
 
-  const shadesOfGrey = [
-    "#D3D3D3",
-    "#A9A9A9",
-  ];
+  const shadesOfGrey = ["#D3D3D3", "#A9A9A9"];
 
   const shadowWhenWhite = shadesOfGrey[random(0, shadesOfGrey.length - 1)];
   const shadowWhenPurple = "black";
@@ -133,7 +130,9 @@ const RenderBox = (props: Item) => {
   );
 };
 
-function AnimationEffect(props: { bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY}) {
+function AnimationEffect(props: {
+  bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY;
+}) {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
   const calculateItems = useCallback(() => {
