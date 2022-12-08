@@ -1,4 +1,4 @@
-import { Box, keyframes } from "@chakra-ui/react";
+import { Box, keyframes, propNames } from "@chakra-ui/react";
 import { useState, useEffect, useCallback } from "react";
 import { uniqueId, random } from "lodash";
 
@@ -30,7 +30,7 @@ const SPEED_VARIANCE = 1.25;
 
 const defaultAnimations = `
 0% { scale: 0 }
-20% { opacity: 0.4; scale: 0.8 }
+10% { opacity: 0.4; scale: 0.8 }
 30% { opacity: 1; scale: 0.9 }
 90% { opacity: 1 }
 `;
@@ -63,6 +63,7 @@ type Item = {
   width: number;
   top: string;
   horizontal: string;
+  bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY;
 };
 
 const RenderBox = (props: Item) => {
@@ -73,6 +74,9 @@ const RenderBox = (props: Item) => {
     COLOR_WHITE,
     COLOR_PRIMARY,
     COLOR_SECONDARY,
+    props.bg,
+    props.bg,
+    props.bg,
   ];
 
   const bg = bgs[random(0, bgs.length - 1)];
@@ -129,7 +133,7 @@ const RenderBox = (props: Item) => {
   );
 };
 
-function AnimationEffect() {
+function AnimationEffect(props: { bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY}) {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
   const calculateItems = useCallback(() => {
@@ -149,6 +153,7 @@ function AnimationEffect() {
       topItems.sort();
       newItems.push({
         id: uniqueId(),
+        bg: props.bg,
         height: height,
         width: height,
         top: `${topItems[-1] + BIAS}%`,
@@ -177,6 +182,7 @@ function AnimationEffect() {
       {itemsFirst.map((item) => (
         <RenderBox
           key={item.id}
+          bg={item.bg}
           id={item.id}
           height={item.height}
           width={item.width}

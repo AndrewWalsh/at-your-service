@@ -128,7 +128,7 @@ function App() {
             left="-50px"
             overflow="hidden"
           >
-            <AnimationEffect />
+            <AnimationEffect bg={COLOR_PRIMARY} />
           </Box>
         </Box>
 
@@ -148,7 +148,7 @@ function App() {
             left="-50px"
             overflow="hidden"
           >
-            <AnimationEffect />
+            <AnimationEffect bg={COLOR_SECONDARY} />
           </Box>
         </Box>
         <Box
