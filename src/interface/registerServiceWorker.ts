@@ -50,7 +50,7 @@ export default async function registerServiceWorker(
   // console.info('Waiting for ready worker');
   let serviceReg;
   try {
-    serviceReg = await timeout(1000, navigator.serviceWorker.ready);
+    serviceReg = await timeout(3000, navigator.serviceWorker.ready);
   } catch {}
   // console.info('Ready registration:', serviceReg);
   if (!serviceReg) {

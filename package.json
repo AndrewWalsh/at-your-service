@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code from network traffic via a service worker proxy",
   "homepage": "https://atyourservice.awalsh.io/",
   "types": "dist/index.d.ts",

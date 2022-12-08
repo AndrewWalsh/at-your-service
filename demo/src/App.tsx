@@ -120,8 +120,18 @@ function App() {
           left="0"
           overflow="hidden"
         >
-          <AnimationEffect />
+          <Box
+            position="absolute"
+            height="100%"
+            width="calc(10vw + 40px)"
+            top="-20px"
+            left="-50px"
+            overflow="hidden"
+          >
+            <AnimationEffect />
+          </Box>
         </Box>
+
         <Box
           position="absolute"
           height="100%"
@@ -130,7 +140,16 @@ function App() {
           right="0"
           overflow="hidden"
         >
-          <AnimationEffect />
+          <Box
+            position="absolute"
+            height="100%"
+            width="calc(10vw + 50px)"
+            top="-20px"
+            left="-50px"
+            overflow="hidden"
+          >
+            <AnimationEffect />
+          </Box>
         </Box>
         <Box
           as="article"
