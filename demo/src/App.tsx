@@ -11,6 +11,7 @@ import {
 import { SkipNavLink, SkipNavContent } from "@chakra-ui/skip-nav";
 import { FaGithub, FaArrowAltCircleDown } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
 import Footer from "./Footer";
 import HowItWorks from "./HowItWorks";
@@ -18,6 +19,7 @@ import BoxOnSWLoad from "./BoxOnSWLoad";
 import Requester from "./Requester";
 import Title from "./Title";
 import AnimationEffect from "./AnimationEffect";
+import SkeletonLanding from "./SkeletonLanding";
 import {
   COLOR_PRIMARY_BORDER,
   COLOR_WHITE,
@@ -25,9 +27,11 @@ import {
   COLOR_SECONDARY,
 } from "./constants";
 
+import useWindowSize from "./useWindowSize";
 import logo from "./assets/logo.png";
 
 function App() {
+  const { width } = useWindowSize();
   return (
     <Box
       width="100%"
@@ -127,6 +131,7 @@ function App() {
             top="-20px"
             left="-50px"
             overflow="hidden"
+            role="presentation"
           >
             <AnimationEffect bg={COLOR_PRIMARY} />
           </Box>
@@ -147,56 +152,73 @@ function App() {
             top="-20px"
             left="-50px"
             overflow="hidden"
+            role="presentation"
           >
             <AnimationEffect bg={COLOR_SECONDARY} />
           </Box>
         </Box>
         <Box
-          as="article"
+          as="section"
           display="flex"
           alignItems="flex-start"
           width="80vw"
-          flexFlow="column nowrap"
+          flexFlow="row nowrap"
         >
-          <Title />
-          <Text maxWidth="650px">
-            <Kbd>at-your-service</Kbd> is an open source{" "}
-            <Link
-              href="https://www.npmjs.com/package/at-your-service"
-              aria-label="learn more about the tool"
-              isExternal
-              color={COLOR_SECONDARY}
-              fontWeight="bold"
-            >
-              developer tool
-            </Link>{" "}
-            for frontend applications that records network requests on the
-            browser
-            <br />
-            <br />
-            Observe API behavior, create schemas, and generate code on the fly
-            <br />
-            <br />
-          </Text>
-
-          <SkipNavLink
-            id="demo"
+          <Box
+            as="article"
             display="flex"
-            position="relative"
-            height="100%"
-            width="100%"
+            alignItems="flex-start"
+            maxWidth="700px"
+            width="700px"
+            flexFlow="column nowrap"
+            flexGrow="1"
           >
-            <Tag
-              size="lg"
-              bg={COLOR_SECONDARY}
-              color={COLOR_WHITE}
-              colorScheme="blue"
+            <Title />
+            <Text maxWidth="650px">
+              <Kbd>at-your-service</Kbd> is an open source{" "}
+              <Link
+                href="https://www.npmjs.com/package/at-your-service"
+                aria-label="learn more about the tool"
+                isExternal
+                color={COLOR_SECONDARY}
+                fontWeight="bold"
+              >
+                developer tool
+              </Link>{" "}
+              for frontend applications that records network requests on the
+              browser
+              <br />
+              <br />
+              Observe API behaviour, create schemas, and generate code on the fly
+              <br />
+              <br />
+            </Text>
+
+            <SkipNavLink
+              id="demo"
+              display="flex"
+              position="relative"
               height="100%"
+              width="100%"
             >
-              Try it out below
-              <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
-            </Tag>
-          </SkipNavLink>
+              <Tag
+                size="lg"
+                bg={COLOR_SECONDARY}
+                color={COLOR_WHITE}
+                colorScheme="blue"
+                height="100%"
+              >
+                Try it out below
+                <Icon as={FaArrowAltCircleDown} marginLeft="4px" />
+              </Tag>
+            </SkipNavLink>
+          </Box>
+
+          {Boolean(width) && width! > 1100 && (
+            <Box display="flex" height="100%" alignItems="center" justifyContent="center" flexGrow="1">
+              <SkeletonLanding />
+            </Box>
+          )}
         </Box>
         <Box
           maxHeight="90%"

@@ -46,7 +46,7 @@ function Title() {
         />
       </Link>{" "}
       <Text as="span" marginLeft="10px">
-        on the Frontend
+        on the Browser
       </Text>
       <br />
       <br />
