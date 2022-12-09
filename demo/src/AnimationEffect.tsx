@@ -22,7 +22,7 @@ const MIN_DIMENSION = 15;
 // Avoid division by zero
 const BIAS = 1;
 // Increase to make items disappear sooner
-const DISAPPEAR_SOONER = 1.2;
+const DISAPPEAR_SOONER = 2;
 // Speed of items
 const SPEED = 40;
 // Degree of variance
