@@ -113,7 +113,6 @@ function App() {
         as="main"
         flexFlow="column nowrap"
         alignItems="center"
-        marginTop="1em"
       >
         <Box
           position="absolute"
@@ -127,7 +126,6 @@ function App() {
             position="absolute"
             height="100%"
             width="calc(10vw + 40px)"
-            top="-20px"
             left="-50px"
             overflow="hidden"
             role="presentation"
@@ -148,7 +146,6 @@ function App() {
             position="absolute"
             height="100%"
             width="calc(10vw + 50px)"
-            top="-20px"
             left="-50px"
             overflow="hidden"
             role="presentation"

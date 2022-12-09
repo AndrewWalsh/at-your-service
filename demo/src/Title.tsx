@@ -17,11 +17,8 @@ const animatedBg = keyframes`
 
 function Title() {
   return (
-    <Heading
-      as="h1"
-      margin="32px 0"
-      maxWidth="850px"
-    >
+    <Heading as="h1" margin="32px 0" maxWidth="850px">
+      <br />
       <Link
         bgClip="text"
         bgGradient={`linear-gradient(-45deg, ${COLOR_SECONDARY}, ${COLOR_PRIMARY}, ${COLOR_SECONDARY}, ${COLOR_SECONDARY})`}
