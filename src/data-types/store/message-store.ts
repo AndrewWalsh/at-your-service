@@ -1,4 +1,4 @@
-import { get, set, isUndefined } from "lodash";
+import { get, set, isUndefined, zip } from "lodash";
 import store2, { StoreBase } from "store2";
 
 import type { MessageData, StoreRoute, StoreStructure } from "../../types";
@@ -9,21 +9,31 @@ import { getPathToStoreRoute } from "../../lib";
 
 export const STORE_STORAGE_NAMESPACE = "at-your-service-sw-store";
 
+const storeRouteMethods = [
+  "requestBodySamples",
+  "requestHeadersSamples",
+  "responseBodySamples",
+  "responseHeadersSamples",
+  "queryParameterSamples",
+] as const;
+
 /**
  * The type of the serialised version of the store in store2
  */
 interface StoreRouteSerialised
   extends Omit<
     StoreRoute,
-    | "reqBodySamples"
-    | "reqHeadersSamples"
-    | "resBodySamples"
-    | "resHeadersSamples"
+    | "requestBodySamples"
+    | "requestHeadersSamples"
+    | "responseBodySamples"
+    | "responseHeadersSamples"
+    | "queryParameterSamples"
   > {
-  reqBodySamples: Array<string>;
-  reqHeadersSamples: Array<string>;
-  resBodySamples: Array<string>;
-  resHeadersSamples: Array<string>;
+  requestBodySamples: Array<string>;
+  requestHeadersSamples: Array<string>;
+  responseBodySamples: Array<string>;
+  responseHeadersSamples: Array<string>;
+  queryParameterSamples: Array<string>;
 }
 
 type PathToStoreRoute = [
@@ -57,17 +67,20 @@ class Store {
     try {
       const all: { [k: string]: StoreRouteSerialised } =
         this.localStorage.getAll();
-      const out: StoreStructure = Object.create(null);
+      const out: StoreStructure = {};
 
       for (const [path, route] of Object.entries(all)) {
         const pathToStoreRoute = getPathToStoreRoute(path);
 
         const initialValues: Partial<StoreRoute> = {
           ...route,
-          reqBodySamples: route.reqBodySamples.map(Sample.create),
-          reqHeadersSamples: route.reqHeadersSamples.map(Sample.create),
-          resBodySamples: route.resBodySamples.map(Sample.create),
-          resHeadersSamples: route.reqHeadersSamples.map(Sample.create),
+          queryParameterSamples: route.queryParameterSamples.map(Sample.create),
+          requestBodySamples: route.requestBodySamples.map(Sample.create),
+          requestHeadersSamples: route.requestHeadersSamples.map(Sample.create),
+          responseBodySamples: route.responseBodySamples.map(Sample.create),
+          responseHeadersSamples: route.responseHeadersSamples.map(
+            Sample.create
+          ),
         };
 
         set(out, pathToStoreRoute, initialValues);
@@ -77,7 +90,7 @@ class Store {
     } catch (e) {
       this.localStorage.clearAll();
       // Localstorage could be blocked for various reasons
-      return Object.create(null);
+      return {};
     }
   }
 
@@ -123,10 +136,10 @@ class Store {
       requestHeadersSample: Sample;
       responseBodySample: Sample;
       responseHeadersSample: Sample;
+      queryParameterSample: Sample;
     } & MessageData
   ) {
     const initialData: StoreRoute = {
-      parameters: parseQueryParameters(withData.url.searchParams),
       pathname: withData.pathname,
       meta: [
         {
@@ -135,10 +148,11 @@ class Store {
           latencyMs: withData.latencyMs,
         },
       ],
-      reqBodySamples: [withData.requestBodySample],
-      reqHeadersSamples: [withData.requestHeadersSample],
-      resBodySamples: [withData.responseBodySample],
-      resHeadersSamples: [withData.responseHeadersSample],
+      requestBodySamples: [withData.requestBodySample],
+      requestHeadersSamples: [withData.requestHeadersSample],
+      responseBodySamples: [withData.responseBodySample],
+      responseHeadersSamples: [withData.responseHeadersSample],
+      queryParameterSamples: [withData.queryParameterSample],
     };
 
     set(this.store, withData.pathToStoreRoute, initialData);
@@ -194,6 +208,7 @@ class Store {
     const requestHeadersSample = new Sample(requestHeadersJSON);
     const responseBodySample = new Sample(responseBodyJSON);
     const responseHeadersSample = new Sample(responseHeadersJSON);
+    const queryParameterSample = parseQueryParameters(url.searchParams);
 
     const storeRoute: undefined | StoreRoute = get(
       this.store,
@@ -211,36 +226,29 @@ class Store {
         requestHeadersSample,
         responseBodySample,
         responseHeadersSample,
+        queryParameterSample,
       });
     }
     // Update
     else {
       // Add new sample if it doesn't exist
       // That is to say, we need to know of it in order to construct an accurate representation
-      if (
-        requestBodySample &&
-        !storeRoute.reqBodySamples.some(requestBodySample.isEqual)
-      ) {
-        storeRoute.reqBodySamples.push(requestBodySample);
+      const allSamples = [
+        requestBodySample,
+        requestHeadersSample,
+        responseBodySample,
+        responseHeadersSample,
+        queryParameterSample,
+      ];
+
+      for (let i = 0; i < allSamples.length; i++) {
+        const sample = allSamples[i];
+        const methodName = storeRouteMethods[i];
+        if (sample && !storeRoute[methodName].some(sample.isEqual)) {
+          storeRoute[methodName].push(sample);
+        }
       }
-      if (
-        requestHeadersSample &&
-        !storeRoute.reqHeadersSamples.some(requestHeadersSample.isEqual)
-      ) {
-        storeRoute.reqHeadersSamples.push(requestHeadersSample);
-      }
-      if (
-        responseBodySample &&
-        !storeRoute.resBodySamples.some(responseBodySample.isEqual)
-      ) {
-        storeRoute.resBodySamples.push(responseBodySample);
-      }
-      if (
-        responseHeadersSample &&
-        !storeRoute.resHeadersSamples.some(responseHeadersSample.isEqual)
-      ) {
-        storeRoute.resHeadersSamples.push(responseHeadersSample);
-      }
+
       storeRoute.meta.push({
         beforeRequestTime: data.beforeRequestTime,
         afterRequestTime: data.afterRequestTime,

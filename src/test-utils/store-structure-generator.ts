@@ -9,20 +9,20 @@ type Options = {
   pathname: string;
   method: string;
   status: string;
-  reqBodySamples: Array<Sample>;
-  reqHeadersSamples: Array<Sample>;
-  resBodySamples: Array<Sample>;
-  resHeadersSamples: Array<Sample>;
+  requestBodySamples: Array<Sample>;
+  requestHeadersSamples: Array<Sample>;
+  responseBodySamples: Array<Sample>;
+  responseHeadersSamples: Array<Sample>;
 };
 
 const defaults: () => Options = () => ({
   pathname: `/${faker.lorem.word()}`,
   method: faker.internet.httpMethod(),
   status: "s" + faker.internet.httpStatusCode(),
-  reqBodySamples: [generateFakeSample()],
-  reqHeadersSamples: [generateFakeSample()],
-  resBodySamples: [generateFakeSample()],
-  resHeadersSamples: [generateFakeSample()],
+  requestBodySamples: [generateFakeSample()],
+  requestHeadersSamples: [generateFakeSample()],
+  responseBodySamples: [generateFakeSample()],
+  responseHeadersSamples: [generateFakeSample()],
 });
 
 export const createStoreStructure = (opts = defaults()) => {
@@ -33,11 +33,11 @@ export const createStoreStructure = (opts = defaults()) => {
       [opts.pathname]: {
         [opts.method]: {
           [opts.status]: {
-            reqBodySamples: opts.reqBodySamples,
-            reqHeadersSamples: opts.reqHeadersSamples,
-            resBodySamples: opts.resBodySamples,
-            resHeadersSamples: opts.resHeadersSamples,
-            parameters: {},
+            requestBodySamples: opts.requestBodySamples,
+            requestHeadersSamples: opts.requestHeadersSamples,
+            responseBodySamples: opts.responseBodySamples,
+            responseHeadersSamples: opts.responseHeadersSamples,
+            queryParameterSamples: {},
             meta: [],
             pathname: opts.pathname,
           },

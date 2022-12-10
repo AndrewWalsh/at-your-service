@@ -29,20 +29,21 @@ const SPEED = 40;
 const SPEED_VARIANCE = 1.25;
 
 const defaultAnimations = `
-0% { scale: 0 }
-10% { opacity: 0.4; scale: 0.8 }
-30% { opacity: 1; scale: 0.9 }
-90% { opacity: 1 }
+0% { scale: 0.5; }
+20% { scale: 0.8; }
+30%,90% { opacity: 1 }
 `;
 
 const generator = () => {
   const variance = () => Math.ceil(Math.random() * (SPEED_VARIANCE * SPEED));
   const y = SPEED + variance();
   const x = SPEED + variance() * 2;
+
   const effects = keyframes`
   ${defaultAnimations}
   0%,100% { opacity: 0; }
-  100% { scale: 1; transform: translate(${x}px, ${y}px) }
+  80% { transform: translate(${x - 5}px, ${y - 5}px); }
+  95%,100% { scale: 1; transform: translate(${x}px, ${y}px); }
   `;
   return effects;
 };
@@ -70,6 +71,7 @@ const RenderBox = (props: Item) => {
   const height = `${Math.max(props.height, MIN_DIMENSION)}px`;
   const width = `${Math.max(props.width, MIN_DIMENSION)}px`;
   const bgs: Array<string> = [
+    COLOR_WHITE,
     COLOR_WHITE,
     COLOR_WHITE,
     COLOR_PRIMARY,

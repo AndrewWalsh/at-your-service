@@ -59,10 +59,10 @@ describe("specific behaviour tests", () => {
     const sampleTwo = new Sample(JSONNum);
 
     const defaults = {
-      reqBodySamples: [sampleOne, sampleTwo],
-      reqHeadersSamples: [sampleOne, sampleTwo],
-      resBodySamples: [sampleOne, sampleTwo],
-      resHeadersSamples: [sampleOne, sampleTwo],
+      requestBodySamples: [sampleOne, sampleTwo],
+      requestHeadersSamples: [sampleOne, sampleTwo],
+      responseBodySamples: [sampleOne, sampleTwo],
+      responseHeadersSamples: [sampleOne, sampleTwo],
       pathname,
       method,
       status,
@@ -91,10 +91,10 @@ describe("specific behaviour tests", () => {
     const sampleHeaders = new Sample(headers);
 
     const defaults = {
-      reqBodySamples: [sample],
-      reqHeadersSamples: [sampleHeaders],
-      resBodySamples: [sample],
-      resHeadersSamples: [sample],
+      requestBodySamples: [sample],
+      requestHeadersSamples: [sampleHeaders],
+      responseBodySamples: [sample],
+      responseHeadersSamples: [sample],
       pathname,
       method,
       status,
@@ -139,19 +139,19 @@ describe("specific behaviour tests", () => {
     const sampleHeaders = new Sample(headers);
 
     const defaults = {
-      reqBodySamples: [sample],
-      reqHeadersSamples: [sample],
-      resBodySamples: [sample],
-      resHeadersSamples: [sampleHeaders],
+      requestBodySamples: [sample],
+      requestHeadersSamples: [sample],
+      responseBodySamples: [sample],
+      responseHeadersSamples: [sampleHeaders],
       pathname,
       method,
       status,
     };
     const { storeStructure } = createStoreStructure(defaults);
     const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
-    const resHeaders =
+    const responseHeaders =
       result.paths[pathname][method].responses[status.slice(1)].headers;
-    expect(resHeaders).toEqual({
+    expect(responseHeaders).toEqual({
       "content-type": {
         required: true,
         schema: {

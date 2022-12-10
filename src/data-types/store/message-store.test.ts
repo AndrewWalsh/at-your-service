@@ -1,6 +1,6 @@
 import { test, expect, beforeEach, vi, describe } from "vitest";
 import store2 from "store2";
-import { times, cloneDeep, get, difference } from "lodash";
+import { times, cloneDeep, get } from "lodash";
 
 import { createMessage } from "../../test-utils";
 import getStore, { Store, STORE_STORAGE_NAMESPACE } from "./message-store";
@@ -16,10 +16,11 @@ type CreateExpected = (values: {
   pathname: string;
   method: string;
   status: string;
-  reqBodySamples: Sample[];
-  reqHeadersSamples: Sample[];
-  resBodySamples: Sample[];
-  resHeadersSamples: Sample[];
+  requestBodySamples: Array<Sample>;
+  requestHeadersSamples: Array<Sample>;
+  responseBodySamples: Array<Sample>;
+  responseHeadersSamples: Array<Sample>;
+  queryParamSamples: Array<Sample>;
   data: Meta;
 }) => Readonly<StoreStructure>;
 const createExpected: CreateExpected = ({
@@ -27,10 +28,11 @@ const createExpected: CreateExpected = ({
   pathname,
   method,
   status,
-  reqBodySamples,
-  reqHeadersSamples,
-  resBodySamples,
-  resHeadersSamples,
+  requestBodySamples,
+  requestHeadersSamples,
+  responseBodySamples,
+  responseHeadersSamples,
+  queryParamSamples,
   data,
 }) => {
   const expected: Readonly<StoreStructure> = {
@@ -39,10 +41,10 @@ const createExpected: CreateExpected = ({
         [method]: {
           // s here is due to the status being a number & being interpreted as an array index integer
           [status]: {
-            reqBodySamples,
-            reqHeadersSamples,
-            resBodySamples,
-            resHeadersSamples,
+            requestBodySamples,
+            requestHeadersSamples,
+            responseBodySamples,
+            responseHeadersSamples,
             meta: [
               {
                 beforeRequestTime: data.beforeRequestTime,
@@ -50,7 +52,7 @@ const createExpected: CreateExpected = ({
                 latencyMs: data.latencyMs,
               },
             ],
-            parameters: {},
+            queryParameterSamples: queryParamSamples,
             pathname: "/",
           },
         },
@@ -86,18 +88,22 @@ const createStoreStructureAndExpectedForSingleMessage = async (
   const storeStructure = await store.get();
   const storeRoute = storeStructure[host][pathname][method][statusPrepended];
 
-  const reqBodySamples = storeRoute.reqBodySamples.length
-    ? [...storeRoute.reqBodySamples]
+  const requestBodySamples = storeRoute.requestBodySamples.length
+    ? [...storeRoute.requestBodySamples]
     : [];
-  const reqHeadersSamples = storeRoute.reqHeadersSamples.length
-    ? [...storeRoute.reqHeadersSamples]
+  const requestHeadersSamples = storeRoute.requestHeadersSamples.length
+    ? [...storeRoute.requestHeadersSamples]
     : [];
 
-  const resBodySamples = storeRoute.resBodySamples.length
-    ? [...storeRoute.resBodySamples]
+  const responseBodySamples = storeRoute.responseBodySamples.length
+    ? [...storeRoute.responseBodySamples]
     : [];
-  const resHeadersSamples = storeRoute.resHeadersSamples.length
-    ? [...storeRoute.resHeadersSamples]
+  const responseHeadersSamples = storeRoute.responseHeadersSamples.length
+    ? [...storeRoute.responseHeadersSamples]
+    : [];
+
+  const queryParamSamples = storeRoute.queryParameterSamples.length
+    ? [...storeRoute.queryParameterSamples]
     : [];
 
   const expected = createExpected({
@@ -105,10 +111,11 @@ const createStoreStructureAndExpectedForSingleMessage = async (
     pathname,
     method,
     status: statusPrepended,
-    reqBodySamples,
-    reqHeadersSamples,
-    resBodySamples,
-    resHeadersSamples,
+    queryParamSamples,
+    requestBodySamples,
+    requestHeadersSamples,
+    responseBodySamples,
+    responseHeadersSamples,
     data,
   });
 
@@ -185,16 +192,16 @@ describe("updates with a single request/response type", () => {
 describe("persistence to and hydration from client storage", () => {
   test("restores state from client storage", async () => {
     // create a store structure that saves to local storage
-    const [storeStructure] =
+    const [_, storeStructure] =
       await createStoreStructureAndExpectedForSingleMessage();
 
     // create a new store instance that loads from local storage
     const newStore = new Store();
     const newStoreStructure = await newStore.get();
 
-    expect(JSON.stringify(newStoreStructure)).toEqual(
-      JSON.stringify(storeStructure)
-    );
+    const serializer = (s: StoreStructure) => JSON.parse(JSON.stringify(s));
+
+    expect(serializer(newStoreStructure)).toEqual(serializer(storeStructure));
   });
 
   test("if client storage is not available or in an invalid format, clears and uses a default value", async () => {
@@ -225,10 +232,10 @@ describe("updates with multiple request/response types", () => {
         method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
       },
       (
-        | "reqBodySamples"
-        | "reqHeadersSamples"
-        | "resBodySamples"
-        | "resHeadersSamples"
+        | "requestBodySamples"
+        | "requestHeadersSamples"
+        | "responseBodySamples"
+        | "responseHeadersSamples"
       ),
       "requestBody" | "requestHeaders" | "responseBody" | "responseHeaders"
     ]
@@ -245,7 +252,7 @@ describe("updates with multiple request/response types", () => {
         responseHeaders: null,
         method: "GET" as const,
       },
-      "reqBodySamples",
+      "requestBodySamples",
       "requestBody",
     ],
     [
@@ -260,7 +267,7 @@ describe("updates with multiple request/response types", () => {
         responseHeaders: null,
         method: "GET" as const,
       },
-      "reqHeadersSamples",
+      "requestHeadersSamples",
       "requestHeaders",
     ],
     [
@@ -275,7 +282,7 @@ describe("updates with multiple request/response types", () => {
         responseHeaders: null,
         method: "GET" as const,
       },
-      "resBodySamples",
+      "responseBodySamples",
       "responseBody",
     ],
     [
@@ -290,7 +297,7 @@ describe("updates with multiple request/response types", () => {
         responseHeaders: "test",
         method: "GET" as const,
       },
-      "resHeadersSamples",
+      "responseHeadersSamples",
       "responseHeaders",
     ],
   ];
@@ -323,5 +330,46 @@ describe("updates with multiple request/response types", () => {
     const expectSamples = ['""', 0, null, true];
 
     expect(storeRoute[method].map((s) => s.getSample())).toEqual(expectSamples);
+  });
+});
+
+describe("updates to query parameters", () => {
+  test("stores new query parameters, and updates to them", async () => {
+    const url = new URL("https://example.com/api?test=1");
+
+    const values = {
+      url: new URL("https://example.com/api").href,
+      status: 200,
+      requestBody: null,
+      requestHeaders: null,
+      responseBody: null,
+      responseHeaders: null,
+      method: "GET" as const,
+    };
+
+    const messages = [
+      createMessage(values),
+      createMessage({ ...values, url: `${values.url}?test="a"` }),
+      createMessage({ ...values, url: `${values.url}?test=1` }),
+    ];
+
+    for (const message of messages) {
+      await store.update(message);
+    }
+
+    const storeStructure = await store.get();
+    // @ts-expect-error
+    const { pathToStoreRoute } = Store.getPathToStoreRoute({
+      url,
+      method: values.method,
+      status: `s${values.status}`,
+    });
+    const storeRoute = get(storeStructure, pathToStoreRoute);
+
+    const expectSamples = [{}, { test: '""' }];
+
+    expect(storeRoute.queryParameterSamples.map((s) => s.getSample())).toEqual(
+      expectSamples
+    );
   });
 });

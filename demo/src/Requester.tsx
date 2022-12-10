@@ -29,6 +29,7 @@ import { COLOR_SECONDARY } from "./constants";
 import initMSW from "./init-msw";
 import useSWIsReady from "./useSWIsReady";
 import KeyValue, { KV } from "./KeyValue";
+import LatencySlider from "./LatencySlider";
 
 const reqEditorDefaultVal = {
   id: 42,
@@ -61,10 +62,12 @@ function Requester() {
   const [pathname, setPathname] = useState("/api");
   const [method, setMethod] = useState("POST");
   const [status, setStatus] = useState("200");
+  const [latency, setLatency] = useState(50);
   const toast = useToast({ position: "top" });
 
   const [requestHeaders, setRequestHeaders] = useState<KV>([]);
   const [responseHeaders, setResponseHeaders] = useState<KV>([]);
+  const [queryParameters, setQueryParameters] = useState<KV>([]);
 
   // Start the worker with a dummy handler
   useEffect(() => {
@@ -81,20 +84,20 @@ function Requester() {
     worker.use(
       handler(host + pathname, (req, res, ctx) => {
         return res(
-          ctx.delay(50),
+          ctx.delay(latency),
           ctx.status(Number(status), "OK"),
           ctx.json(JSON.parse(resEditorVal)),
           ctx.set(Object.fromEntries(responseHeaders))
         );
       }),
-      rest.get("https://example.com/api", (req, res, ctx) => {
-        return res(ctx.delay(50), ctx.status(200, "OK"), ctx.json({}));
-      })
     );
     const params = showReqEditor
       ? { method, headers: requestHeaders, body: reqEditorVal }
       : { method, headers: requestHeaders };
-    fetch(`${host}${pathname}`, params);
+    
+    const urlParams = new URLSearchParams(Object.fromEntries(queryParameters));
+
+    fetch(`${host}${pathname}${urlParams ? `?${urlParams}` : ""}`, params);
     toast({
       title: "API request mocked",
       description: `${method} ${host}${pathname} -> ${status}`,
@@ -256,7 +259,7 @@ function Requester() {
         </Box>
       </Box>
 
-      <Box display="flex" flexFlow="column" as="form" gap={4} marginTop="8px">
+      <Box display="flex" flexFlow="column" as="form" gap={4} marginTop="8px" overflow="visible">
         <Button
           bg={COLOR_SECONDARY}
           colorScheme="blue"
@@ -278,9 +281,9 @@ function Requester() {
             paddingTop="32px"
             display="flex"
             alignItems="flex-start"
+            justifyContent="flex-start"
             flexFlow="column nowrap"
             gap={4}
-            maxHeight="250px"
           >
             <InputGroup>
               <InputLeftAddon children="Method" width="100px" />
@@ -335,24 +338,37 @@ function Requester() {
                 <option value="400">400</option>
               </Select>
             </InputGroup>
+
+            <InputGroup>
+              <InputLeftAddon children="Latency" width="100px" />
+              <Box width="100%" display="flex" alignItems="center" margin="0 16px">
+                <LatencySlider value={latency} setValue={setLatency} />
+              </Box>
+            </InputGroup>
           </Box>
 
           <Box
-            maxHeight="250px"
             overflow="scroll"
             width="300px"
             paddingTop="32px"
           >
-            <KeyValue title="Request header" onChange={setRequestHeaders} />
+            <KeyValue title="Request headers" onChange={setRequestHeaders} />
           </Box>
 
           <Box
-            maxHeight="250px"
             overflow="scroll"
             width="300px"
             paddingTop="32px"
           >
-            <KeyValue title="Response header" onChange={setResponseHeaders} />
+            <KeyValue title="Response headers" onChange={setResponseHeaders} />
+          </Box>
+
+          <Box
+            overflow="scroll"
+            width="300px"
+            paddingTop="32px"
+          >
+            <KeyValue title="Query parameters" onChange={setQueryParameters} />
           </Box>
         </Box>
 

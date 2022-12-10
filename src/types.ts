@@ -54,10 +54,6 @@ export type EventsMap = {
   [MessageTypeFromWorker.FETCH]: (data: FETCHFromWorker) => void;
 };
 
-export type QueryParamStore = {
-  [queryParamName: string]: string;
-};
-
 export type Meta = {
   beforeRequestTime: number;
   afterRequestTime: number;
@@ -65,20 +61,20 @@ export type Meta = {
 };
 
 export interface StoreRoute {
-  /** Stores information about query parameters */
-  parameters: QueryParamStore;
   /** The pathname for this endpoint */
   pathname: string;
   /** Meta information about this request */
   meta: Array<Meta>;
   /** Request JSON body */
-  reqBodySamples: Array<Sample>;
+  requestBodySamples: Array<Sample>;
   /** Request JSON headers */
-  reqHeadersSamples: Array<Sample>;
+  requestHeadersSamples: Array<Sample>;
   /** Response JSON body */
-  resBodySamples: Array<Sample>;
+  responseBodySamples: Array<Sample>;
   /** Response JSON headers */
-  resHeadersSamples: Array<Sample>;
+  responseHeadersSamples: Array<Sample>;
+  /** Stores information about query parameters */
+  queryParameterSamples: Array<Sample>;
 }
 
 export type StoreStructure = {

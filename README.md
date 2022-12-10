@@ -22,10 +22,10 @@
 
   <p align="center">
     <blockquote>
-        A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code from network traffic via a service worker proxy
+        A developer tool for API observability on the browser. Generate OpenAPI specifications and code from network traffic
         <br />
         <br />
-        Designed for ease of use. Zero config & no requirement to integrate with existing code
+        Designed for ease of use. No need to integrate with existing code
       </blockquote>
       <br />
       <br />
@@ -86,7 +86,7 @@
 
 This tool is designed to help tackle problems that arise from a lack of awareness on API behaviour.
 
-It records network requests as they happen locally on the browser and offers schema and code generation capabilities.
+It records network requests under the hood using a service worker proxy. As the tool makes observations of network traffic over time, it learns the structure of the underlying API.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -95,7 +95,7 @@ It records network requests as they happen locally on the browser and offers sch
 ## Features
 
 - **Spec gen**: autogenerate [OpenAPI 3.1](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released) specifications from network traffic
-- **Code gen**: [convert](https://github.com/quicktype/quicktype) network response bodies into code for 10+ languages including TypeScript, Python, JSON Schema, and more 
+- **Code gen**: [convert](https://github.com/quicktype/quicktype) network response bodies into code for 10+ languages including TypeScript, Python, and JSON Schema
 - **API Observability**: explore the network layer with enhanced tooling
 - **Easy installation**: designed to plug in and go with an existing application
 
@@ -152,7 +152,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ## Limitations
 
-The library creates specifications that are only as accurate as the underlying observations. If your application relies on a response body that has not been observed, then type information for it will not be available. In addition, the underlying sampling algorithm is fairly basic.
+The library creates specifications that are only as accurate as the underlying observations. If your application relies on a response body that has not been observed, then type information for it will not be available.
 
 Overall the intent is to produce a *best guess* that reveals API behaviour. This will never be a replacement for proper documentation.
 

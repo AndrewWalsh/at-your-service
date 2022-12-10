@@ -1,7 +1,7 @@
 {
   "name": "at-your-service",
-  "version": "0.2.1",
-  "description": "A frontend developer tool that autogenerates OpenAPI 3.1 specifications and code from network traffic via a service worker proxy",
+  "version": "0.2.2",
+  "description": "A developer tool for API observability on the browser. Generate OpenAPI specifications and code from network traffic",
   "homepage": "https://atyourservice.awalsh.io/",
   "types": "dist/index.d.ts",
   "files": [
@@ -71,11 +71,11 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@vitest/coverage-c8": "^0.25.1",
     "cpy-cli": "^4.2.0",
+    "prettier": "2.7.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "tslib": "^2.4.1",
     "vite": "^3.2.2",
-    "prettier": "2.7.1",
     "vitest": "^0.24.5"
   },
   "dependencies": {

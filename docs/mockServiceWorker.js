@@ -157,7 +157,6 @@ async function handleRequest(event, requestId) {
           body:
             clonedResponse.body === null ? null : await clonedResponse.text(),
           headers: Object.fromEntries(clonedResponse.headers.entries()),
-          redirected: clonedResponse.redirected,
         },
       })
     })()
@@ -257,7 +256,7 @@ async function getResponse(event, client, requestId) {
 
   switch (clientMessage.type) {
     case 'MOCK_RESPONSE': {
-      // const response = await getResponse(event, client, requestId)
+      const mockedRes = await respondWithMock(clientMessage.data)
       const payload = await new FetchPayload(
         event,
         clientMessage.data,
@@ -266,7 +265,7 @@ async function getResponse(event, client, requestId) {
         requestBody,
       ).getPayload();
       await sendToClient(client, { payload, type: "FETCH" });
-      return respondWithMock(clientMessage.data)
+      return mockedRes;
     }
 
     case 'MOCK_NOT_FOUND': {

@@ -4,16 +4,14 @@ import parseQueryParameters from "./parse-query-parameters";
 test("is empty when input is empty", async () => {
   const qp: URLSearchParams = new URLSearchParams();
   const expected = {};
-  expect(parseQueryParameters(qp)).toEqual(expected);
+  expect(parseQueryParameters(qp).getSample()).toEqual(expected);
 });
 
-test("returns key and values", async () => {
+test("returns sample", async () => {
   const qp: URLSearchParams = new URLSearchParams();
-  qp.set("test", "value");
-  qp.set("t 1", "t 2");
+  qp.set("string", "value");
   const expected = {
-    test: "value",
-    "t 1": "t 2",
+    string: '""',
   };
-  expect(parseQueryParameters(qp)).toEqual(expected);
+  expect(parseQueryParameters(qp).getSample()).toEqual(expected);
 });

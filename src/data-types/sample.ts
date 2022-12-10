@@ -89,6 +89,6 @@ export default class Sample {
     }
 
     setObjOrArrPropertiesToEmpty(parsedJSON);
-    return Object.freeze(parsedJSON);
+    return parsedJSON;
   }
 }

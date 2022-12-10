@@ -20,7 +20,7 @@ export default class Message {
     this.data = data;
   }
 
-  get(): MessageData {
-    return Object.freeze(this.data);
+  get(): Readonly<MessageData> {
+    return this.data;
   }
 }

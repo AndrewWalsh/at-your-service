@@ -160,7 +160,6 @@ class FetchPayload {
         url: response.url || request.url,
         headers: responseHeaders,
         status: response.status,
-        redirected: false,
         type: "basic",
       },
     });

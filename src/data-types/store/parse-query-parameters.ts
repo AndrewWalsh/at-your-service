@@ -1,17 +1,12 @@
-import type { QueryParamStore } from "../../types";
+import Sample from "../sample";
 
-/**
- * Identify basic information about the query parameters
- * This determines QueryParamStore
- * Which in turn determines the scope of what we can do
- */
 export default function parseQueryParameters(
-  queryParams: URLSearchParams,
-  existingParams?: QueryParamStore
-): QueryParamStore {
-  const qpStore: QueryParamStore = {};
+  queryParams: URLSearchParams
+): Sample {
+  const qpStore: { [k: string]: string } = {};
   for (const [qpName, qpValue] of queryParams) {
     qpStore[qpName] = qpValue;
   }
-  return qpStore;
+  const sample = new Sample(JSON.stringify(qpStore));
+  return sample;
 }

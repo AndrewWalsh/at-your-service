@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Skeleton } from "@chakra-ui/react";
 import { Box, Text, Stack, Button } from "@chakra-ui/react";
-import { COLOR_PRIMARY } from "./constants";
 
 export default function SkeletonLanding() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -10,8 +9,8 @@ export default function SkeletonLanding() {
       <Skeleton
         height="40px"
         isLoaded={isLoaded}
-        startColor={COLOR_PRIMARY}
-        endColor={COLOR_PRIMARY}
+        startColor="gray.300"
+        endColor="gray.300"
       >
         <Text fontWeight="bold">Collects network traffic</Text>
       </Skeleton>
@@ -19,8 +18,8 @@ export default function SkeletonLanding() {
         height="40px"
         isLoaded={isLoaded}
         fadeDuration={2}
-        startColor={COLOR_PRIMARY}
-        endColor={COLOR_PRIMARY}
+        startColor="gray.300"
+        endColor="gray.300"
       >
         <Text>Without integrating with code</Text>
       </Skeleton>
@@ -28,8 +27,8 @@ export default function SkeletonLanding() {
         height="40px"
         isLoaded={isLoaded}
         fadeDuration={4}
-        startColor={COLOR_PRIMARY}
-        endColor={COLOR_PRIMARY}
+        startColor="gray.300"
+        endColor="gray.300"
       >
         <Text>In browser environments</Text>
       </Skeleton>

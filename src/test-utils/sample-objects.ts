@@ -3,13 +3,13 @@ import { faker } from "@faker-js/faker";
 import { Message } from "../data-types";
 import type { PayloadFromWorker } from "../types";
 
-const createPayloadFromWorkerDefaults = () => ({
-  url: faker.internet.url(),
+export const createPayloadFromWorkerDefaults = () => ({
+  url: faker.internet.url() + "?qp=test",
   status: faker.internet.httpStatusCode(),
-  requestBody: { data: { test: "message" } } as any,
-  requestHeaders: { data: { test: "message" } } as any,
-  responseBody: { data: { test: "message" } } as any,
-  responseHeaders: { data: { test: "message" } } as any,
+  requestBody: { data: { requestBody: "message" } } as any,
+  requestHeaders: { data: { requestHeaders: "message" } } as any,
+  responseBody: { data: { responseBody: "message" } } as any,
+  responseHeaders: { data: { responseHeaders: "message" } } as any,
   method: faker.internet.httpMethod(),
 });
 type CreatePayloadFromWorker = (
@@ -34,7 +34,6 @@ export const createPayloadFromWorker: CreatePayloadFromWorker = (
       status: values.status,
       referrer: null,
       url: values.url,
-      redirected: false,
       type: "basic",
     },
   };

@@ -91,10 +91,10 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
         for (let status in store[host][pathname][method]) {
           // Remove the prefix character from the status code
           const {
-            reqBodySamples,
-            reqHeadersSamples,
-            resBodySamples,
-            resHeadersSamples,
+            requestBodySamples,
+            requestHeadersSamples,
+            responseBodySamples,
+            responseHeadersSamples,
           } = store[host][pathname][method][status];
           status = status.slice(1);
 
@@ -102,7 +102,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * REQUEST OBJECT CREATION
            */
           const reqMediaType: MediaTypeObject = {
-            schema: convert(reqBodySamples),
+            schema: convert(requestBodySamples),
           };
           const reqContent: ContentObject = {
             "application/json": reqMediaType,
@@ -117,21 +117,23 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
            * RESPONSE OBJECT CREATION
            */
           const resMediaType: MediaTypeObject = {
-            schema: convert(resBodySamples),
+            schema: convert(responseBodySamples),
           };
           const resContent: ContentObject = {
             "application/json": resMediaType,
           };
-          const resHeaders: Record<string, HeaderObject> = {};
+          const responseHeaders: Record<string, HeaderObject> = {};
 
-          const { properties: propResHeaders } = convert(resHeadersSamples);
-          if (propResHeaders) {
-            Object.entries(propResHeaders).forEach(([name, schema]) => {
+          const { properties: propResponseHeaders } = convert(
+            responseHeadersSamples
+          );
+          if (propResponseHeaders) {
+            Object.entries(propResponseHeaders).forEach(([name, schema]) => {
               const headerObj: HeaderObject = {
                 required: true,
                 schema,
               };
-              resHeaders[name] = headerObj;
+              responseHeaders[name] = headerObj;
             });
           }
 
@@ -139,7 +141,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
           const response: ResponseObject = {
             content: resContent,
             description: `Response for ${pathname} ${method} ${status}`,
-            headers: resHeaders,
+            headers: responseHeaders,
           };
           // All the different responses we can get from 200, 400, 204, etc
           const responses: ResponsesObject = {
@@ -163,9 +165,11 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             },
           }));
 
-          const { properties: propReqHeaders } = convert(reqHeadersSamples);
-          if (propReqHeaders) {
-            Object.entries(propReqHeaders).forEach(([name, schema]) => {
+          const { properties: proprequestHeaders } = convert(
+            requestHeadersSamples
+          );
+          if (proprequestHeaders) {
+            Object.entries(proprequestHeaders).forEach(([name, schema]) => {
               parameters.push({
                 name,
                 in: "header",
