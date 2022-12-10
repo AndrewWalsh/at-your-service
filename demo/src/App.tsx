@@ -146,7 +146,7 @@ function App() {
             position="absolute"
             height="100%"
             width="calc(10vw + 50px)"
-            left="-50px"
+            left="-40px"
             overflow="hidden"
             role="presentation"
           >
@@ -158,6 +158,7 @@ function App() {
           display="flex"
           alignItems="flex-start"
           width="80vw"
+          padding="0 1em"
           flexFlow="row nowrap"
         >
           <Box

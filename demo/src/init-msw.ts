@@ -1,7 +1,7 @@
 import { SetupWorkerApi } from "msw";
 
-// import { startAtYourService } from "at-your-service";
-import { startAtYourService } from "../../src";
+import { startAtYourService } from "at-your-service";
+// import { startAtYourService } from "../../src";
 
 import registerServiceWorker from "./registerServiceWorker";
 

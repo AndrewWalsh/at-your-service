@@ -7,6 +7,7 @@ import {
   COLOR_SECONDARY,
   COLOR_WHITE,
   COLOR_TERTIARY,
+  COLOR_PRIMARY_FADE,
 } from "./constants";
 
 // In seconds
@@ -191,6 +192,26 @@ function AnimationEffect(props: {
           horizontal={item.horizontal}
         />
       ))}
+
+      {/* <Box
+        height="100%"
+        position="absolute"
+        right="0"
+        bg={COLOR_PRIMARY_FADE}
+        zIndex="99"
+        width="2%"
+        top="0"
+      />
+
+      <Box
+        height="100%"
+        position="absolute"
+        left="50px"
+        bg={COLOR_PRIMARY_FADE}
+        zIndex="99"
+        width="2%"
+        top="0"
+      /> */}
     </Box>
   );
 }
