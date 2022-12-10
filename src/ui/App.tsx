@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { GeistProvider, Button } from "@geist-ui/core";
+import "./index.css";
 
 import { Ctx } from "./context";
 import { StoreStructure } from "../types";

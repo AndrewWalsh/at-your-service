@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A developer tool for API observability on the browser. Generate OpenAPI specifications and code from network traffic",
   "homepage": "https://atyourservice.awalsh.io/",
   "types": "dist/index.d.ts",
@@ -81,6 +81,7 @@
   "dependencies": {
     "quicktype-core": "^6.1.0",
     "type-fest": "^3.1.0",
+    "vite-plugin-css-injected-by-js": "^2.1.1",
     "yargs": "^17.6.2"
   },
   "peerDependencies": {

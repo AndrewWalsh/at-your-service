@@ -14,6 +14,7 @@ import TabViewOpenAPI from "./TabViewOpenAPI";
 import { StoreStructure, StoreRoute, Meta } from "../types";
 import { storeStructToOpenAPI } from "../lib";
 import TabView from "./TabView";
+import Metrics from "./Metrics";
 
 const meanLatency = (meta: Array<Meta>) => {
   return Math.round(
@@ -84,21 +85,23 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
   }, [visible]);
 
   return (
-    <GeistDrawer visible={visible} onClose={onClose} placement="left">
-      {/* <GeistDrawer.Title>at-your-service</GeistDrawer.Title> */}
-      <GeistDrawer.Subtitle>Network requests</GeistDrawer.Subtitle>
-      <GeistDrawer.Content>
-        <Grid.Container direction="row" justify="space-around" gap={1}>
-          <Grid>
-            {/* <Button
+    <>
+      
+      <GeistDrawer visible={visible} onClose={onClose} placement="left">
+        {/* <GeistDrawer.Title>at-your-service</GeistDrawer.Title> */}
+        <GeistDrawer.Subtitle>Network requests</GeistDrawer.Subtitle>
+        <GeistDrawer.Content>
+          <Grid.Container direction="row" justify="space-around" gap={1}>
+            <Grid>
+              {/* <Button
               width="100%"
               type="secondary"
               onClick={() => setTreeValue(createTree())}
             >
               Refresh
             </Button> */}
-          </Grid>
-          {/* <Grid>
+            </Grid>
+            {/* <Grid>
             <Button
               auto
               type="error"
@@ -109,60 +112,63 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
               Reset
             </Button>
           </Grid> */}
-        </Grid.Container>
+          </Grid.Container>
 
-        <Grid.Container gap={1}>
-          <Grid xs>
-            <Button
-              width="100%"
-              type="success"
-              onClick={async () => {
-                const res = await storeStructToOpenAPI(storeStruct);
-                navigator.clipboard.writeText(res.getJSON());
-              }}
-            >
-              Copy OpenAPI Spec
-            </Button>
-          </Grid>
-        </Grid.Container>
+          <Grid.Container gap={1}>
+            <Grid xs>
+              <Button
+                width="100%"
+                type="success"
+                onClick={async () => {
+                  const res = await storeStructToOpenAPI(storeStruct);
+                  navigator.clipboard.writeText(res.getJSON());
+                }}
+              >
+                Copy OpenAPI Spec
+              </Button>
+            </Grid>
+          </Grid.Container>
 
-        <Spacer h={1} />
-        <Tree>{treeValue}</Tree>
-      </GeistDrawer.Content>
+          <Spacer h={1} />
+          <Tree>{treeValue}</Tree>
+        </GeistDrawer.Content>
+    
+        <Metrics open={false} />
 
-      <Modal {...bindings} width="80vw" height="80vh">
-        {content && (
-          <>
-            <Modal.Title>{`~${meanLatency(
-              content.storeRoute.meta
-            )}ms`}</Modal.Title>
-            <Modal.Content style={{ overflow: "scroll" }}>
-              <Tabs initialValue="1">
-                <Tabs.Item label="Open API" value="1">
-                  <TabViewOpenAPI
-                    storeRoute={content.storeRoute}
-                    fullPath={content.fullPath}
-                  />
-                </Tabs.Item>
-                <Tabs.Item label="request" value="2">
-                  <TabView
-                    bodySamples={content.storeRoute.requestBodySamples}
-                    headersSamples={content.storeRoute.requestHeadersSamples}
-                    meta={content.storeRoute.meta}
-                  />
-                </Tabs.Item>
-                <Tabs.Item label="response" value="3">
-                  <TabView
-                    bodySamples={content.storeRoute.responseBodySamples}
-                    headersSamples={content.storeRoute.responseHeadersSamples}
-                    meta={content.storeRoute.meta}
-                  />
-                </Tabs.Item>
-              </Tabs>
-            </Modal.Content>
-          </>
-        )}
-      </Modal>
-    </GeistDrawer>
+        <Modal {...bindings} width="80vw" height="80vh">
+          {content && (
+            <>
+              <Modal.Title>{`~${meanLatency(
+                content.storeRoute.meta
+              )}ms`}</Modal.Title>
+              <Modal.Content style={{ overflow: "scroll" }}>
+                <Tabs initialValue="1">
+                  <Tabs.Item label="Open API" value="1">
+                    <TabViewOpenAPI
+                      storeRoute={content.storeRoute}
+                      fullPath={content.fullPath}
+                    />
+                  </Tabs.Item>
+                  <Tabs.Item label="request" value="2">
+                    <TabView
+                      bodySamples={content.storeRoute.requestBodySamples}
+                      headersSamples={content.storeRoute.requestHeadersSamples}
+                      meta={content.storeRoute.meta}
+                    />
+                  </Tabs.Item>
+                  <Tabs.Item label="response" value="3">
+                    <TabView
+                      bodySamples={content.storeRoute.responseBodySamples}
+                      headersSamples={content.storeRoute.responseHeadersSamples}
+                      meta={content.storeRoute.meta}
+                    />
+                  </Tabs.Item>
+                </Tabs>
+              </Modal.Content>
+            </>
+          )}
+        </Modal>
+      </GeistDrawer>
+    </>
   );
 }

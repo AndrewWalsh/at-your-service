@@ -30,7 +30,7 @@ function BoxOnSWLoad() {
       bottom="-440px"
       animation={`${grow} 0.5s ease-in`}
       role="presentation"
-      zIndex="900"
+      zIndex="998"
     ></Box>
   );
 }

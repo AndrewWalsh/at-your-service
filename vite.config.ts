@@ -7,13 +7,14 @@ import nodePolyfills from "rollup-plugin-node-polyfills";
 import typescript from "@rollup/plugin-typescript";
 import react from "@vitejs/plugin-react";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
   // @ts-expect-error
-  plugins: [peerDepsExternal(), react(), typescript({ tsconfig: "./tsconfig.json" })],
+  plugins: [cssInjectedByJsPlugin(),peerDepsExternal(), react(), typescript({ tsconfig: "./tsconfig.json" })],
   define: {
     global: "window",
   },

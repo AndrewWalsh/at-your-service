@@ -1,0 +1,20 @@
+/**
+ * Disable the backgrop of the Metrics modal
+ */
+#geist-ui-modal .layer {
+  display: none;
+}
+
+/**
+ * Don't let the hidden backdrop intercept clicks
+ */
+#geist-ui-modal .backdrop {
+  pointer-events: none;
+}
+
+/**
+ * Do let the modal intercept clicks
+ */
+.metrics-css {
+  pointer-events: auto;
+}
