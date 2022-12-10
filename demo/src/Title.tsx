@@ -21,9 +21,9 @@ function Title() {
       <br />
       <Link
         bgClip="text"
-        bgGradient={`linear-gradient(-45deg, ${COLOR_SECONDARY}, ${COLOR_PRIMARY}, ${COLOR_SECONDARY}, ${COLOR_SECONDARY})`}
+        bgGradient={`linear-gradient(-180deg, ${COLOR_PRIMARY}, ${COLOR_PRIMARY}, ${COLOR_SECONDARY}, ${COLOR_SECONDARY})`}
         bgSize="400% 400%"
-        animation={`${animatedBg} 5s ease-in-out infinite`}
+        animation={`${animatedBg} 10s ease-in-out infinite`}
         _hover={{ textDecoration: "underline", color: COLOR_SECONDARY }}
         href="https://awalsh.io/posts/developer-tool-api-discovery-observability-frontend/"
         isExternal
