@@ -13,6 +13,7 @@ type Options = {
   requestHeadersSamples: Array<Sample>;
   responseBodySamples: Array<Sample>;
   responseHeadersSamples: Array<Sample>;
+  queryParameterSamples: Array<Sample>;
 };
 
 const defaults: () => Options = () => ({
@@ -23,6 +24,7 @@ const defaults: () => Options = () => ({
   requestHeadersSamples: [generateFakeSample()],
   responseBodySamples: [generateFakeSample()],
   responseHeadersSamples: [generateFakeSample()],
+  queryParameterSamples: [generateFakeSample()],
 });
 
 export const createStoreStructure = (opts = defaults()) => {
@@ -37,7 +39,7 @@ export const createStoreStructure = (opts = defaults()) => {
             requestHeadersSamples: opts.requestHeadersSamples,
             responseBodySamples: opts.responseBodySamples,
             responseHeadersSamples: opts.responseHeadersSamples,
-            queryParameterSamples: {},
+            queryParameterSamples: opts.queryParameterSamples,
             meta: [],
             pathname: opts.pathname,
           },

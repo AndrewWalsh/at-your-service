@@ -5,6 +5,32 @@ import { merge, times } from "lodash";
 import storeStructToOpenAPI from "./store-struct-to-openapi";
 import { createStoreStructure } from "../test-utils/store-structure-generator";
 import { Sample } from "../data-types";
+import { ParameterObject } from "openapi3-ts";
+
+const path = "test";
+const pathname = `/{${path}}`;
+const status = "s200";
+const method = "get";
+const JSONStr = '"some_text"';
+const JSONNum = "1";
+const headers = JSON.stringify({
+  "content-type": "application/json",
+  other: "header",
+});
+const expectHeaders = {
+  "content-type": {
+    required: true,
+    schema: {
+      type: "string",
+    },
+  },
+  other: {
+    required: true,
+    schema: {
+      type: "string",
+    },
+  },
+};
 
 describe("high level tests against document validity and interface behaviour", () => {
   test("getJSON returns JSON", async () => {
@@ -48,13 +74,6 @@ describe("specific behaviour tests", () => {
    * do not end result in duplicated path names in the ParameterObject list
    */
   test("the extracted path name does not duplicate when a path has multiple samples", async () => {
-    const path = "test";
-    const pathname = `/{${path}}`;
-    const status = "s200";
-    const method = "get";
-    const JSONStr = '"some_text"';
-    const JSONNum = "1";
-
     const sampleOne = new Sample(JSONStr);
     const sampleTwo = new Sample(JSONNum);
 
@@ -63,6 +82,7 @@ describe("specific behaviour tests", () => {
       requestHeadersSamples: [sampleOne, sampleTwo],
       responseBodySamples: [sampleOne, sampleTwo],
       responseHeadersSamples: [sampleOne, sampleTwo],
+      queryParameterSamples: [sampleOne, sampleTwo],
       pathname,
       method,
       status,
@@ -77,16 +97,6 @@ describe("specific behaviour tests", () => {
   });
 
   test("includes request headers", async () => {
-    const path = "test";
-    const pathname = `/{${path}}`;
-    const status = "s200";
-    const method = "get";
-    const JSONStr = '"some_text"';
-    const headers = JSON.stringify({
-      "content-type": "application/json",
-      other: "header",
-    });
-
     const sample = new Sample(JSONStr);
     const sampleHeaders = new Sample(headers);
 
@@ -95,6 +105,7 @@ describe("specific behaviour tests", () => {
       requestHeadersSamples: [sampleHeaders],
       responseBodySamples: [sample],
       responseHeadersSamples: [sample],
+      queryParameterSamples: [sample],
       pathname,
       method,
       status,
@@ -125,16 +136,6 @@ describe("specific behaviour tests", () => {
   });
 
   test("includes response headers", async () => {
-    const path = "test";
-    const pathname = `/{${path}}`;
-    const status = "s200";
-    const method = "get";
-    const JSONStr = '"some_text"';
-    const headers = JSON.stringify({
-      "content-type": "application/json",
-      other: "header",
-    });
-
     const sample = new Sample(JSONStr);
     const sampleHeaders = new Sample(headers);
 
@@ -143,6 +144,7 @@ describe("specific behaviour tests", () => {
       requestHeadersSamples: [sample],
       responseBodySamples: [sample],
       responseHeadersSamples: [sampleHeaders],
+      queryParameterSamples: [sample],
       pathname,
       method,
       status,
@@ -151,20 +153,33 @@ describe("specific behaviour tests", () => {
     const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
     const responseHeaders =
       result.paths[pathname][method].responses[status.slice(1)].headers;
-    expect(responseHeaders).toEqual({
-      "content-type": {
-        required: true,
-        schema: {
-          type: "string",
-        },
-      },
-      other: {
-        required: true,
-        schema: {
-          type: "string",
-        },
-      },
-    });
+    expect(responseHeaders).toEqual(expectHeaders);
+
+    const validator = new Validator();
+    const res = await validator.validate(result);
+    expect(res.errors).toBeUndefined();
+  });
+
+  test("includes query parameters", async () => {
+    const sample = new Sample(JSONStr);
+    const sampleQueryParameters = new Sample(headers);
+
+    const defaults = {
+      requestBodySamples: [sample],
+      requestHeadersSamples: [sample],
+      responseBodySamples: [sample],
+      responseHeadersSamples: [sample],
+      queryParameterSamples: [sampleQueryParameters],
+      pathname,
+      method,
+      status,
+    };
+    const { storeStructure } = createStoreStructure(defaults);
+    const result = (await storeStructToOpenAPI(storeStructure)).getSpec();
+    const queryParameters = result.paths[pathname][method].parameters.filter(
+      (p: ParameterObject) => p.in === "query"
+    );
+    expect(queryParameters).toHaveLength(Object.keys(expectHeaders).length);
 
     const validator = new Validator();
     const res = await validator.validate(result);

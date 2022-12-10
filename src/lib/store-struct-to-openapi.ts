@@ -95,6 +95,7 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             requestHeadersSamples,
             responseBodySamples,
             responseHeadersSamples,
+            queryParameterSamples,
           } = store[host][pathname][method][status];
           status = status.slice(1);
 
@@ -165,14 +166,28 @@ const storeStructToOpenApi: StoreStructToOpenApi = async (store) => {
             },
           }));
 
-          const { properties: proprequestHeaders } = convert(
+          const { properties: propRequestHeaders } = convert(
             requestHeadersSamples
           );
-          if (proprequestHeaders) {
-            Object.entries(proprequestHeaders).forEach(([name, schema]) => {
+          if (propRequestHeaders) {
+            Object.entries(propRequestHeaders).forEach(([name, schema]) => {
               parameters.push({
                 name,
                 in: "header",
+                required: true,
+                schema,
+              });
+            });
+          }
+
+          const { properties: propQueryParameters } = convert(
+            queryParameterSamples
+          );
+          if (propQueryParameters) {
+            Object.entries(propQueryParameters).forEach(([name, schema]) => {
+              parameters.push({
+                name,
+                in: "query",
                 required: true,
                 schema,
               });

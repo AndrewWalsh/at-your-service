@@ -96,11 +96,13 @@ function Requester() {
       : { method, headers: requestHeaders };
     
     const urlParams = new URLSearchParams(Object.fromEntries(queryParameters));
+    let query = urlParams.toString()
+    query = query ? `?${query}` : ""
 
-    fetch(`${host}${pathname}${urlParams ? `?${urlParams}` : ""}`, params);
+    fetch(`${host}${pathname}${query}`, params);
     toast({
       title: "API request mocked",
-      description: `${method} ${host}${pathname} -> ${status}`,
+      description: `${method} ${host}${pathname}${query} -> ${status}`,
       status: "success",
       duration: 2000,
       isClosable: true,
