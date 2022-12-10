@@ -4,23 +4,15 @@ import {
   Button,
   Tree,
   useModal,
-  Modal,
   Grid,
   Spacer,
-  Tabs,
 } from "@geist-ui/core";
+import Menu from "@geist-ui/icons/menu";
 
-import TabViewOpenAPI from "./TabViewOpenAPI";
-import { StoreStructure, StoreRoute, Meta } from "../types";
+import { StoreStructure, StoreRoute } from "../types";
 import { storeStructToOpenAPI } from "../lib";
-import TabView from "./TabView";
 import Metrics from "./Metrics";
-
-const meanLatency = (meta: Array<Meta>) => {
-  return Math.round(
-    meta.reduce((acc, { latencyMs }) => latencyMs + acc, 0) / meta.length
-  );
-};
+import Inspector from "./Inspector";
 
 type Props = {
   visible: boolean;
@@ -40,7 +32,8 @@ const isStoreRoute = (
 ): route is StoreRoute => !!route.pathname;
 
 export default function Drawer({ visible, onClose, storeStruct }: Props) {
-  const { setVisible, bindings } = useModal();
+  const { setVisible, bindings } = useModal(false);
+  const [showMetrics, setShowMetrics] = useState(false);
   const [content, setContent] = useState<{
     storeRoute: StoreRoute;
     fullPath: string;
@@ -86,20 +79,23 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
 
   return (
     <>
-      
       <GeistDrawer visible={visible} onClose={onClose} placement="left">
-        {/* <GeistDrawer.Title>at-your-service</GeistDrawer.Title> */}
-        <GeistDrawer.Subtitle>Network requests</GeistDrawer.Subtitle>
+        <GeistDrawer.Subtitle>Network Requests</GeistDrawer.Subtitle>
         <GeistDrawer.Content>
-          <Grid.Container direction="row" justify="space-around" gap={1}>
+          <Grid.Container direction="row" justify="flex-start" gap={1}>
             <Grid>
               {/* <Button
-              width="100%"
-              type="secondary"
-              onClick={() => setTreeValue(createTree())}
-            >
-              Refresh
-            </Button> */}
+                type="secondary"
+                onClick={() => setTreeValue(createTree())}
+              >
+                Refresh
+              </Button> */}
+              <Button
+                iconRight={<Menu />}
+                auto
+                scale={0.5}
+                onClick={() => setShowMetrics(true)}
+              />
             </Grid>
             {/* <Grid>
             <Button
@@ -132,42 +128,14 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
           <Spacer h={1} />
           <Tree>{treeValue}</Tree>
         </GeistDrawer.Content>
-    
-        <Metrics open={false} />
 
-        <Modal {...bindings} width="80vw" height="80vh">
-          {content && (
-            <>
-              <Modal.Title>{`~${meanLatency(
-                content.storeRoute.meta
-              )}ms`}</Modal.Title>
-              <Modal.Content style={{ overflow: "scroll" }}>
-                <Tabs initialValue="1">
-                  <Tabs.Item label="Open API" value="1">
-                    <TabViewOpenAPI
-                      storeRoute={content.storeRoute}
-                      fullPath={content.fullPath}
-                    />
-                  </Tabs.Item>
-                  <Tabs.Item label="request" value="2">
-                    <TabView
-                      bodySamples={content.storeRoute.requestBodySamples}
-                      headersSamples={content.storeRoute.requestHeadersSamples}
-                      meta={content.storeRoute.meta}
-                    />
-                  </Tabs.Item>
-                  <Tabs.Item label="response" value="3">
-                    <TabView
-                      bodySamples={content.storeRoute.responseBodySamples}
-                      headersSamples={content.storeRoute.responseHeadersSamples}
-                      meta={content.storeRoute.meta}
-                    />
-                  </Tabs.Item>
-                </Tabs>
-              </Modal.Content>
-            </>
-          )}
-        </Modal>
+        <Metrics
+          open={showMetrics}
+          onClose={() => setShowMetrics(false)}
+          storeStruct={storeStruct}
+        />
+
+        <Inspector bindings={bindings} content={content} />
       </GeistDrawer>
     </>
   );

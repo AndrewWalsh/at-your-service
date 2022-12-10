@@ -34,6 +34,10 @@ export default function TabViewCode({ samples, meta }: Props) {
     samplesToQuicktype(samples, language).then((s) => setCode(s));
   }, [language, samples]);
 
+  if (samples.length === 0 || meta.length === 0) {
+    return <p>No results</p>;
+  }
+
   return (
     <Grid.Container style={{ overflowX: "scroll" }}>
       <Grid.Container justify="flex-start" gap={1}>
