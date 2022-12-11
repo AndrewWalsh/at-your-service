@@ -34,6 +34,8 @@ function App() {
   return (
     <Box
       width="100%"
+      maxWidth="100vw"
+      overflowX="hidden"
       height="100vh"
       display="flex"
       flexFlow="column nowrap"
@@ -106,6 +108,7 @@ function App() {
 
       <Box
         width="100%"
+        maxWidth="100vw"
         flex="1"
         justifyContent="center"
         display="flex"
@@ -126,11 +129,11 @@ function App() {
             position="absolute"
             height="100%"
             width="calc(10vw + 40px)"
-            left="-50px"
+            left="-56px"
             overflow="hidden"
             role="presentation"
           >
-            <AnimationEffect bg={COLOR_PRIMARY} />
+            <AnimationEffect bg={COLOR_PRIMARY} direction="left" />
           </Box>
         </Box>
 
@@ -139,18 +142,18 @@ function App() {
           height="100%"
           width="10vw"
           top="0"
-          right="0"
+          right="-16px"
           overflow="hidden"
         >
           <Box
             position="absolute"
             height="100%"
-            width="calc(10vw + 50px)"
-            left="-40px"
+            width="calc(10vw + 40px)"
+            right="10px"
             overflow="hidden"
             role="presentation"
           >
-            <AnimationEffect bg={COLOR_SECONDARY} />
+            <AnimationEffect bg={COLOR_SECONDARY} direction="right" />
           </Box>
         </Box>
         <Box

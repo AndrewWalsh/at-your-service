@@ -135,6 +135,7 @@ const RenderBox = (props: Item) => {
 
 function AnimationEffect(props: {
   bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY;
+  direction: "left" | "right"; 
 }) {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
@@ -180,7 +181,7 @@ function AnimationEffect(props: {
     setItemsFirst(calculateItems());
   }, []);
   return (
-    <Box height="100%" width="100%" position="absolute">
+    <Box height="100%" width="100%" position="absolute" boxSizing="border-box">
       {itemsFirst.map((item) => (
         <RenderBox
           key={item.id}
@@ -193,25 +194,16 @@ function AnimationEffect(props: {
         />
       ))}
 
-      {/* <Box
-        height="100%"
-        position="absolute"
-        right="0"
-        bg={COLOR_PRIMARY_FADE}
-        zIndex="99"
-        width="2%"
-        top="0"
-      />
-
       <Box
         height="100%"
         position="absolute"
-        left="50px"
+        right={props.direction === "left" ? "0" : "auto"}
+        left={props.direction === "right" ? "50px" : "auto"}
         bg={COLOR_PRIMARY_FADE}
-        zIndex="99"
+        zIndex="400"
         width="2%"
         top="0"
-      /> */}
+      />
     </Box>
   );
 }
