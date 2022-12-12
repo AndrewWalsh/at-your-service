@@ -27,7 +27,6 @@ import "ace-builds/src-noconflict/mode-json";
 
 import { COLOR_SECONDARY } from "./constants";
 import initMSW from "./init-msw";
-import useSWIsReady from "./useSWIsReady";
 import KeyValue, { KV } from "./KeyValue";
 import LatencySlider from "./LatencySlider";
 
@@ -50,7 +49,6 @@ const resEditorDefaultVal = {
 const prettyPrintJSON = (json: {}) => JSON.stringify(json, null, 2);
 
 function Requester() {
-  const swIsRead = useSWIsReady();
   const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
   const [reqEditorVal, setReqEditorVal] = useState(
     prettyPrintJSON(reqEditorDefaultVal)
@@ -89,15 +87,15 @@ function Requester() {
           ctx.json(JSON.parse(resEditorVal)),
           ctx.set(Object.fromEntries(responseHeaders))
         );
-      }),
+      })
     );
     const params = showReqEditor
       ? { method, headers: requestHeaders, body: reqEditorVal }
       : { method, headers: requestHeaders };
-    
+
     const urlParams = new URLSearchParams(Object.fromEntries(queryParameters));
-    let query = urlParams.toString()
-    query = query ? `?${query}` : ""
+    let query = urlParams.toString();
+    query = query ? `?${query}` : "";
 
     fetch(`${host}${pathname}${query}`, params);
     toast({
@@ -261,7 +259,14 @@ function Requester() {
         </Box>
       </Box>
 
-      <Box display="flex" flexFlow="column" as="form" gap={4} marginTop="8px" overflow="visible">
+      <Box
+        display="flex"
+        flexFlow="column"
+        as="form"
+        gap={4}
+        marginTop="8px"
+        overflow="visible"
+      >
         <Button
           bg={COLOR_SECONDARY}
           colorScheme="blue"
@@ -270,8 +275,7 @@ function Requester() {
             !reqEditorIsValid ||
             !resEditorIsValid ||
             !hostIsValid ||
-            !pathnameIsValid ||
-            !swIsRead
+            !pathnameIsValid
           }
           type="submit"
         >
@@ -343,33 +347,26 @@ function Requester() {
 
             <InputGroup>
               <InputLeftAddon children="Latency" width="100px" />
-              <Box width="100%" display="flex" alignItems="center" margin="0 16px">
+              <Box
+                width="100%"
+                display="flex"
+                alignItems="center"
+                margin="0 16px"
+              >
                 <LatencySlider value={latency} setValue={setLatency} />
               </Box>
             </InputGroup>
           </Box>
 
-          <Box
-            overflow="scroll"
-            width="300px"
-            paddingTop="32px"
-          >
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Request headers" onChange={setRequestHeaders} />
           </Box>
 
-          <Box
-            overflow="scroll"
-            width="300px"
-            paddingTop="32px"
-          >
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Response headers" onChange={setResponseHeaders} />
           </Box>
 
-          <Box
-            overflow="scroll"
-            width="300px"
-            paddingTop="32px"
-          >
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Query parameters" onChange={setQueryParameters} />
           </Box>
         </Box>

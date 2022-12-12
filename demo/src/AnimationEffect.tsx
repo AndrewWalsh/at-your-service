@@ -7,7 +7,6 @@ import {
   COLOR_SECONDARY,
   COLOR_WHITE,
   COLOR_TERTIARY,
-  COLOR_PRIMARY_FADE,
 } from "./constants";
 
 // In seconds
@@ -135,7 +134,6 @@ const RenderBox = (props: Item) => {
 
 function AnimationEffect(props: {
   bg: typeof COLOR_PRIMARY | typeof COLOR_SECONDARY;
-  direction: "left" | "right"; 
 }) {
   const [itemsFirst, setItemsFirst] = useState<Array<Item>>([]);
 
@@ -193,17 +191,6 @@ function AnimationEffect(props: {
           horizontal={item.horizontal}
         />
       ))}
-
-      <Box
-        height="100%"
-        position="absolute"
-        right={props.direction === "left" ? "0" : "auto"}
-        left={props.direction === "right" ? "50px" : "auto"}
-        bg={COLOR_PRIMARY_FADE}
-        zIndex="400"
-        width="2%"
-        top="0"
-      />
     </Box>
   );
 }

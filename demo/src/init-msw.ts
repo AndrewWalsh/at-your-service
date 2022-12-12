@@ -3,20 +3,13 @@ import { SetupWorkerApi } from "msw";
 import { startAtYourService } from "at-your-service";
 // import { startAtYourService } from "../../src";
 
-import registerServiceWorker from "./registerServiceWorker";
-
 const initialiseWorker = async (worker: SetupWorkerApi) => {
-  const serviceWorker = await registerServiceWorker('mockServiceWorker')
-
   worker.start({
     quiet: true,
     onUnhandledRequest: "bypass",
-    serviceWorker,
   });
 
-  window.navigator.serviceWorker.ready.then(() => {
-    startAtYourService({ registerWorker: false });
-  });
+  startAtYourService({ registerWorker: false });
 
   return worker;
 };

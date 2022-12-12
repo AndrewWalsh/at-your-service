@@ -1,7 +1,6 @@
 import { Box, keyframes } from "@chakra-ui/react";
 
 import { COLOR_PRIMARY_BORDER, COLOR_PRIMARY } from "./constants";
-import useSWIsReady from "./useSWIsReady";
 
 const grow = keyframes`
   from {
@@ -13,10 +12,6 @@ const grow = keyframes`
 `;
 
 function BoxOnSWLoad() {
-  const show = useSWIsReady();
-  if (!show) {
-    return null;
-  }
   return (
     <Box
       position="fixed"

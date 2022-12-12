@@ -133,7 +133,7 @@ function App() {
             overflow="hidden"
             role="presentation"
           >
-            <AnimationEffect bg={COLOR_PRIMARY} direction="left" />
+            <AnimationEffect bg={COLOR_PRIMARY} />
           </Box>
         </Box>
 
@@ -153,7 +153,7 @@ function App() {
             overflow="hidden"
             role="presentation"
           >
-            <AnimationEffect bg={COLOR_SECONDARY} direction="right" />
+            <AnimationEffect bg={COLOR_SECONDARY} />
           </Box>
         </Box>
         <Box
