@@ -161,7 +161,6 @@ function App() {
           display="flex"
           alignItems="flex-start"
           width="80vw"
-          padding="0 1em"
           flexFlow="row nowrap"
         >
           <Box
