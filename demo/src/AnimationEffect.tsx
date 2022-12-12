@@ -12,9 +12,9 @@ import {
 // In seconds
 const DURATION = 16;
 // How many to generate on each iteration
-const QUANTITY_TO_GEN = 40;
+const QUANTITY_TO_GEN = 30;
 // The minimum number of items to generate
-const MIN_QUANTITY_TO_GEN = 19;
+const MIN_QUANTITY_TO_GEN = 10;
 // Affects the size of items
 const DIMENSION = 35;
 // Min size for each item
