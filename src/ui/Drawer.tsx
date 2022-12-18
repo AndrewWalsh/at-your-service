@@ -90,12 +90,12 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
               >
                 Refresh
               </Button> */}
-              <Button
+              {/* <Button
                 iconRight={<Menu />}
                 auto
                 scale={0.5}
                 onClick={() => setShowMetrics(true)}
-              />
+              /> */}
             </Grid>
             {/* <Grid>
             <Button

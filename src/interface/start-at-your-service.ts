@@ -9,7 +9,6 @@ import {
 import { getStore } from "../data-types";
 import { validateWorkerMessage } from "../lib";
 import { Message } from "../data-types";
-import registerServiceWorker from "./registerServiceWorker";
 
 const startOnHandler = (emitter: StrictEventEmitter<EventsMap>) => {
   navigator.serviceWorker.addEventListener(
@@ -65,7 +64,13 @@ export default async function startAtYourService(
 ) {
   try {
     if (config.registerWorker) {
-      await registerServiceWorker("at-your-service-sw");
+      await navigator.serviceWorker.register("./at-your-service-sw.js");
+    }
+
+    // Sometimes, things go wrong relating to dev servers
+    if (config.registerWorker && !navigator.serviceWorker.controller) {
+      location.reload();
+      return;
     }
 
     const store = getStore();
