@@ -6,6 +6,12 @@ test("replaces UUIDs with the previous part name", async () => {
   expect(withNamedPathParts(pathname)).toBe("/api/user/{userId}/post/new");
 });
 
+test("replaces numbers with the previous part name", async () => {
+  const pathname = "/api/user/3424324234/post/new";
+  expect(withNamedPathParts(pathname)).toBe("/api/user/{userId}/post/new");
+});
+
+
 test("uses {id} as the id when there is no preexisting id", async () => {
   const pathname = "/ec6b0caa-ee57-41b9-9810-c996c34f260a/post/new";
   expect(withNamedPathParts(pathname)).toBe("/{id}/post/new");

@@ -1,4 +1,5 @@
 import isUUID from "validator/es/lib/isUUID";
+import isNumeric from "validator/es/lib/isNumeric";
 import createDynamicPartName from "./create-dynamic-part-name";
 
 /**
@@ -21,7 +22,7 @@ export default function withNamedPathParts(pathname: string): string {
   const parsed = split.map((part) => {
     // This is a very simple approach
     // Turn UUIDS into {id}
-    if (isUUID(part)) {
+    if (isUUID(part) || isNumeric(part)) {
       let suggestedPartName = "";
       if (lastPart) {
         suggestedPartName = lastPart;
