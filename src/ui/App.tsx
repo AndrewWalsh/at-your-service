@@ -20,6 +20,14 @@ export default function App() {
     return null;
   }
 
+  const clear = () => {
+    store.clear();
+    store.get().then((store) => {
+      setStoreStruct(store);
+    });
+    setOpen(false);
+  };
+
   return (
     <GeistProvider>
       <Button style={{ margin: "1em" }} onClick={() => setOpen(true)}>
@@ -30,6 +38,7 @@ export default function App() {
         visible={open}
         onClose={() => setOpen(false)}
         storeStruct={storeStruct}
+        clear={clear}
       />
     </GeistProvider>
   );

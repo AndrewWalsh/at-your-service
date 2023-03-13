@@ -116,7 +116,7 @@ class Store {
   /**
    * Delete all state in memory and on disk
    */
-  clear() {
+  clear = () => {
     this.localStorage.clearAll();
     this.store = {};
   }

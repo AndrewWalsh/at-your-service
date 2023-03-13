@@ -7,7 +7,6 @@ import {
   Grid,
   Spacer,
 } from "@geist-ui/core";
-import Menu from "@geist-ui/icons/menu";
 
 import { StoreStructure, StoreRoute } from "../types";
 import { storeStructToOpenAPI } from "../lib";
@@ -18,6 +17,7 @@ type Props = {
   visible: boolean;
   onClose: () => void;
   storeStruct: StoreStructure;
+  clear: () => void;
 };
 
 type StoreStructureDeep =
@@ -31,7 +31,12 @@ const isStoreRoute = (
   route: StoreRoute | StoreStructureDeep
 ): route is StoreRoute => !!route.pathname;
 
-export default function Drawer({ visible, onClose, storeStruct }: Props) {
+export default function Drawer({
+  visible,
+  onClose,
+  storeStruct,
+  clear,
+}: Props) {
   const { setVisible, bindings } = useModal(false);
   const [showMetrics, setShowMetrics] = useState(false);
   const [content, setContent] = useState<{
@@ -82,35 +87,19 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
       <GeistDrawer visible={visible} onClose={onClose} placement="left">
         <GeistDrawer.Subtitle>Network Requests</GeistDrawer.Subtitle>
         <GeistDrawer.Content>
-          <Grid.Container direction="row" justify="flex-start" gap={1}>
-            <Grid>
-              {/* <Button
-                type="secondary"
-                onClick={() => setTreeValue(createTree())}
-              >
-                Refresh
-              </Button> */}
-              {/* <Button
-                iconRight={<Menu />}
-                auto
-                scale={0.5}
-                onClick={() => setShowMetrics(true)}
-              /> */}
-            </Grid>
-            {/* <Grid>
-            <Button
-              auto
-              type="error"
-              onClick={() => {
-                
-              }}
-            >
-              Reset
-            </Button>
-          </Grid> */}
-          </Grid.Container>
-
           <Grid.Container gap={1}>
+            <Grid xs>
+              <Button
+                width="100%"
+                type="error"
+                onClick={() => {
+                  clear();
+                }}
+              >
+                Reset
+              </Button>
+            </Grid>
+
             <Grid xs>
               <Button
                 width="100%"
@@ -120,7 +109,7 @@ export default function Drawer({ visible, onClose, storeStruct }: Props) {
                   navigator.clipboard.writeText(res.getJSON());
                 }}
               >
-                Copy OpenAPI Spec
+                Copy
               </Button>
             </Grid>
           </Grid.Container>
