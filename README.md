@@ -29,10 +29,6 @@
       </blockquote>
       <br />
       <br />
-      🚧 <code>Alpha</code> pre-release 🚧
-      <br />
-      <br />
-      <br />
       <a href="https://atyourservice.awalsh.io/">View the Live Demo</a>
       <br />
       <br />
