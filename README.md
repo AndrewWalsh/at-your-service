@@ -35,6 +35,8 @@
       <a href="https://github.com/AndrewWalsh/at-your-service/issues">Report Bug</a>
       ·
       <a href="https://www.npmjs.com/package/at-your-service">View on npm</a>
+      ·
+      <a href="https://www.youtube.com/watch?v=S-BXpghaEb0">YouTube Demo</a>
   </p>
 </div>
 
