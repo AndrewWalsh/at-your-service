@@ -358,15 +358,15 @@ function Requester() {
             </InputGroup>
           </Box>
 
-          <Box width="300px" paddingTop="32px">
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Request headers" onChange={setRequestHeaders} />
           </Box>
 
-          <Box width="300px" paddingTop="32px">
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Response headers" onChange={setResponseHeaders} />
           </Box>
 
-          <Box width="300px" paddingTop="32px">
+          <Box overflow="scroll" width="300px" paddingTop="32px">
             <KeyValue title="Query parameters" onChange={setQueryParameters} />
           </Box>
         </Box>
