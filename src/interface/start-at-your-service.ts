@@ -5,6 +5,7 @@ import {
   PayloadToWorker,
   FETCHFromWorker,
   EventsMap,
+  MessageTypeToWorker,
 } from "../types";
 import { getStore } from "../data-types";
 import { validateWorkerMessage } from "../lib";
@@ -80,9 +81,11 @@ export default async function startAtYourService(
       store.update(new Message(data.payload));
     });
 
-    // sendMessage(navigator.serviceWorker.controller, {
-    //   type: MessageTypeToWorker.INIT_PORT,
-    // });
+    window.setInterval(() => {
+      sendMessage(navigator.serviceWorker.controller, {
+        type: MessageTypeToWorker.KEEPALIVE_REQUEST,
+      });
+    }, 5000);
 
     startUi(store);
   } catch (error) {

@@ -27,11 +27,8 @@ self.addEventListener("message", async (event) => {
   }
 
   switch (event.data.type) {
-    case "HELLO": {
-      postMessage(event, "HELLO", "WORLD");
-    }
-    case "INIT_PORT": {
-      postMessage(event, "INIT_PORT", "WORLD");
+    case 'KEEPALIVE_REQUEST': {
+      postMessage(event, "KEEPALIVE_REQUEST", "OK");
     }
   }
 });

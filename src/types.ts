@@ -22,9 +22,9 @@ import {
 } from "quicktype-core";
 
 export enum MessageTypeToWorker {
-  INIT_PORT = "INIT_PORT",
-  HELLO = "HELLO",
+  KEEPALIVE_REQUEST = "KEEPALIVE_REQUEST",
 }
+
 export type PayloadToWorker = {
   type: MessageTypeToWorker;
 };
