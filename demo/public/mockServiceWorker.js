@@ -134,6 +134,12 @@ self.addEventListener('message', async function (event) {
     type: 'window',
   })
 
+  if (event.data && event.data.type === "KEEPALIVE_REQUEST") {
+    sendToClient(client, {
+      type: 'KEEPALIVE_RESPONSE',
+    })
+  }
+
   switch (event.data) {
     case 'KEEPALIVE_REQUEST': {
       sendToClient(client, {
