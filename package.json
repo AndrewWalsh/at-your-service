@@ -1,6 +1,6 @@
 {
   "name": "at-your-service",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A developer tool for API observability on the browser. Generate OpenAPI specifications and code from network traffic",
   "homepage": "https://atyourservice.awalsh.io/",
   "types": "dist/index.d.ts",

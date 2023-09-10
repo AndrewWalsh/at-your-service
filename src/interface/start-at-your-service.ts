@@ -82,9 +82,11 @@ export default async function startAtYourService(
     });
 
     window.setInterval(() => {
-      sendMessage(navigator.serviceWorker.controller, {
-        type: MessageTypeToWorker.KEEPALIVE_REQUEST,
-      });
+      if (navigator.serviceWorker.controller) {
+        sendMessage(navigator.serviceWorker.controller, {
+          type: MessageTypeToWorker.KEEPALIVE_REQUEST,
+        });
+      }
     }, 5000);
 
     startUi(store);

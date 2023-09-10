@@ -12,7 +12,7 @@ import {
   InputGroup,
   InputLeftAddon,
 } from "@chakra-ui/react";
-import { setupWorker, rest, SetupWorkerApi } from "msw";
+import { setupWorker, rest, SetupWorker } from "msw";
 import isJSON from "validator/es/lib/isJSON";
 import isValidHostName from "is-valid-hostname";
 
@@ -49,7 +49,7 @@ const resEditorDefaultVal = {
 const prettyPrintJSON = (json: {}) => JSON.stringify(json, null, 2);
 
 function Requester() {
-  const worker = useMemo<SetupWorkerApi>(() => setupWorker(), []);
+  const worker = useMemo<SetupWorker>(() => setupWorker(), []);
   const [reqEditorVal, setReqEditorVal] = useState(
     prettyPrintJSON(reqEditorDefaultVal)
   );
@@ -72,7 +72,7 @@ function Requester() {
     initMSW(worker);
   }, []);
 
-  const onClickMockRequest = (e: MouseEvent<HTMLButtonElement>) => {
+  const onClickMockRequest = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!worker) {
       return;
@@ -97,14 +97,22 @@ function Requester() {
     let query = urlParams.toString();
     query = query ? `?${query}` : "";
 
-    fetch(`${host}${pathname}${query}`, params);
-    toast({
-      title: "API request mocked",
-      description: `${method} ${host}${pathname}${query} -> ${status}`,
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-    });
+    // the fetch promise will never resolve when using msw
+    // if it fails, then the service worker has idled/terminated
+    // the reload is not ideal but will reactivate it
+    try {
+      toast({
+        title: "API request mocked",
+        description: `${method} ${host}${pathname}${query} -> ${status}`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      await fetch(`${host}${pathname}${query}`, params);
+    } catch {
+      window.location.reload();
+    }
+
   };
 
   const showReqEditor = method !== "GET" && method !== "DELETE";
